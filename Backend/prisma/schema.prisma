@@ -48,8 +48,6 @@ model Product {
 model Category {
   id                Int       @id @default(autoincrement())
   name              String
-  parent_category   Category? @relation("ParentCategory", fields: [parent_category_id], references: [id])
-  parent_category_id Int?
 
   created_by     User     @relation("CategoryCreatedBy", fields: [created_by_id], references: [id])
   created_by_id  Int
@@ -59,8 +57,6 @@ model Category {
   deleted_at     DateTime?
   products       Product[]
 
-  // Opposite side of parent_category self-relation
-  child_categories Category[] @relation("ParentCategory")
 
   @@map("category")
 }
