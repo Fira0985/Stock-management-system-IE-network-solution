@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CLERK
+  AUDITOR
+  CUSTOMER
+  SUPPLIER
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  barcode      String   @unique
+  unit         String
+  image_url    String? 
+  sale_price   Float
+  cost_price   Float
+  category     Category @relation(fields: [category_id], references: [id])
+  category_id  Int
+  archived     Boolean
+  created_by   User     @relation("ProductCreatedBy", fields: [created_by_id], references: [id])
+  created_by_id Int
+  deleted_by   User?    @relation("ProductDeletedBy", fields: [deleted_by_id], references: [id])
+  deleted_by_id Int?
+  created_at   DateTime @default(now())
+  deleted_at   DateTime?
+
+  saleItems    SaleItem[]
+  purchaseItems PurchaseItem[]
+
+  @@map("product")
+}
+
+model Category {
+  id                Int       @id @default(autoincrement())
+  name              String
+  parent_category   Category? @relation("ParentCategory", fields: [parent_category_id], references: [id])
+  parent_category_id Int?
+
+  created_by     User     @relation("CategoryCreatedBy", fields: [created_by_id], references: [id])
+  created_by_id  Int
+  deleted_by     User?    @relation("CategoryDeletedBy", fields: [deleted_by_id], references: [id])
+  deleted_by_id  Int?
+  created_at     DateTime @default(now())
+  deleted_at     DateTime?
+  products       Product[]
+
+  // Opposite side of parent_category self-relation
+  child_categories Category[] @relation("ParentCategory")
+
+  @@map("category")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  username      String   @unique
+  role          Role
+  password_hash String?
+  phone         String?
+  address       String?
+  credit_limit  Float?
+
+  created_by_id Int?
+  created_by    User?    @relation("UserCreatedBy", fields: [created_by_id], references: [id])
+  deleted_by_id Int?
+  deleted_by    User?    @relation("UserDeletedBy", fields: [deleted_by_id], references: [id])
+  created_at    DateTime @default(now())
+  deleted_at    DateTime?
+
+  // Opposite relations for Products
+  productsCreated Product[] @relation("ProductCreatedBy")
+  productsDeleted Product[] @relation("ProductDeletedBy")
+
+  // Opposite relations for Categories
+  categoriesCreated Category[] @relation("CategoryCreatedBy")
+  categoriesDeleted Category[] @relation("CategoryDeletedBy")
+
+  // Opposite relations for Users (self-relations)
+  usersCreated User[] @relation("UserCreatedBy")
+  usersDeleted User[] @relation("UserDeletedBy")
+
+  // Opposite relations for Sales
+  salesAsCustomer Sale[] @relation("SaleCustomer")
+  salesCreated Sale[] @relation("SaleCreatedBy")
+  salesDeleted Sale[] @relation("SaleDeletedBy")
+
+  // Opposite relations for Purchases
+  purchasesAsSupplier Purchase[] @relation("PurchaseSupplier")
+  purchasesCreated Purchase[] @relation("PurchaseCreatedBy")
+  purchasesDeleted Purchase[] @relation("PurchaseDeletedBy")
+
+  @@map("user")
+}
+
+model Sale {
+  id             Int      @id @default(autoincrement())
+  type           SaleType
+  total          Float
+  discount_amount Float
+  customer       User     @relation("SaleCustomer", fields: [customer_id], references: [id])
+  customer_id    Int
+  created_by     User     @relation("SaleCreatedBy", fields: [created_by_id], references: [id])
+  created_by_id  Int
+  deleted_by     User?    @relation("SaleDeletedBy", fields: [deleted_by_id], references: [id])
+  deleted_by_id  Int?
+  created_at     DateTime @default(now())
+  deleted_at     DateTime?
+  items          SaleItem[]
+
+  @@map("sale")
+}
+
+enum SaleType {
+  CASH
+  CREDIT
+}
+
+model SaleItem {
+  id         Int     @id @default(autoincrement())
+  sale       Sale    @relation(fields: [sale_id], references: [id])
+  sale_id    Int
+  product    Product @relation(fields: [product_id], references: [id])
+  product_id Int
+  quantity   Int
+  unit_price Float
+
+  @@map("sale_item")
+}
+
+model Purchase {
+  id            Int     @id @default(autoincrement())
+  supplier      User    @relation("PurchaseSupplier", fields: [supplier_id], references: [id])
+  supplier_id   Int
+  created_by    User    @relation("PurchaseCreatedBy", fields: [created_by_id], references: [id])
+  created_by_id Int
+  deleted_by    User?   @relation("PurchaseDeletedBy", fields: [deleted_by_id], references: [id])
+  deleted_by_id Int?
+  created_at    DateTime @default(now())
+  deleted_at    DateTime?
+  items         PurchaseItem[]
+
+  @@map("purchase")
+}
+
+model PurchaseItem {
+  id           Int      @id @default(autoincrement())
+  purchase     Purchase @relation(fields: [purchase_id], references: [id])
+  purchase_id  Int
+  product      Product  @relation(fields: [product_id], references: [id])
+  product_id   Int
+  quantity     Int
+  cost_price   Float
+
+  @@map("purchase_item")
+}
