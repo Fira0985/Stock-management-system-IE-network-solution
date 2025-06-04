@@ -27,14 +27,6 @@ enum PaymentStatus {
   OVERDUE
 }
 
-enum PaymentMethod {
-  CASH
-  CHEQUE
-  TRANSFER
-  CARD
-  OTHER
-}
-
 model Product {
   id             Int      @id @default(autoincrement())
   name           String
@@ -157,7 +149,6 @@ model Payment {
   id              Int            @id @default(autoincrement())
   amount          Float
   paid_at         DateTime       @default(now())
-  method          PaymentMethod  @default(CASH)
   note            String?
 
   sale            Sale           @relation(fields: [sale_id], references: [id])
