@@ -31,13 +31,13 @@ model Product {
   cost_price   Float
   category     Category @relation(fields: [category_id], references: [id])
   category_id  Int
-  archived     Boolean
   created_by   User     @relation("ProductCreatedBy", fields: [created_by_id], references: [id])
   created_by_id Int
   deleted_by   User?    @relation("ProductDeletedBy", fields: [deleted_by_id], references: [id])
   deleted_by_id Int?
   created_at   DateTime @default(now())
   deleted_at   DateTime?
+  archived     Boolean   @default(false)
 
   saleItems    SaleItem[]
   purchaseItems PurchaseItem[]
@@ -56,6 +56,7 @@ model Category {
   created_at     DateTime @default(now())
   deleted_at     DateTime?
   products       Product[]
+  archived     Boolean   @default(false)
 
 
   @@map("category")
@@ -76,6 +77,7 @@ model User {
   deleted_by    User?    @relation("UserDeletedBy", fields: [deleted_by_id], references: [id])
   created_at    DateTime @default(now())
   deleted_at    DateTime?
+  archived     Boolean   @default(false)
 
   // Opposite relations for Products
   productsCreated Product[] @relation("ProductCreatedBy")
@@ -116,6 +118,7 @@ model Sale {
   created_at     DateTime @default(now())
   deleted_at     DateTime?
   items          SaleItem[]
+  archived     Boolean   @default(false)
 
   @@map("sale")
 }
@@ -133,6 +136,7 @@ model SaleItem {
   product_id Int
   quantity   Int
   unit_price Float
+  archived     Boolean   @default(false)
 
   @@map("sale_item")
 }
@@ -148,6 +152,7 @@ model Purchase {
   created_at    DateTime @default(now())
   deleted_at    DateTime?
   items         PurchaseItem[]
+  archived     Boolean   @default(false)
 
   @@map("purchase")
 }
@@ -160,6 +165,7 @@ model PurchaseItem {
   product_id   Int
   quantity     Int
   cost_price   Float
+  archived     Boolean   @default(false)
 
   @@map("purchase_item")
 }
