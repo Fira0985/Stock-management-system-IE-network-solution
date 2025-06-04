@@ -99,7 +99,7 @@ const addProduct = async (req, res) => {
       },
     });
 
-    res.status(201).json(product);
+    res.status(201).json({message: "successfully Created the Product"});
   } catch (error) {
     res.status(500).json({ error: 'Failed to add product', details: error.message });
   }
@@ -124,10 +124,46 @@ const addCategory = async (req, res) => {
   }
 };
 
+// Edit Product
+const editProduct = async (req, res) => {
+  const productId = parseInt(req.params.id);
+  const data = req.body;
+
+  try {
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data,
+    });
+
+    res.json({message: "Update successfull"});
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to edit product', details: error.message });
+  }
+};
+
+// Edit Category
+const editCategory = async (req, res) => {
+  const categoryId = parseInt(req.params.id);
+  const data = req.body;
+
+  try {
+    const updatedCategory = await prisma.category.update({
+      where: { id: categoryId },
+      data,
+    });
+
+    res.json(updatedCategory);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to edit category', details: error.message });
+  }
+};
+
 module.exports = {
   addProduct,
   addCategory,
   addUser,
   editUser,
-  deleteUser
+  deleteUser,
+  editProduct,
+  editCategory
 };
