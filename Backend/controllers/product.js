@@ -1,0 +1,55 @@
+const prisma = require('@prisma/client')
+
+// Add Product
+const addProduct = async (req, res) => {
+  try {
+    const {
+      name,
+      barcode,
+      unit,
+      image_url,
+      sale_price,
+      cost_price,
+      category_id,
+      archived,
+      created_by_id,
+    } = req.body;
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        barcode,
+        unit,
+        image_url,
+        sale_price,
+        cost_price,
+        category_id,
+        archived,
+        created_by_id,
+      },
+    });
+
+    res.status(201).json({ message: "Successfully created the product", product });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add product', details: error.message });
+  }
+};
+
+// Edit Product
+const editProduct = async (req, res) => {
+  const productId = parseInt(req.params.id);
+  const data = req.body;
+
+  try {
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data,
+    });
+
+    res.json({ message: "Update successful", product: updatedProduct });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to edit product', details: error.message });
+  }
+};
+
+module.exports ={addProduct, editProduct}

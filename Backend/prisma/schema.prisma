@@ -7,11 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Role {
-  id    Int     @id @default(autoincrement()) 
-  name  String  @unique
+enum RoleType {
+  OWNER
+  CLERK
+  AUDITOR
+}
 
-  users User[]
+model User {
+  id                  Int       @id @default(autoincrement())
+  email               String    @unique
+  username            String
+  role                RoleType
+  password_hash       String?
+  phone               String?
+  created_by_id       Int?
+  created_by          User?     @relation("UserCreatedBy", fields: [created_by_id], references: [id])
+  deleted_by_id       Int?
+  deleted_by          User?     @relation("UserDeletedBy", fields: [deleted_by_id], references: [id])
+  created_at          DateTime  @default(now())
+  deleted_at          DateTime?
+  archived            Boolean   @default(false)
+
+  // Relations
+  productsCreated     Product[] @relation("ProductCreatedBy")
+  productsDeleted     Product[] @relation("ProductDeletedBy")
+  categoriesCreated   Category[] @relation("CategoryCreatedBy")
+  categoriesDeleted   Category[] @relation("CategoryDeletedBy")
+  usersCreated        User[]    @relation("UserCreatedBy")
+  usersDeleted        User[]    @relation("UserDeletedBy")
+
+  salesCreated        Sale[]    @relation("SaleCreatedBy")
+  salesDeleted        Sale[]    @relation("SaleDeletedBy")
+
+  purchasesCreated    Purchase[] @relation("PurchaseCreatedBy")
+  purchasesDeleted    Purchase[] @relation("PurchaseDeletedBy")
+
+  paymentsCreated     Payment[] @relation("PaymentCreatedBy")
+  paymentsDeleted     Payment[] @relation("PaymentDeletedBy")
+
+  @@map("user")
+}
+
+model NonUser {
+  id             Int      @id @default(autoincrement())
+  name           String
+  address        String?
+  phone          String?
+  credit_limit   Float?
+  type           String   // "CUSTOMER" or "SUPPLIER"
+  archived       Boolean  @default(false)
+  created_at     DateTime @default(now())
+
+  sales          Sale[]   @relation("SaleCustomer")
+  purchases      Purchase[] @relation("PurchaseSupplier")
 }
 
 model Product {
@@ -54,57 +102,17 @@ model Category {
   @@map("category")
 }
 
-model User {
-  id                  Int       @id @default(autoincrement())
-  email               String    @unique
-  username            String    
-  role                Role      @relation(fields: [role_id], references: [id]) 
-  role_id             Int
-  password_hash       String?
-  phone               String?
-  address             String?
-  credit_limit        Float?
-  created_by_id       Int?
-  created_by          User?     @relation("UserCreatedBy", fields: [created_by_id], references: [id])
-  deleted_by_id       Int?
-  deleted_by          User?     @relation("UserDeletedBy", fields: [deleted_by_id], references: [id])
-  created_at          DateTime  @default(now())
-  deleted_at          DateTime?
-  archived            Boolean   @default(false)
-
-  // Relations
-  productsCreated     Product[] @relation("ProductCreatedBy")
-  productsDeleted     Product[] @relation("ProductDeletedBy")
-  categoriesCreated   Category[] @relation("CategoryCreatedBy")
-  categoriesDeleted   Category[] @relation("CategoryDeletedBy")
-  usersCreated        User[]    @relation("UserCreatedBy")
-  usersDeleted        User[]    @relation("UserDeletedBy")
-
-  salesAsCustomer     Sale[]    @relation("SaleCustomer")
-  salesCreated        Sale[]    @relation("SaleCreatedBy")
-  salesDeleted        Sale[]    @relation("SaleDeletedBy")
-
-  purchasesAsSupplier Purchase[] @relation("PurchaseSupplier")
-  purchasesCreated    Purchase[] @relation("PurchaseCreatedBy")
-  purchasesDeleted    Purchase[] @relation("PurchaseDeletedBy")
-
-  paymentsCreated    Payment[] @relation("PaymentCreatedBy")
-  paymentsDeleted    Payment[] @relation("PaymentDeletedBy")
-
-  @@map("user")
-}
-
 model Sale {
   id               Int       @id @default(autoincrement())
-  type             String    // e.g., "CASH", "CREDIT"
+  type             String    // "CASH", "CREDIT"
   total            Float
   discount_amount  Float
   paid_amount      Float     @default(0)
   balance_due      Float     @default(0)
   due_date         DateTime?
-  payment_status   String    @default("UNPAID") // e.g., "PAID", "PARTIAL", "UNPAID", "OVERDUE"
+  payment_status   String    @default("UNPAID")
 
-  customer         User      @relation("SaleCustomer", fields: [customer_id], references: [id])
+  customer         NonUser   @relation("SaleCustomer", fields: [customer_id], references: [id])
   customer_id      Int
   created_by       User      @relation("SaleCreatedBy", fields: [created_by_id], references: [id])
   created_by_id    Int
@@ -137,25 +145,21 @@ model Payment {
   id              Int      @id @default(autoincrement())
   amount          Float
   paid_at         DateTime @default(now())
- 
   sale            Sale     @relation(fields: [sale_id], references: [id])
   sale_id         Int
   created_by      User     @relation("PaymentCreatedBy", fields: [created_by_id], references: [id])
   created_by_id   Int
-
   deleted_by      User?    @relation("PaymentDeletedBy", fields: [deleted_by_id], references: [id])
   deleted_by_id   Int?
-
   created_at      DateTime @default(now())
   deleted_at      DateTime?
-
 
   @@map("payment")
 }
 
 model Purchase {
   id             Int       @id @default(autoincrement())
-  supplier       User      @relation("PurchaseSupplier", fields: [supplier_id], references: [id])
+  supplier       NonUser   @relation("PurchaseSupplier", fields: [supplier_id], references: [id])
   supplier_id    Int
   created_by     User      @relation("PurchaseCreatedBy", fields: [created_by_id], references: [id])
   created_by_id  Int
