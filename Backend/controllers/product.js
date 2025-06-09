@@ -1,6 +1,43 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+// Get all products
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({
+      where: { archived: false },
+      include: {
+        category: true,
+        created_by: true,
+      },
+    });
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch products', details: error.message });
+  }
+};
+
+// Get product by ID
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        category: true,
+        created_by: true,
+      },
+    });
+    if (!product || product.archived) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product', details: error.message });
+  }
+};
+
+
 // Add Product
 const addProduct = async (req, res) => {
   try {
@@ -53,4 +90,4 @@ const editProduct = async (req, res) => {
   }
 };
 
-module.exports ={addProduct, editProduct}
+module.exports ={addProduct, editProduct, getAllProducts, getProductById}

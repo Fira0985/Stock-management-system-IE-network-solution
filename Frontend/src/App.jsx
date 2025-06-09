@@ -6,15 +6,12 @@ import Dashboard from './Pages/Dashboard/dashboardPage';
 
 function App() {
   return (
-    <div>
-      <Router>
+    <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
-    </div>
-    
   );
 }
 

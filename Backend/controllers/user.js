@@ -4,6 +4,45 @@ const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+// Get all users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      where: { archived: false },
+      include: {
+        usersCreated: true,
+        usersDeleted: true,
+      },
+    });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch users', details: error.message });
+  }
+};
+
+// Get user by email
+const getUserByEmail = async (req, res) => {
+  const { email } = req.params; // Expecting email from the route parameter
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email }, // Prisma will match this email exactly
+      include: {
+        usersCreated: true,
+        usersDeleted: true,
+      },
+    });
+
+    if (!user || user.archived) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch user by email', details: error.message });
+  }
+};
+
+
 // Add User
 const addUser = async (req, res) => {
   try {
@@ -96,4 +135,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports ={addUser, editUser, deleteUser}
+module.exports ={addUser, editUser, deleteUser, getAllUsers, getUserByEmail};

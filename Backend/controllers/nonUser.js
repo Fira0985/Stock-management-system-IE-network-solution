@@ -1,6 +1,44 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+// Get all NonUsers
+const getAllNonUsers = async (req, res) => {
+  try {
+    const nonUsers = await prisma.nonUser.findMany({
+      where: {
+        archived: false, // Exclude archived by default
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    res.json(nonUsers);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch non-users', details: error.message });
+  }
+};
+
+// Get a NonUser by ID
+const getNonUserById = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const nonUser = await prisma.nonUser.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!nonUser || nonUser.archived) {
+      return res.status(404).json({ error: 'NonUser not found' });
+    }
+
+    res.json(nonUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch non-user', details: error.message });
+  }
+};
+
+
 // add NonUser
 const addNonUser = async (req, res) => {
   try {
@@ -68,4 +106,4 @@ const deleteNonUser = async (req, res) => {
 };
 
 
-module.exports = {addNonUser, editNonUser, deleteNonUser}
+module.exports = {addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById}
