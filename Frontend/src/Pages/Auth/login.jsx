@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './Auth.css';
-import { loginUser } from '../../services/authService'; // Adjust path as needed
+import { loginUser } from '../../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const navigate = useNavigate();
 
   async function handleLogin() {
     try {
@@ -15,6 +17,7 @@ function Login() {
       // Save token if returned
       if (data.token) {
         localStorage.setItem('token', data.token);
+        navigate('/dashboard');
       }
 
       // Redirect or update UI here
