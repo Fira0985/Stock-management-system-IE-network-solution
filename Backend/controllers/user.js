@@ -1,7 +1,9 @@
 const isValidEmail = require('../utils/validator')
 const {SALT_ROUNDS} = require('../config')
 const bcrypt = require('bcrypt')
-const prisma = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
 // Add User
 const addUser = async (req, res) => {
   try {
@@ -31,8 +33,7 @@ const addUser = async (req, res) => {
     }
 
     // Hash the password
-    const saltRounds = 10;
-    const password_hash = await bcrypt.hash(password, saltRounds);
+    const password_hash = await bcrypt.hash(password, SALT_ROUNDS);
 
     const newUser = await prisma.user.create({
       data: {

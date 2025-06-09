@@ -1,7 +1,10 @@
-const isValidEmail = require('../utils/validator')
+const {isValidEmail} = require('../utils/validator')
 const {JWT_SECRET} = require('../config')
 const bcrypt = require('bcrypt')
-const prisma = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+const jwt = require('jsonwebtoken');
+
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
