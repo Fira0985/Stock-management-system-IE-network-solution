@@ -1,4 +1,4 @@
-const isValidEmail = require('../utils/validator')
+const {isValidEmail} = require('../utils/validator')
 const {SALT_ROUNDS} = require('../config')
 const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client');
