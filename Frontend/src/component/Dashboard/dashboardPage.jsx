@@ -20,7 +20,7 @@ const Dashboard = () => {
             <p>{label}</p>
             <h3 className="amount">
               {label === "Daily Sales" ? "$200" :
-               label === "Monthly Sales" ? "$6,000" : "$1,500"}
+                label === "Monthly Sales" ? "$6,000" : "$1,500"}
             </h3>
           </div>
         ))}

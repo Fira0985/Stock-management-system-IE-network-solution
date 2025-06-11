@@ -1,49 +1,102 @@
 .sidebar {
-  width: 220px;
-  background: #FFFAFA;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+    width: 15vw;
+    background: #FFFAFA;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+    min-height: 100vh;
+    position: fixed;
 }
 
 .brand {
-  font-size: 24px;
-  font-weight: bold;
-  color: #001aff;
+    font-size: 24px;
+    font-weight: 700;
+    color: #001aff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .brand span {
-  color: black;
+    color: black;
 }
 
 .menu {
-  list-style: none;
-  padding: 0;
-  margin-top: 30px;
+    list-style: none;
+    padding: 0;
 }
 
 .menu li {
-  padding: 10px 0;
-  cursor: pointer;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 10px;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+}
+
+.menu li:hover {
+    background-color: #e6e6ff;
+    color: #001aff;
+    padding-left: 16px;
 }
 
 .user-profile {
-  text-align: center;
+    margin-top: 3vh;
+    padding-left: 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-top: 1vh;
+    border-top: 1px solid #eee;
 }
 
 .avatar {
-  background: black;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin: 0 auto 10px;
+    background: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    margin-left: 0.6vw;
 }
 
 .logout-btn {
-  margin-top: 10px;
-  padding: 6px 10px;
-  background: white;
-  border: 1px solid #ddd;
-  cursor: pointer;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #001aff;
+    color: white;
+    border-color: #001aff;
+}
+
+/* Responsive behavior for smaller screens */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 180px;
+        padding: 15px;
+    }
+
+    .brand {
+        font-size: 20px;
+    }
+
+    .menu li {
+        font-size: 14px;
+        gap: 8px;
+    }
+
+    .logout-btn {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
 }
