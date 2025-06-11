@@ -3,65 +3,6 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-.dashboard-container {
-  display: flex;
-  min-height: 100vh;
-  background: #f9f9f9;
-  width: 100%;
-}
-
-.sidebar {
-  width: 220px;
-  background: #fff5f5;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.brand {
-  font-size: 24px;
-  font-weight: bold;
-  color: #001aff;
-}
-
-.brand span {
-  color: black;
-}
-
-.menu {
-  list-style: none;
-  padding: 0;
-  margin-top: 30px;
-  width: 100vw;
-}
-
-.menu li {
-  padding: 10px 0;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.user-profile {
-  text-align: center;
-}
-
-.avatar {
-  background: black;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin: 0 auto 10px;
-}
-
-.logout-btn {
-  margin-top: 10px;
-  padding: 6px 10px;
-  background: white;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
 .main-content {
   flex-grow: 1;
   padding: 20px 30px;
@@ -88,6 +29,8 @@ body {
 .avatar.small {
   width: 30px;
   height: 30px;
+  background: black;
+  border-radius: 50%;
 }
 
 .overview {
