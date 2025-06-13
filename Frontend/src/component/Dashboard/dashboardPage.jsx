@@ -1,18 +1,11 @@
 import React from 'react';
 import './Dashboard.css';
+import Navbar from '../Navbar/navbar';
 
 const Dashboard = () => {
   return (
     <main className="main-content">
-      <header className="topbar">
-        <div className="title">Dashboard</div>
-        <div className="topbar-right">
-          <span className="icon">🔔</span>
-          <span className="icon">🌞</span>
-          <div className="avatar small" />
-          <span>Samuel</span>
-        </div>
-      </header>
+      <Navbar />
 
       <section className="overview">
         {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
