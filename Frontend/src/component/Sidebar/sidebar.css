@@ -10,11 +10,12 @@
 }
 
 .brand {
-    font-size: 24px;
-    font-weight: 700;
-    color: #001aff;
+    font-size: 25px;
+    font-weight: bold;
+    color: #0000FF;
     text-transform: uppercase;
     letter-spacing: 1px;
+    padding-bottom: 1vh;
 }
 
 .brand span {
@@ -35,6 +36,7 @@
     font-weight: 500;
     border-radius: 6px;
     transition: background-color 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+    color: #333;
 }
 
 .menu li:hover {
@@ -47,7 +49,7 @@
     margin-top: 3vh;
     padding-left: 2vw;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: start;
     padding-top: 1vh;
     border-top: 1px solid #eee;
@@ -59,11 +61,19 @@
     height: 40px;
     border-radius: 50%;
     margin-bottom: 8px;
-    margin-left: 0.6vw;
+}
+
+.name{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-left: 10px;
+    margin-top: 7px;
 }
 
 .logout-btn {
     margin-top: 10px;
+    margin-left: 10%;
     padding: 6px 12px;
     background: white;
     border: 1px solid #ccc;
@@ -71,12 +81,12 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    width: 50%;
 }
 
 .logout-btn:hover {
-    background-color: #001aff;
-    color: white;
-    border-color: #001aff;
+    color: black;
+    border-color: #333;
 }
 
 /* Responsive behavior for smaller screens */

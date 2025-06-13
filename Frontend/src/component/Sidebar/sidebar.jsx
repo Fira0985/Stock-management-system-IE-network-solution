@@ -6,7 +6,7 @@ import { LayoutDashboard, Package, ShoppingCart, ShoppingBag, CreditCard, BarCha
 const Sidebar = () => {
     return (
         <aside className="sidebar">
-            <div className="brand">Stock<span>.</span></div>
+            <div className="brand">Track<span>እቃ</span> <span>.</span></div>
             <ul className="menu">
                 <li><LayoutDashboard size={16} /> Dashboard</li>
                 <li><Package size={16} /> Products</li>
@@ -22,9 +22,9 @@ const Sidebar = () => {
 
             <div className="user-profile">
                 <div className="avatar" />
-                <div>Samuel</div>
-                <button className="logout-btn">Logout</button>
+                <div className='name'>Samuel</div>
             </div>
+            <button className="logout-btn">Logout</button>
         </aside>
     );
 };
