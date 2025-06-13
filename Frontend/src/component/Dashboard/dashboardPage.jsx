@@ -1,11 +1,56 @@
 import React from 'react';
 import './Dashboard.css';
 import Navbar from '../Navbar/navbar';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend,
+  LineChart, Line
+} from 'recharts';
+
+// Sample data
+const weeklyData = [
+  { name: 'Mon', sales: 400 },
+  { name: 'Tue', sales: 300 },
+  { name: 'Wed', sales: 500 },
+  { name: 'Thu', sales: 200 },
+  { name: 'Fri', sales: 350 },
+  { name: 'Sat', sales: 600 },
+];
+
+const monthlyData = [
+  { name: 'Electronics', value: 400 },
+  { name: 'Groceries', value: 300 },
+  { name: 'Clothing', value: 200 },
+  { name: 'Accessories', value: 100 },
+];
+
+const annualData = [
+  { month: 'Jan', value: 1200 },
+  { month: 'Feb', value: 2100 },
+  { month: 'Mar', value: 800 },
+  { month: 'Apr', value: 1600 },
+  { month: 'May', value: 1900 },
+];
+
+const pieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const Dashboard = () => {
   return (
     <main className="main-content">
       <Navbar />
+
+      {/* Overview section stays the same */}
+      <section className="overview">
+        {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
+          <div className="card" key={i}>
+            <p>{label}</p>
+            <h3 className="amount">
+              {label === "Daily Sales" ? "$200" :
+                label === "Monthly Sales" ? "$6,000" : "$1,500"}
+            </h3>
+          </div>
+        ))}
+      </section>
 
       <section className="overview">
         {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
@@ -19,36 +64,67 @@ const Dashboard = () => {
         ))}
       </section>
 
+      {/* Updated Statistics with Recharts */}
       <section className="statistics">
         <h2>Statistics</h2>
         <div className="charts">
+
+          {/* Weekly Sales: Bar Chart */}
           <div className="chart">
             <p>Weekly Sales</p>
-            <div className="bars blue">
-              {[...Array(6)].map((_, i) => (
-                <div className="bar" key={i}></div>
-              ))}
-            </div>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={weeklyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="sales" fill="#001aff" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
+
+          {/* Monthly Sales: Pie Chart */}
           <div className="chart">
             <p>Monthly Sales</p>
-            <div className="bars gray">
-              {[...Array(6)].map((_, i) => (
-                <div className="bar" key={i}></div>
-              ))}
-            </div>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={monthlyData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  label
+                >
+                  {monthlyData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                  ))}
+                </Pie>
+                <Legend />
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
+
+          {/* Annual Sales: Line Chart */}
           <div className="chart">
             <p>Annual Sales</p>
-            <div className="bars blue">
-              {[...Array(6)].map((_, i) => (
-                <div className="bar" key={i}></div>
-              ))}
-            </div>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={annualData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="value" stroke="#001aff" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
+
         </div>
       </section>
 
+      {/* Activity section stays the same */}
       <section className="activity">
         <h2>Recent Activity</h2>
         <ul className="activity-list">
