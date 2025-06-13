@@ -13,11 +13,19 @@ body {
   background-color: #ffffff;
 }
 
+.main-content-collapsed{
+  flex-grow: 1;
+  width: 100%;
+  margin-left: 6vw;
+  box-sizing: border-box;
+  background-color: #ffffff; 
+}
+
 /* Overview Section */
 .overview {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
+  gap: 50px;
   margin-top: 24px;
   padding: 20px;
 }

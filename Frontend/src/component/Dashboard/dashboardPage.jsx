@@ -34,10 +34,9 @@ const annualData = [
 
 const pieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const Dashboard = () => {
+const Dashboard = ({ isSidebarOpen } ) => {
   return (
-    <main className="main-content">
-      <Navbar />
+    <main className={isSidebarOpen? "main-content" : "main-content-collapsed"}>
 
       {/* Overview section stays the same */}
       <section className="overview">

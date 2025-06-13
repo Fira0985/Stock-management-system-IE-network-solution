@@ -1,6 +1,15 @@
 .dashboard-container {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: white;
-  width: 100%;
+  width: 83vw;
+}
+
+.dashboard-container-collapsed{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: white;
+  width: 93vw;
 }
