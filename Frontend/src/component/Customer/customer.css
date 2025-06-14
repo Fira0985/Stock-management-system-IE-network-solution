@@ -1,52 +1,56 @@
-.supplier-content {
+.customer-content {
     padding: 30px 40px;
     background-color: #fff;
-    font-family: "Segoe UI", sans-serif;
     margin-left: 16.6vw;
+    font-family: "Segoe UI", sans-serif;
     width: 77vw;
 }
 
-.supplier-content.collapse{
+.customer-content.collapse {
     margin-left: 6vw;
     transition: margin-left 0.3s ease;
     width: 87vw;
 }
 
-.supplier-header {
+.customer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
 }
 
-.supplier-header h2 {
+.customer-header h2 {
     font-size: 24px;
     font-weight: bold;
 }
 
-.new-supplier-btn {
-    background-color: #f3f4f6;
+.add-customer {
+    background-color: #f9f9f9;
     border: 1px solid #d1d5db;
-    border-radius: 12px;
     padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
 }
 
-.new-supplier-btn:hover {
+.add-customer:hover {
     background-color: #111827;
-    color: white;
+    color: #ffffff;
     border-color: #111827;
 }
 
-.supplier-table {
-    border: 1px solid #eee;
-    border-radius: 12px;
+.customer-table {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
     overflow: hidden;
 }
 
-.supplier-row {
+.customer-row {
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 2fr 2fr 0.5fr;
     padding: 15px 15px;
@@ -55,30 +59,31 @@
     align-items: center;
 }
 
-.supplier-header-row {
-    background-color: #fafafa;
+.customer-row.header {
     font-weight: bold;
+    background-color: #f3f4f6;
+    border-bottom: 2px solid #d1d5db;
 }
 
-.menu-dots {
-    font-size: 18px;
-    text-align: center;
-    cursor: pointer;
+.dots {
+    font-size: 20px;
     color: #666;
+    cursor: pointer;
+    text-align: center;
 }
 
 .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
     margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
     font-size: 14px;
+    justify-content: center;
 }
 
 .pagination span {
-    padding: 5px 10px;
-    border-radius: 6px;
+    padding: 5px 12px;
+    border-radius: 5px;
     cursor: pointer;
 }
 

@@ -6,16 +6,29 @@ import {
 } from 'lucide-react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-const Sidebar = ({ onToggle }) => {
+const Sidebar = ({ onToggle, onMenuSelect }) => {
     const [isOpen, setIsOpen] = useState(true);
 
     const handleToggle = () => {
         const newState = !isOpen;
         setIsOpen(newState);
         if (onToggle) {
-            onToggle(newState); // ← send state to parent
+            onToggle(newState);
         }
     };
+
+    const menuItems = [
+        { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
+        { icon: <Package size={16} />, label: "Products" },
+        { icon: <ShoppingCart size={16} />, label: "Sales" },
+        { icon: <ShoppingBag size={16} />, label: "Purchase" },
+        { icon: <CreditCard size={16} />, label: "Credits" },
+        { icon: <BarChart2 size={16} />, label: "Report" },
+        { icon: <Truck size={16} />, label: "Supplier" },
+        { icon: <Users size={16} />, label: "Customer" },
+        { icon: <User size={16} />, label: "User" },
+        { icon: <Settings size={16} />, label: "Settings" },
+    ];
 
     return (
         <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
@@ -27,16 +40,11 @@ const Sidebar = ({ onToggle }) => {
             </div>
 
             <ul className="menu">
-                <li><LayoutDashboard size={16} /> {isOpen && 'Dashboard'}</li>
-                <li><Package size={16} /> {isOpen && 'Products'}</li>
-                <li><ShoppingCart size={16} /> {isOpen && 'Sales'}</li>
-                <li><ShoppingBag size={16} /> {isOpen && 'Purchase'}</li>
-                <li><CreditCard size={16} /> {isOpen && 'Credits'}</li>
-                <li><BarChart2 size={16} /> {isOpen && 'Report'}</li>
-                <li><Truck size={16} /> {isOpen && 'Supplier'}</li>
-                <li><Users size={16} /> {isOpen && 'Customer'}</li>
-                <li><User size={16} /> {isOpen && 'User'}</li>
-                <li><Settings size={16} /> {isOpen && 'Settings'}</li>
+                {menuItems.map((item) => (
+                    <li key={item.label} onClick={() => onMenuSelect(item.label)}>
+                        {item.icon} {isOpen && item.label}
+                    </li>
+                ))}
             </ul>
 
             {isOpen ? (
@@ -47,7 +55,6 @@ const Sidebar = ({ onToggle }) => {
                     </div>
                     <button className="logout-btn">Logout</button>
                 </>
-
             ) : (
                 <>
                     <div className='user-profile-collapse'>
