@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Sidebar from '../../component/Sidebar/sidebar';
-// import Dashboard from '../../component/Dashboard/dashboardPage';
+import Dashboard from '../../component/Dashboard/dashboardPage';
 import './MainPage.css';
 import Navbar from '../../component/Navbar/navbar';
 import Product from '../../component/Product/product';
 import SupplierList from '../../component/Supplier/supplier';
+import UserManagement from '../../component/User/userManagement';
 
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Lifted state
@@ -21,7 +22,8 @@ const MainPage = () => {
       <Sidebar onToggle={handleSidebarToggle} />
       {/* <Dashboard isSidebarOpen={isSidebarOpen} /> */}
       {/* <Product isSidebarOpen={isSidebarOpen} /> */}
-      <SupplierList isSidebarOpen={isSidebarOpen} />
+      {/* <SupplierList isSidebarOpen={isSidebarOpen} /> */}
+      < UserManagement isSidebarOpen={isSidebarOpen} />
     </div>
   );
 };
