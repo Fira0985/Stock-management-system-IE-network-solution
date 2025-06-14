@@ -1,0 +1,93 @@
+.supplier-content {
+    padding: 30px 40px;
+    background-color: #fff;
+    font-family: "Segoe UI", sans-serif;
+    margin-left: 16.6vw;
+    width: 77vw;
+}
+
+.supplier-content.collapse{
+    margin-left: 6vw;
+    transition: margin-left 0.3s ease;
+    width: 87vw;
+}
+
+.supplier-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.supplier-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.new-supplier-btn {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.new-supplier-btn:hover {
+    background-color: #111827;
+    color: white;
+    border-color: #111827;
+}
+
+.supplier-table {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.supplier-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr 2fr 0.5fr;
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    align-items: center;
+}
+
+.supplier-header-row {
+    background-color: #fafafa;
+    font-weight: bold;
+}
+
+.menu-dots {
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+.pagination span {
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pagination .active {
+    background-color: black;
+    color: white;
+}
+
+.pagination .disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}
