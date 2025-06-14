@@ -20,7 +20,7 @@ const Sidebar = ({ onToggle }) => {
     return (
         <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
             <div className="sidebar-header">
-                <div className="brand">Track<span>እቃ</span><span>.</span></div>
+                {isOpen ? <div className="brand">Track<span>እቃ</span><span>.</span></div> : <div></div>}
                 <button className="toggle-btn" onClick={handleToggle}>
                     {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
                 </button>
@@ -39,13 +39,21 @@ const Sidebar = ({ onToggle }) => {
                 <li><Settings size={16} /> {isOpen && 'Settings'}</li>
             </ul>
 
-            {isOpen && (
+            {isOpen ? (
                 <>
                     <div className="user-profile">
                         <div className="avatar" />
                         <div className="name">Samuel</div>
                     </div>
                     <button className="logout-btn">Logout</button>
+                </>
+
+            ) : (
+                <>
+                    <div className='user-profile-collapse'>
+                        <div className="avatar" />
+                    </div>
+                    <button className="logout-btn-collopse">Logout</button>
                 </>
             )}
         </aside>
