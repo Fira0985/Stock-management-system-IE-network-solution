@@ -6,7 +6,7 @@
     width: 77vw;
 }
 
-.user-content.collapse{
+.user-content.collapse {
     margin-left: 6vw;
     transition: margin-left 0.3s ease;
     width: 87vw;
@@ -43,7 +43,7 @@
 .user-table {
     border: 1px solid #eee;
     border-radius: 12px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .user-row {
@@ -90,4 +90,39 @@
 .pagination .disabled {
     color: #aaa;
     cursor: not-allowed;
+}
+
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.popup-menu {
+    position: absolute;
+    right: 0;
+    top: 25px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 999;
+    min-width: 120px;
+}
+
+.popup-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.popup-item:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-dots {
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
 }

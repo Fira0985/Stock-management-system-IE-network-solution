@@ -1,5 +1,5 @@
-const {isValidEmail} = require('../utils/validator')
-const {SALT_ROUNDS} = require('../config')
+const { isValidEmail } = require('../utils/validator')
+const { SALT_ROUNDS } = require('../config')
 const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -111,7 +111,7 @@ const editUser = async (req, res) => {
   }
 };
 
-// Delete User (Soft Delete by email)
+// Delete User (Hard Delete by Email)
 const deleteUser = async (req, res) => {
   const { email, deleted_by_id } = req.body;
 
@@ -120,19 +120,25 @@ const deleteUser = async (req, res) => {
   }
 
   try {
-    const deletedUser = await prisma.user.update({
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
       where: { email },
-      data: {
-        deleted_at: new Date(),
-        deleted_by_id,
-        archived: true
-      },
     });
 
-    res.json({ message: 'User soft-deleted', deletedUser });
+    if (!existingUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Hard delete user
+    await prisma.user.delete({
+      where: { email },
+    });
+
+    res.json({ message: 'User permanently deleted', deleted_by_id, deleted_email: email });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-module.exports ={addUser, editUser, deleteUser, getAllUsers, getUserByEmail};
+
+module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail };
