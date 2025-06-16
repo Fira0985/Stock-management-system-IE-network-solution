@@ -58,3 +58,32 @@
     color: #333;
     cursor: pointer;
 }
+
+.avatar.small {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.default-avatar {
+    font-size: 18px;
+    color: #555;
+}
+
+.username {
+    margin-left: 10px;
+    font-weight: 500;
+}

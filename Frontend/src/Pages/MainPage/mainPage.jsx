@@ -8,7 +8,7 @@ import UserManagement from '../../component/User/userManagement';
 import Customer from '../../component/Customer/customer';
 import './MainPage.css';
 
-const MainPage = () => {
+const MainPage = (props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedPage, setSelectedPage] = useState("Dashboard");
 

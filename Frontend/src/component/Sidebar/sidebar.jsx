@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './sidebar.css';
 import {
     LayoutDashboard, Package, ShoppingCart, ShoppingBag,
@@ -6,16 +6,25 @@ import {
 } from 'lucide-react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-const Sidebar = ({ onToggle, onMenuSelect }) => {
+const Sidebar = (props) => {
     const [isOpen, setIsOpen] = useState(true);
+    const [storedName, setStoredName] = useState('');
 
     const handleToggle = () => {
         const newState = !isOpen;
         setIsOpen(newState);
-        if (onToggle) {
-            onToggle(newState);
+        if (props.onToggle) {
+            props.onToggle(newState);
         }
     };
+
+    // Load name from localStorage on mount
+    useEffect(() => {
+        const nameFromStorage = localStorage.getItem('userName');
+        if (nameFromStorage) {
+            setStoredName(nameFromStorage);
+        }
+    }, []);
 
     const menuItems = [
         { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
@@ -41,7 +50,7 @@ const Sidebar = ({ onToggle, onMenuSelect }) => {
 
             <ul className="menu">
                 {menuItems.map((item) => (
-                    <li key={item.label} onClick={() => onMenuSelect(item.label)}>
+                    <li key={item.label} onClick={() => props.onMenuSelect(item.label)}>
                         {item.icon} {isOpen && item.label}
                     </li>
                 ))}
@@ -51,7 +60,7 @@ const Sidebar = ({ onToggle, onMenuSelect }) => {
                 <>
                     <div className="user-profile">
                         <div className="avatar" />
-                        <div className="name">Samuel</div>
+                        <div className="name">{storedName}</div>
                     </div>
                     <button className="logout-btn">Logout</button>
                 </>

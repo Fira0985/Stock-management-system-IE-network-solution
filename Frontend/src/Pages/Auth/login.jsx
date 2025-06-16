@@ -3,11 +3,15 @@ import './Auth.css';
 import { loginUser } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
+
+  function sendDataToParent(data) {
+    props.onSendData(data);
+  }
 
   async function handleLogin() {
     try {
@@ -19,6 +23,9 @@ function Login() {
         localStorage.setItem('token', data.token);
         navigate('/dashboard');
       }
+
+      console.log(data.user.username);
+      localStorage.setItem('userName', data.user.username); 
 
       // Redirect or update UI here
       alert('Login successful!');

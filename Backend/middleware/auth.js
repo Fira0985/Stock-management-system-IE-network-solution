@@ -1,5 +1,5 @@
-const {isValidEmail} = require('../utils/validator')
-const {JWT_SECRET} = require('../config')
+const { isValidEmail } = require('../utils/validator')
+const { JWT_SECRET } = require('../config')
 const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -58,6 +58,7 @@ const loginUser = async (req, res) => {
         id: user.id,
         email: user.email,
         username: user.username,
+        name: user.name,     // include full name here
         role: user.role,
       },
       token,
@@ -67,5 +68,8 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = {authenticateToken,
-    loginUser};
+
+module.exports = {
+  authenticateToken,
+  loginUser
+};

@@ -17,6 +17,7 @@ model User {
   id                  Int       @id @default(autoincrement())
   email               String    @unique
   username            String
+  image_url           String?
   role                RoleType
   password_hash       String?
   phone               String?

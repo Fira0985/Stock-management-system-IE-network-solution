@@ -4,18 +4,21 @@ import api from './api';
 export async function loginUser(credentials) {
   try {
     const response = await api.post('/login', credentials, {
-      withCredentials: true, // This is usually for cookies, but your token is in response body
+      withCredentials: true, // Still fine if backend uses cookies (optional)
     });
 
-    // Extract token from response
-    const { token } = response.data;
+    const { token, user } = response.data;
 
     if (token) {
-      // Store token in localStorage (or sessionStorage if preferred)
       localStorage.setItem('authToken', token);
     }
 
-    return response.data;
+    // Optionally store the user data if needed later
+    if (user) {
+      localStorage.setItem('userInfo', JSON.stringify(user)); // Optional
+    }
+
+    return { token, user }; // return both token and full user
   } catch (error) {
     throw error.response?.data || { message: 'Login failed' };
   }
