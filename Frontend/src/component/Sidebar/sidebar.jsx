@@ -33,7 +33,7 @@ const Sidebar = ({ onToggle, onMenuSelect }) => {
     return (
         <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
             <div className="sidebar-header">
-                {isOpen ? <div className="brand">Track<span>እቃ</span><span>.</span></div> : <div></div>}
+                {isOpen ? <div className="brand">Sto<span>ck</span><span>.</span></div> : <div></div>}
                 <button className="toggle-btn" onClick={handleToggle}>
                     {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
                 </button>

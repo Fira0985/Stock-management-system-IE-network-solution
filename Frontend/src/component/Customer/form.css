@@ -1,0 +1,82 @@
+/* Modal overlay - dim the background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Modal container */
+.modal {
+    background-color: #ffffff;
+    padding: 30px 25px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: slideFadeIn 0.3s ease-in-out;
+}
+
+/* Modal heading */
+.modal h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #111827;
+    text-align: center;
+}
+
+/* Form inputs */
+.modal input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    color: #111827;
+}
+
+.modal input:focus {
+    border-color: #111827;
+    outline: none;
+}
+
+
+/* Form buttons */
+.modal button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #111827;
+    color: white;
+    cursor: pointer;
+    margin-left: 3vw;
+}
+
+/* Cancel button */
+.cancel-button {
+    background-color: #f3f3f3;
+    color: #333;
+}
+
+/* Optional animation */
+@keyframes slideFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

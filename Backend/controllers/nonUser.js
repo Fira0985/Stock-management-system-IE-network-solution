@@ -39,20 +39,22 @@ const getNonUserById = async (req, res) => {
 };
 
 
-// add NonUser
 const addNonUser = async (req, res) => {
   try {
-    const { name, address, phone, credit_limit, type } = req.body;
+    let { name, address, phone, credit_limit, type } = req.body;
 
     if (!name || !type || !["CUSTOMER", "SUPPLIER"].includes(type.toUpperCase())) {
       return res.status(400).json({ error: "Name and valid type (CUSTOMER or SUPPLIER) are required." });
     }
 
+    // Convert credit_limit safely
+    credit_limit = credit_limit === "" || credit_limit === undefined ? null : parseFloat(credit_limit);
+
     const nonUser = await prisma.nonUser.create({
       data: {
         name,
-        address,
-        phone,
+        address: address || null,
+        phone: phone || null,
         credit_limit,
         type: type.toUpperCase(),
       },
@@ -60,18 +62,18 @@ const addNonUser = async (req, res) => {
 
     res.status(201).json({ message: "NonUser added successfully", nonUser });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error in addNonUser:", error);
+    res.status(500).json({ error: "Failed to create NonUser", details: error.message });
   }
 };
 
-// Edit NonUser
 const editNonUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id); // Correctly parse id here
     const { name, address, phone, credit_limit, type } = req.body;
 
     const updated = await prisma.nonUser.update({
-      where: { id: parseInt(id) },
+      where: { id: id },
       data: {
         name,
         address,
@@ -90,7 +92,7 @@ const editNonUser = async (req, res) => {
 // Delete NonUser 
 const deleteNonUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
 
     const deleted = await prisma.nonUser.update({
       where: { id: parseInt(id) },
@@ -106,4 +108,4 @@ const deleteNonUser = async (req, res) => {
 };
 
 
-module.exports = {addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById}
+module.exports = { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById }

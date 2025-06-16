@@ -28,7 +28,8 @@ router.post('/getCategoryById', authenticateToken, getCategoryById)
 router.delete('/deleteCategory', authenticateToken, deleteCategory)
 
 router.post('/NonUser', authenticateToken,  addNonUser)
-router.put('/editNonUser', authenticateToken,  editNonUser)
+router.put("/editNonUser/:id", editNonUser);
+
 router.delete('/deleteNonUser', authenticateToken,  deleteNonUser)
 router.get('/NonUser', authenticateToken, getAllNonUsers)
 router.post('/getNonUserById', authenticateToken, getNonUserById)
