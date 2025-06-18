@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../middleware/upload');
 
 const { authenticateToken } = require('../middleware/auth');
 const {addProduct, editProduct, getAllProducts, getProductById} = require('../controllers/product')
 const {addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory} = require('../controllers/category')
-const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail} = require('../controllers/user')
+const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage} = require('../controllers/user')
 const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById} = require('../controllers/nonUser');
 const { loginUser } = require('../middleware/auth');
 
@@ -33,5 +34,6 @@ router.put("/editNonUser/:id", editNonUser);
 router.delete('/deleteNonUser', authenticateToken,  deleteNonUser)
 router.get('/NonUser', authenticateToken, getAllNonUsers)
 router.post('/getNonUserById', authenticateToken, getNonUserById)
+router.post('/upload-profile', upload.single('image'), uploadProfileImage);
 
 module.exports = router;

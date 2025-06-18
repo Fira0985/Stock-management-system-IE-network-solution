@@ -1,4 +1,6 @@
+
 import api from './api';
+import axios from 'axios';
 
 function getAuthHeaders() {
     const token = localStorage.getItem('authToken');
@@ -37,4 +39,26 @@ export const deleteUser = async (email, deleted_by_id) => {
         headers: getAuthHeaders(),
         data: { email, deleted_by_id },  // Pass data correctly in DELETE request body
     });
+};
+
+export const uploadProfileImage = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file);  // Changed to 'image'
+
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/upload-profile',
+      formData,
+      {
+        headers: {
+          ...getAuthHeaders(),
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Upload failed:', error);
+    throw error.response?.data || { message: 'Image upload failed' };
+  }
 };

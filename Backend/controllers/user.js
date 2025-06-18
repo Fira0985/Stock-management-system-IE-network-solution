@@ -141,4 +141,22 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail };
+const uploadProfileImage = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log("hi")
+    const imageUrl = req.file.path;
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { image_url: imageUrl }
+    });
+
+    res.status(200).json({ message: 'Profile image uploaded', user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ error: 'Upload failed', details: error.message });
+  }
+};
+
+
+module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage };

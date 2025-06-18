@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FiBell, FiSun } from 'react-icons/fi';
 import './Navbar.css';
 import { FiUser } from 'react-icons/fi';
+import { uploadProfileImage } from '../../services/userService'; 
 
 
 const Navbar = ({ isSidebarOpen }) => {
@@ -20,18 +21,23 @@ const Navbar = ({ isSidebarOpen }) => {
         fileInputRef.current.click(); // Trigger file selection
     };
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64Image = reader.result;
-                setAvatar(base64Image);
-                localStorage.setItem('userAvatar', base64Image); // Persist image
-            };
-            reader.readAsDataURL(file);
+            try {
+                console.log("hi")
+                const result = await uploadProfileImage(file); 
+                console.log(result.user.image_url)
+                const imageUrl = result.user.image_url;
+
+                setAvatar(imageUrl);
+                localStorage.setItem('userAvatar', imageUrl); // persist image url
+            } catch (err) {
+                console.error('Image upload failed:', err.message);
+            }
         }
     };
+
 
     return (
         <header className={isSidebarOpen ? "topbar" : "topbar-collapsed"}>
@@ -47,8 +53,7 @@ const Navbar = ({ isSidebarOpen }) => {
                         <span className="default-avatar"><FiUser size={18} /></span>
                     )}
                 </div>
-
-                {name && <span className="username">{name}</span>}
+                 {name && <span className="username">{name}</span>}
 
                 <input
                     type="file"
