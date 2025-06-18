@@ -69,8 +69,6 @@ const deleteCategory = async (req, res) => {
         archived: true,
         deleted_by_id: deleted_by_id, 
         deleted_at: new Date(),
-        // Optionally: set deleted_by_id from authenticated user
-        // deleted_by_id: req.user.id
       },
     });
 

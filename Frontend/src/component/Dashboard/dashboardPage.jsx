@@ -38,7 +38,7 @@ const Dashboard = ({ isSidebarOpen } ) => {
   return (
     <main className={isSidebarOpen? "main-content" : "main-content-collapsed"}>
 
-      {/* Overview section stays the same */}
+   
       <section className="overview">
         {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
           <div className="card" key={i}>
