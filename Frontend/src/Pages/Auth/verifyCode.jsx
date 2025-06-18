@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
 import './Auth.css';
+import { verifyCode, changePassword } from '../../services/userService';
+import { Navigate } from 'react-router-dom';
 
 function VerifyCode() {
     const [code, setCode] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
-    function handleVerify() {
-        // Add actual code verification here if needed
+    async function handleVerify() {
+        setErrorMsg('')
+        const data = {
+            email: localStorage.getItem('email'),
+            code: code
+        }
+        try {
+            const verify_response = await verifyCode(data)
+
+            data = {
+                email: localStorage.getItem('email'),
+                password: localStorage.getItem(newPassword)
+            }
+
+            const response = await changePassword(data)
+            Navigate('/dashboard')
+        } catch (error) {
+            if (error.response && error.response.data) {
+                setErrorMsg(error.response.data.message || error.response.data.error);
+            } else {
+                setErrorMsg('An unexpected error occurred');
+            }
+        }
     }
 
     return (
@@ -13,6 +37,8 @@ function VerifyCode() {
             <div className="auth-box">
                 <h2 className="auth-title">Verify Code</h2>
                 <p className="auth-subtitle">Enter the 6-digit code sent to your email</p>
+
+                {errorMsg && <p className="auth-error">{errorMsg}</p>}
 
                 <input
                     type="text"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import { Link, useNavigate } from 'react-router-dom'; // For routing
-import { verfyUser } from '../../services/userService';
+import { verifyUser } from '../../services/userService';
 
 function Register(props) {
   const [email, setEmail] = useState('');
@@ -22,12 +22,13 @@ function Register(props) {
     }
 
     try {
-      const response = await verfyUser(data)
+      const response = await verifyUser(data)
 
       setSuccessMsg(response.data.message);
 
       // Store the new password in localStorage/sessionStorage for next step
       localStorage.setItem('newPassword', newPassword);
+      localStorage.setItem('email', email)
 
       // Redirect to verification page
       navigate('/verifycode');

@@ -63,7 +63,17 @@ export const uploadProfileImage = async (file) => {
   }
 };
 
-export const verfyUser = async (data) => {
+export const verifyUser = async (data) => {
     return await api.post('/verify-user', data,);
 };
+
+export const verifyCode = async (data) => {
+    return await api.post('/verify-code', data,);
+};
+
+export const changePassword = async (data) => {
+    return await api.post('/change-password', data,);
+};
+
+
 
