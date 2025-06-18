@@ -62,3 +62,8 @@ export const uploadProfileImage = async (file) => {
     throw error.response?.data || { message: 'Image upload failed' };
   }
 };
+
+export const verfyUser = async (data) => {
+    return await api.post('/verify-user', data,);
+};
+

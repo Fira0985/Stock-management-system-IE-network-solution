@@ -5,7 +5,7 @@ const upload = require('../middleware/upload');
 const { authenticateToken } = require('../middleware/auth');
 const {addProduct, editProduct, getAllProducts, getProductById} = require('../controllers/product')
 const {addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory} = require('../controllers/category')
-const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage} = require('../controllers/user')
+const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword} = require('../controllers/user')
 const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById} = require('../controllers/nonUser');
 const { loginUser } = require('../middleware/auth');
 
@@ -16,6 +16,10 @@ router.delete('/deleteUser', authenticateToken,  deleteUser);
 router.get('/users', authenticateToken, getAllUsers);
 router.post('/getUserByEmail', authenticateToken, getUserByEmail);
 router.post('/login', loginUser)
+router.post('/upload-profile', authenticateToken, upload.single('image'), uploadProfileImage);
+router.post('/verify-user', verifyUser)
+router.post('/verify-code', verifyCode)
+router.post('/change-password', changePassword)
 
 router.get('/products', authenticateToken, getAllProducts);
 router.post('/getProductById', authenticateToken, getProductById);
@@ -34,6 +38,5 @@ router.put("/editNonUser/:id", editNonUser);
 router.delete('/deleteNonUser', authenticateToken,  deleteNonUser)
 router.get('/NonUser', authenticateToken, getAllNonUsers)
 router.post('/getNonUserById', authenticateToken, getNonUserById)
-router.post('/upload-profile', upload.single('image'), uploadProfileImage);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const { SALT_ROUNDS } = require('../config')
 const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const sendEmail = require('../utils/mail')
 
 // Get all users
 const getAllUsers = async (req, res) => {
@@ -158,5 +159,77 @@ const uploadProfileImage = async (req, res) => {
   }
 };
 
+const verifyUser = async (req, res) => {
+  const { email, password, newPassword } = req.body;
 
-module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage };
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) return res.status(404).json({ message: 'Email not found' });
+
+  const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
+  if (!isPasswordValid) {
+    return res.status(401).json({ error: 'Invalid password' });
+  }
+
+  if (user.verfied) {
+    return res.status(400).json({ error: 'User already registered' })
+  }
+
+  if (!newPassword || newPassword.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  }
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+  const expiresAt = new Date(Date.now() + 10 * 60000); // Expires in 10 minutes
+
+  await prisma.user.update({
+    where: { email },
+    data: {
+      verfiy_code: code,
+      verfiyCode_expireAt: expiresAt,
+    },
+  });
+
+  await sendEmail(email, code);
+
+  res.json({ message: 'Reset code sent to email' });
+};
+
+const verifyCode = async (req, res) => {
+  const { email, code } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (user.verfiy_code !== code)
+    return res.status(400).json({ message: 'Invalid code' });
+
+  if (new Date(user.verfiyCode_expireAt) < new Date())
+    return res.status(400).json({ message: 'Code expired' });
+
+  res.json({ message: 'Code verified' });
+};
+
+const changePassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  const hashed = await bcrypt.hash(password, 10);
+
+  await prisma.user.update({
+    where: { email },
+    data: {
+      password_hash: hashed,
+      verfiy_code: null,
+      verfiyCode_expireAt: null,
+    },
+  });
+
+  res.json({ message: 'success' });
+};
+
+
+module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword };

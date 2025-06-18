@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import { loginUser } from '../../services/authService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Login(props) {
   const [email, setEmail] = useState('');
@@ -42,8 +42,6 @@ function Login(props) {
 
         {errorMsg && <p className="auth-error">{errorMsg}</p>}
 
-        <button className="google-button">Continue with Google</button>
-
         <input
           type="email"
           placeholder="Email"
@@ -61,6 +59,9 @@ function Login(props) {
 
         <button className="auth-submit" onClick={handleLogin}>Login</button>
 
+        <p className="auth-footer">
+          Don't have Account? <Link to="/">Register</Link>
+        </p>
         <p className="auth-footer">
           Forget Password? <a href="#">Recover</a>
         </p>

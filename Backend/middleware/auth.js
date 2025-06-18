@@ -36,6 +36,10 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    if(!user.verfied){
+      return res.status(400).json({error: 'The email is not verfied'})
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
     if (!isPasswordValid) {

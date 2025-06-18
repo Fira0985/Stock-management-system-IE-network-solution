@@ -21,6 +21,11 @@ model User {
   role                RoleType
   password_hash       String?
   phone               String?
+  verfied             Boolean @default(false)
+  verfiy_code          String?
+  verfiyCode_expireAt  DateTime?
+  reset_code          String?
+  resetCode_expireAt  DateTime?
   created_by_id       Int?
   created_by          User?     @relation("UserCreatedBy", fields: [created_by_id], references: [id])
   deleted_by_id       Int?
