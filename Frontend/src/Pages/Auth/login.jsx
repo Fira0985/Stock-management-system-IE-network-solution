@@ -9,10 +9,6 @@ function Login(props) {
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
-  function sendDataToParent(data) {
-    props.onSendData(data);
-  }
-
   async function handleLogin() {
     try {
       const data = await loginUser({ email, password });
@@ -26,6 +22,7 @@ function Login(props) {
 
       console.log(data.user.username);
       localStorage.setItem('userName', data.user.username); 
+      localStorage.setItem('email', email)
 
       // Redirect or update UI here
       alert('Login successful!');

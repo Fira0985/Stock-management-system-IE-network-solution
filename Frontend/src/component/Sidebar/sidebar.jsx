@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './sidebar.css';
 import {
     LayoutDashboard, Package, ShoppingCart, ShoppingBag,
     CreditCard, BarChart2, Truck, Users, User, Settings
 } from 'lucide-react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiUser } from 'react-icons/fi';
+import { uploadProfileImage } from '../../services/userService';  // Make sure this path is correct
 
 const Sidebar = (props) => {
     const [isOpen, setIsOpen] = useState(true);
     const [storedName, setStoredName] = useState('');
+    // const [avatar, setAvatar] = useState('');
+    const fileInputRef = useRef();
 
     const handleToggle = () => {
         const newState = !isOpen;
@@ -18,13 +21,38 @@ const Sidebar = (props) => {
         }
     };
 
-    // Load name from localStorage on mount
+    // Load name and avatar from localStorage on mount
     useEffect(() => {
         const nameFromStorage = localStorage.getItem('userName');
+        // const avatarFromStorage = localStorage.getItem('userAvatar');
         if (nameFromStorage) {
             setStoredName(nameFromStorage);
         }
+        // if (avatarFromStorage) {
+        //     setAvatar(avatarFromStorage);
+        // }
     }, []);
+
+    // Trigger file input when avatar clicked
+    const handleAvatarClick = () => {
+        fileInputRef.current.click();
+    };
+
+    // Handle profile image file selection and upload
+    // const handleImageChange = async (e) => {
+    //     const file = e.target.files[0];
+    //     if (file && file.type.startsWith('image/')) {
+    //         try {
+    //             const result = await uploadProfileImage(file);
+    //             // Assuming result.user.image_url contains relative path
+    //             const imageUrl = `http://localhost:3000/${result.user.image_url}`;
+    //             setAvatar(imageUrl);
+    //             localStorage.setItem('userAvatar', imageUrl);
+    //         } catch (err) {
+    //             console.error('Image upload failed:', err.message);
+    //         }
+    //     }
+    // };
 
     const menuItems = [
         { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
@@ -58,20 +86,40 @@ const Sidebar = (props) => {
 
             {isOpen ? (
                 <>
-                    <div className="user-profile">
-                        <div className="avatar" />
-                        <div className="name">{storedName}</div>
+                    <div className="user-profile" onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
+                        {/* <div className="avatar">
+                            {avatar ? (
+                                <img src={avatar} alt="User Avatar" className="avatar-img" />
+                            ) : (
+                                <FiUser size={24} />
+                            )}
+                        </div> */}
+                        {/* <div className="name">{storedName}</div> */}
                     </div>
                     <button className="logout-btn">Logout</button>
                 </>
             ) : (
                 <>
-                    <div className='user-profile-collapse'>
-                        <div className="avatar" />
+                    <div className='user-profile-collapse' onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
+                        {/* <div className="avatar">
+                            {avatar ? (
+                                <img src={avatar} alt="User Avatar" className="avatar-img" />
+                            ) : (
+                                <FiUser size={24} />
+                            )}
+                        </div> */}
                     </div>
                     <button className="logout-btn-collopse">Logout</button>
                 </>
             )}
+
+            {/* <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleImageChange}
+            /> */}
         </aside>
     );
 };

@@ -42,25 +42,30 @@ export const deleteUser = async (email, deleted_by_id) => {
 };
 
 export const uploadProfileImage = async (file) => {
-  const formData = new FormData();
-  formData.append('image', file);  // Changed to 'image'
+    const formData = new FormData();
+    formData.append('image', file);  // Changed to 'image'
 
-  try {
-    const response = await axios.post(
-      'http://localhost:3000/api/upload-profile',
-      formData,
-      {
-        headers: {
-          ...getAuthHeaders(),
-        },
-      }
-    );
+    try {
+        const response = await axios.post(
+          'http://localhost:3000/api/upload-profile',
+          formData,
+          {
+             headers: getAuthHeaders(),
+          }
+        );
 
-    return response.data;
-  } catch (error) {
-    console.error('Upload failed:', error);
-    throw error.response?.data || { message: 'Image upload failed' };
-  }
+        // const response = await api.post('/upload-profile', formData, {
+        //     headers: {
+        //         ...getAuthHeaders(),
+        //     }
+        // });
+
+
+        return response.data;
+    } catch (error) {
+        console.error('Upload failed:', error);
+        throw error.response?.data || { message: 'Image upload failed' };
+    }
 };
 
 export const verifyUser = async (data) => {
@@ -74,6 +79,13 @@ export const verifyCode = async (data) => {
 export const changePassword = async (data) => {
     return await api.post('/change-password', data,);
 };
+
+export const getImage = async (data) => {
+    return await api.post('/getImage', data, {
+        headers: getAuthHeaders(),
+    });
+};
+
 
 
 

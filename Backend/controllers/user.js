@@ -145,7 +145,6 @@ const deleteUser = async (req, res) => {
 const uploadProfileImage = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log("hi")
     const imageUrl = req.file.path;
 
     const updatedUser = await prisma.user.update({
@@ -208,6 +207,13 @@ const verifyCode = async (req, res) => {
   if (user.verfiy_code !== code)
     return res.status(400).json({ message: 'Invalid code' });
 
+  await prisma.user.update({
+    where: { email },
+    data: {
+      verfied: true,
+    },
+  });
+
   if (new Date(user.verfiyCode_expireAt) < new Date())
     return res.status(400).json({ message: 'Code expired' });
 
@@ -231,5 +237,24 @@ const changePassword = async (req, res) => {
   res.json({ message: 'success' });
 };
 
+const getImage = async (req, res) => {
+  const { email } = req.body;
 
-module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword };
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { image_url: true },
+    });
+
+    if (!user || !user.image_url) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    res.json({ imageUrl: user.image_url });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch image', details: error.message });
+  }
+}
+
+
+module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage };

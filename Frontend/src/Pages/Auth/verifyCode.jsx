@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import { verifyCode, changePassword } from '../../services/userService';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function VerifyCode() {
     const [code, setCode] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
+    const navigate = useNavigate();
 
     async function handleVerify() {
-        setErrorMsg('')
-        const data = {
-            email: localStorage.getItem('email'),
-            code: code
-        }
+        setErrorMsg('');
+        setSuccessMsg('');
+
+        const email = localStorage.getItem('email');
+        const newPassword = localStorage.getItem('newPassword'); // Fix: Key should be a string, not a variable
+
         try {
-            const verify_response = await verifyCode(data)
+            const verify_response = await verifyCode({ email, code });
 
-            data = {
-                email: localStorage.getItem('email'),
-                password: localStorage.getItem(newPassword)
-            }
+            await changePassword({ email, password: newPassword });
 
-            const response = await changePassword(data)
-            Navigate('/dashboard')
+            setSuccessMsg('Registered Successfully! Redirecting...');
+
+            setTimeout(() => {
+                navigate('/login');
+            }, 2000); // Wait 2 seconds before redirecting
         } catch (error) {
             if (error.response && error.response.data) {
                 setErrorMsg(error.response.data.message || error.response.data.error);
@@ -39,6 +42,7 @@ function VerifyCode() {
                 <p className="auth-subtitle">Enter the 6-digit code sent to your email</p>
 
                 {errorMsg && <p className="auth-error">{errorMsg}</p>}
+                {successMsg && <p className="auth-success">{successMsg}</p>}
 
                 <input
                     type="text"

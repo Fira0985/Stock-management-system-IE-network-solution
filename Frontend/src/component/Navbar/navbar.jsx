@@ -1,43 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FiBell, FiSun } from 'react-icons/fi';
+import { FiBell, FiSun, FiUser } from 'react-icons/fi';
 import './Navbar.css';
-import { FiUser } from 'react-icons/fi';
-import { uploadProfileImage } from '../../services/userService'; 
+import { uploadProfileImage, getImage } from '../../services/userService';
 
 
 const Navbar = ({ isSidebarOpen }) => {
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState('');
     const fileInputRef = useRef();
+    const data = { email: localStorage.getItem('email') }
+
+    async function fetchImage(data) {
+        const response = await getImage(data)
+        console.log(response.data.imageUrl)
+        setAvatar(response.data.imageUrl)
+    }
+
 
     useEffect(() => {
+
         const storedName = localStorage.getItem('userName');
-        const storedAvatar = localStorage.getItem('userAvatar');
         if (storedName) setName(storedName);
-        if (storedAvatar) setAvatar(storedAvatar);
+        fetchImage(data)
     }, []);
 
     const handleAvatarClick = () => {
-        fileInputRef.current.click(); // Trigger file selection
+        fileInputRef.current.click();
     };
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file && file.type.startsWith('image/')) {
             try {
-                console.log("hi")
-                const result = await uploadProfileImage(file); 
-                console.log(result.user.image_url)
-                const imageUrl = result.user.image_url;
+                const result = await uploadProfileImage(file);
 
-                setAvatar(imageUrl);
-                localStorage.setItem('userAvatar', imageUrl); // persist image url
+                console.log("Upload result:", result);
+
+                const imageUrl = `http://localhost:3000/${result.user.image_url}`;
+                fetchImage(data)
+
+                console.log("Final image URL:", imageUrl);
             } catch (err) {
                 console.error('Image upload failed:', err.message);
             }
         }
     };
-
 
     return (
         <header className={isSidebarOpen ? "topbar" : "topbar-collapsed"}>
@@ -48,12 +55,12 @@ const Navbar = ({ isSidebarOpen }) => {
 
                 <div className="avatar small" onClick={handleAvatarClick}>
                     {avatar ? (
-                        <img src={avatar} alt="User Avatar" className="avatar-img" />
+                        <img src={`http://localhost:3000/${avatar}`} alt="User Avatar" className="avatar-img" />
                     ) : (
-                        <span className="default-avatar"><FiUser size={18} /></span>
+                        <span className="default-avatar"><FiUser /></span>
                     )}
                 </div>
-                 {name && <span className="username">{name}</span>}
+                {name && <span className="username">{name}</span>}
 
                 <input
                     type="file"
