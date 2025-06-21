@@ -1,56 +1,197 @@
-import React from 'react';
-import './supplier.css';
+import React, { useEffect, useState } from "react";
+import {
+    fetchNonUser,
+    addNonUser,
+    editNonUser,
+    deleteNonUser,
+} from "../../services/nonUserService";
+import AddSupplierForm from "./AddSupplierForm"
+import EditSupplierForm from "./EditSupplierForm"
+import DeleteSupplierForm from "./DeleteSupplierForm"
+import "./supplier.css";
 
-const SupplierList = ( { isSidebarOpen } ) => {
-    const suppliers = [
-        { id: '#1023', name: 'Cindy Morris', address: 'Addis', phone: '+2510393234', email: '' },
-        { id: '#1022', name: 'Wade Warren', address: 'Bahrdar', phone: '+2510393234', email: '' },
-        { id: '#1021', name: 'Grace Johnson', address: 'Ambo', phone: '+2510393234', email: '' },
-        { id: '#1020', name: 'Mike Smith', address: 'Adama', phone: '+2510393234', email: '' },
-        { id: '#1019', name: 'Sarah Brown', address: 'Hawasa', phone: '+2510393234', email: '' },
-    ];
+const Supplier = ({ isSidebarOpen }) => {
+    const [suppliers, setsuppliers] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [menuIndex, setMenuIndex] = useState(null);
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedSupplier, setSelectedSupplier] = useState(null);
+
+    const suppliersPerPage = 5;
+
+    const loadsuppliers = async () => {
+        try {
+            const suppliersData = await fetchNonUser("SUPPLIER");
+            setsuppliers(suppliersData);
+        } catch (err) {
+            console.error("Failed to load suppliers:", err.message);
+        }
+    };
+
+    useEffect(() => {
+        loadsuppliers();
+    }, []);
+
+    const handleAddSupplier = async (data) => {
+        try {
+            await addNonUser({ ...data, type: "SUPPLIER" });
+            await loadsuppliers();
+            setShowAddModal(false);
+        } catch (err) {
+            console.error("Add supplier failed:", err.message);
+        }
+    };
+
+    const handleEditSupplier = async (id, data) => {
+        try {
+            await editNonUser(id, { ...data, id, type: "SUPPLIER" });
+            await loadsuppliers();
+            setShowEditModal(false);
+        } catch (err) {
+            console.error("Edit supplier failed:", err.message);
+        }
+    };
+
+    const handleDeleteSupplier = async (id) => {
+        try {
+            await deleteNonUser(id);
+            await loadsuppliers();
+            setShowDeleteModal(false);
+        } catch (err) {
+            console.error("Delete supplier failed:", err.message);
+        }
+    };
+
+    const handleEditClick = (supplier) => {
+        setSelectedSupplier(supplier);
+        setShowEditModal(true);
+    };
+
+    const handleDeleteClick = (supplier) => {
+        setSelectedSupplier(supplier);
+        setShowDeleteModal(true);
+    };
+
+    const totalPages = Math.ceil(suppliers.length / suppliersPerPage);
+    const paginatedsuppliers = suppliers.slice(
+        (currentPage - 1) * suppliersPerPage,
+        currentPage * suppliersPerPage
+    );
+
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
 
     return (
-        <div className={isSidebarOpen? "supplier-content": "supplier-content collapse"}>
+        <div
+            className={isSidebarOpen ? "supplier-content" : "supplier-content collapse"}
+            onClick={() => setMenuIndex(null)}
+        >
             <div className="supplier-header">
-                <h2>All Suppliers</h2>
-                <button className="new-supplier-btn">New Supplier</button>
+                <h2>All suppliers</h2>
+                <button className="add-supplier" onClick={() => setShowAddModal(true)}>
+                    New Supplier
+                </button>
             </div>
 
             <div className="supplier-table">
-                <div className="supplier-row supplier-header-row">
-                    <span>SupplierID</span>
-                    <span>Supplier Name</span>
+                <div className="supplier-row header">
+                    <span>ID</span>
+                    <span>Name</span>
+                    <span>Phone</span>
                     <span>Address</span>
-                    <span>Phone Number</span>
-                    <span>Email</span>
-                    <span></span>
+                    <span>Actions</span>
                 </div>
 
-                {suppliers.map((supplier, index) => (
-                    <div className="supplier-row" key={index}>
-                        <span>{supplier.id}</span>
+                {paginatedsuppliers.map((supplier, index) => (
+                    <div className="supplier-row" key={supplier.id}>
+                        <span>#{supplier.id}</span>
                         <span>{supplier.name}</span>
-                        <span>{supplier.address}</span>
                         <span>{supplier.phone}</span>
-                        <span>{supplier.email}</span>
-                        <span className="menu-dots">⋯</span>
+                        <span>{supplier.address}</span>
+                        <span
+                            className="dots"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setMenuIndex(menuIndex === index ? null : index);
+                            }}
+                        >
+                            ⋯
+                            {menuIndex === index && (
+                                <div className="popup-menu">
+                                    <div
+                                        className="popup-item edit-item"
+                                        onClick={() => handleEditClick(supplier)}
+                                    >
+                                        Edit
+                                    </div>
+                                    <div
+                                        className="popup-item delete-item"
+                                        onClick={() => handleDeleteClick(supplier)}
+                                    >
+                                        Delete
+                                    </div>
+                                </div>
+                            )}
+                        </span>
                     </div>
                 ))}
             </div>
 
             <div className="pagination">
-                <span className="disabled">← Previous</span>
-                <span className="active">1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>…</span>
-                <span>67</span>
-                <span>68</span>
-                <span>Next →</span>
+                <span
+                    className={currentPage === 1 ? "disabled" : ""}
+                    onClick={() => goToPage(currentPage - 1)}
+                >
+                    ← Previous
+                </span>
+
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <span
+                        key={i + 1}
+                        className={currentPage === i + 1 ? "active" : ""}
+                        onClick={() => goToPage(i + 1)}
+                    >
+                        {i + 1}
+                    </span>
+                ))}
+
+                <span
+                    className={currentPage === totalPages ? "disabled" : ""}
+                    onClick={() => goToPage(currentPage + 1)}
+                >
+                    Next →
+                </span>
             </div>
+
+            {showAddModal && (
+                <AddSupplierForm
+                    onClose={() => setShowAddModal(false)}
+                    onSubmit={handleAddSupplier}
+                />
+            )}
+
+            {showEditModal && selectedSupplier && (
+                <EditSupplierForm
+                    nonUser={selectedSupplier}
+                    onClose={() => setShowEditModal(false)}
+                    onSubmit={(data) => handleEditSupplier(selectedSupplier.id, data)}
+                />
+            )}
+
+            {showDeleteModal && selectedSupplier && (
+                <DeleteSupplierForm
+                    supplier={selectedSupplier}
+                    onDelete={handleDeleteSupplier}
+                    onClose={() => setShowDeleteModal(false)}
+                />
+            )}
         </div>
     );
 };
 
-export default SupplierList;
+export default Supplier;

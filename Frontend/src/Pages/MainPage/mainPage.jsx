@@ -6,11 +6,13 @@ import Product from '../../component/Product/product';
 import SupplierList from '../../component/Supplier/supplier';
 import UserManagement from '../../component/User/userManagement';
 import Customer from '../../component/Customer/customer';
+import UserProfile from '../../component/userManagement/userProfile';
 import './MainPage.css';
 
-const MainPage = (props) => {
+const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedPage, setSelectedPage] = useState("Dashboard");
+  const [showUserProfile, setShowUserProfile] = useState(false);
 
   const handleSidebarToggle = (openState) => {
     setIsSidebarOpen(openState);
@@ -18,6 +20,14 @@ const MainPage = (props) => {
 
   const handleMenuSelect = (menu) => {
     setSelectedPage(menu);
+  };
+
+  const handleProfileClick = () => {
+    setShowUserProfile(true);
+  };
+
+  const closeProfilePopup = () => {
+    setShowUserProfile(false);
   };
 
   const renderPage = () => {
@@ -37,11 +47,24 @@ const MainPage = (props) => {
     }
   };
 
+  function handleDataFromChild(data){
+    setShowUserProfile(data)
+  }
+
   return (
     <div className={isSidebarOpen ? "dashboard-container" : "dashboard-container-collapsed"}>
-      <Navbar isSidebarOpen={isSidebarOpen} />
+      <Navbar isSidebarOpen={isSidebarOpen} onProfileClick={handleProfileClick} />
       <Sidebar onToggle={handleSidebarToggle} onMenuSelect={handleMenuSelect} />
       {renderPage()}
+
+      {showUserProfile && (
+        <div className="modal-overlay" onClick={closeProfilePopup}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeProfilePopup}>&times;</button>
+            <UserProfile onSendToParent={handleDataFromChild} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

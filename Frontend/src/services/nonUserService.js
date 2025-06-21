@@ -10,28 +10,28 @@ function getAuthHeaders() {
     };
 }
 
-export const fetchCustomers = async () => {
+export const fetchNonUser = async ( type ) => {
     const response = await api.get('/NonUser', {
         headers: getAuthHeaders(),
     });
-    return response.data.filter(non => non.type === "CUSTOMER");
+    return response.data.filter(non => non.type === type);
 };
 
-export const addCustomer = async (data) => {
+export const addNonUser = async (data) => {
     const response = await api.post('/NonUser', data, {
         headers: getAuthHeaders(),
     });
     return response.data;
 };
 
-export const editCustomer = async (id, data) => {
+export const editNonUser = async (id, data) => {
     const response = await api.put(`/editNonUser/${id}`, data, {
         headers: getAuthHeaders(),
     });
     return response.data;
 };
 
-export const deleteCustomer = async (id) => {
+export const deleteNonUser = async (id) => {
     const response = await api.delete('/deleteNonUser', {
         headers: getAuthHeaders(),
         data: { id }, // 🟢 id must be inside 'data' for DELETE body

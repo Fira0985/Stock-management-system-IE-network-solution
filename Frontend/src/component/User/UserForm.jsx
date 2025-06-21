@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './userForm.css'; 
+import './userForm.css';
 const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
     const [form, setForm] = useState({
         username: initialData.username || '',
@@ -38,40 +38,10 @@ const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className={isEdit? "modal-content-edit": "modal-content"} onClick={(e) => e.stopPropagation()}>
                 <h2>{isEdit ? 'Edit User' : 'Add User'}</h2>
 
-                <form onSubmit={handleSubmit}>
-                    {!isEdit && (
-                        <>
-                            <div className="form-group">
-                                <label htmlFor="username">Username:</label>
-                                <input
-                                    id="username"
-                                    type="text"
-                                    name="username"
-                                    value={form.username}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                {errors.username && <div className="error-text">{errors.username}</div>}
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="email">Email:</label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    value={form.email}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                {errors.email && <div className="error-text">{errors.email}</div>}
-                            </div>
-                        </>
-                    )}
-
+                {isEdit ? <form onSubmit={handleSubmit} >
                     <div className="form-group">
                         <label htmlFor="role">Role:</label>
                         <select
@@ -101,7 +71,67 @@ const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
                         />
                     </div>
 
-                    {!isEdit && (
+                    <div className="form-actions">
+                        <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
+                        <button type="submit">{isEdit ? 'Update' : 'Add'} User</button>
+                    </div>
+                </form> :
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="username">Username:</label>
+                            <input
+                                id="username"
+                                type="text"
+                                name="username"
+                                value={form.username}
+                                onChange={handleChange}
+                                required
+                            />
+                            {errors.username && <div className="error-text">{errors.username}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="email">Email:</label>
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={form.email}
+                                onChange={handleChange}
+                                required
+                            />
+                            {errors.email && <div className="error-text">{errors.email}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="role">Role:</label>
+                            <select
+                                id="role"
+                                name="role"
+                                value={form.role}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" disabled>Select a role</option>
+                                <option value="OWNER">OWNER</option>
+                                <option value="CLERK">CLERK</option>
+                                <option value="AUDITOR">AUDITOR</option>
+                            </select>
+                            {errors.role && <div className="error-text">{errors.role}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="phone">Phone (optional):</label>
+                            <input
+                                id="phone"
+                                type="tel"
+                                name="phone"
+                                value={form.phone}
+                                onChange={handleChange}
+                                placeholder="Option"
+                            />
+                        </div>
+
                         <div className="form-group">
                             <label htmlFor="password">Password:</label>
                             <input
@@ -114,13 +144,12 @@ const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
                             />
                             {errors.password && <div className="error-text">{errors.password}</div>}
                         </div>
-                    )}
 
-                    <div className="form-actions">
-                        <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
-                        <button type="submit">{isEdit ? 'Update' : 'Add'} User</button>
-                    </div>
-                </form>
+                        <div className="form-actions">
+                            <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
+                            <button type="submit">{isEdit ? 'Update' : 'Add'} User</button>
+                        </div>
+                    </form>}
             </div>
         </div>
     );

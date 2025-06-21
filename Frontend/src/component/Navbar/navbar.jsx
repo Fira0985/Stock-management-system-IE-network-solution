@@ -4,7 +4,7 @@ import './Navbar.css';
 import { uploadProfileImage, getImage } from '../../services/userService';
 
 
-const Navbar = ({ isSidebarOpen }) => {
+const Navbar = ({ isSidebarOpen, onProfileClick }) => {
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState('');
     const fileInputRef = useRef();
@@ -12,7 +12,6 @@ const Navbar = ({ isSidebarOpen }) => {
 
     async function fetchImage(data) {
         const response = await getImage(data)
-        console.log(response.data.imageUrl)
         setAvatar(response.data.imageUrl)
     }
 
@@ -22,7 +21,7 @@ const Navbar = ({ isSidebarOpen }) => {
         const storedName = localStorage.getItem('userName');
         if (storedName) setName(storedName);
         fetchImage(data)
-    }, []);
+    },);
 
     const handleAvatarClick = () => {
         fileInputRef.current.click();
@@ -34,12 +33,8 @@ const Navbar = ({ isSidebarOpen }) => {
             try {
                 const result = await uploadProfileImage(file);
 
-                console.log("Upload result:", result);
-
                 const imageUrl = `http://localhost:3000/${result.user.image_url}`;
                 fetchImage(data)
-
-                console.log("Final image URL:", imageUrl);
             } catch (err) {
                 console.error('Image upload failed:', err.message);
             }
@@ -60,7 +55,7 @@ const Navbar = ({ isSidebarOpen }) => {
                         <span className="default-avatar"><FiUser /></span>
                     )}
                 </div>
-                {name && <span className="username">{name}</span>}
+                {name && <span className="username" onClick={onProfileClick}>{name}</span>}
 
                 <input
                     type="file"

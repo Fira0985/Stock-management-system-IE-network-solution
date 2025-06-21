@@ -1,17 +1,18 @@
 .supplier-content {
     padding: 30px 40px;
     background-color: #fff;
-    font-family: "Segoe UI", sans-serif;
     margin-left: 16.6vw;
+    font-family: "Segoe UI", sans-serif;
     width: 77vw;
 }
 
-.supplier-content.collapse{
+.supplier-content.collapse {
     margin-left: 6vw;
     transition: margin-left 0.3s ease;
     width: 87vw;
 }
 
+/* Header Section */
 .supplier-header {
     display: flex;
     justify-content: space-between;
@@ -24,61 +25,105 @@
     font-weight: bold;
 }
 
-.new-supplier-btn {
-    background-color: #f3f4f6;
+/* Add Supplier Button */
+.add-supplier {
+    background-color: #f9f9f9;
     border: 1px solid #d1d5db;
-    border-radius: 12px;
     padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
 }
 
-.new-supplier-btn:hover {
+.add-supplier:hover {
     background-color: #111827;
-    color: white;
+    color: #ffffff;
     border-color: #111827;
 }
 
+/* Table Styles */
 .supplier-table {
-    border: 1px solid #eee;
-    border-radius: 12px;
-    overflow: hidden;
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
 }
 
 .supplier-row {
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 2fr 2fr 0.5fr;
+    grid-template-columns: 1fr 2fr 2fr 2fr 0.5fr;
     padding: 15px 15px;
     border-bottom: 1px solid #eee;
     font-size: 14px;
     align-items: center;
+    position: relative;
 }
 
-.supplier-header-row {
-    background-color: #fafafa;
+.supplier-row.header {
     font-weight: bold;
+    background-color: #f3f4f6;
+    border-bottom: 2px solid #d1d5db;
 }
 
-.menu-dots {
-    font-size: 18px;
-    text-align: center;
-    cursor: pointer;
+/* Dots Menu */
+.dots {
+    font-size: 20px;
     color: #666;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
 }
 
-.pagination {
+/* Popup Menu */
+.popup-menu {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 100;
+    min-width: 110px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 30px;
+    flex-direction: column;
+}
+
+.popup-item {
+    padding: 10px 14px;
     font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.popup-item:hover {
+    background-color: #f2f2f2;
+}
+
+.edit-item {
+    color: #333;
+}
+
+.delete-item {
+    color: #333;
+}
+
+/* Pagination Styles */
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+    justify-content: center;
 }
 
 .pagination span {
-    padding: 5px 10px;
-    border-radius: 6px;
+    padding: 5px 12px;
+    border-radius: 5px;
     cursor: pointer;
 }
 

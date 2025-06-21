@@ -12,15 +12,12 @@ function Login(props) {
   async function handleLogin() {
     try {
       const data = await loginUser({ email, password });
-      console.log('Logged in:', data);
 
       // Save token if returned
       if (data.token) {
         localStorage.setItem('token', data.token);
         navigate('/dashboard');
       }
-
-      console.log(data.user.username);
       localStorage.setItem('userName', data.user.username); 
       localStorage.setItem('email', email)
 

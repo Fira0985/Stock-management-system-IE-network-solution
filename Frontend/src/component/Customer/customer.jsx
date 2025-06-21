@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
-    fetchCustomers,
-    addCustomer,
-    editCustomer,
-    deleteCustomer,
+    fetchNonUser,
+    addNonUser,
+    editNonUser,
+    deleteNonUser,
 } from "../../services/nonUserService";
 import AddNonUserForm from "./AddNonUserForm";
 import EditNonUserForm from "./EditNonUserForm";
@@ -23,7 +23,7 @@ const Customer = ({ isSidebarOpen }) => {
 
     const loadCustomers = async () => {
         try {
-            const customersData = await fetchCustomers();
+            const customersData = await fetchNonUser("CUSTOMER");
             setCustomers(customersData);
         } catch (err) {
             console.error("Failed to load customers:", err.message);
@@ -34,9 +34,9 @@ const Customer = ({ isSidebarOpen }) => {
         loadCustomers();
     }, []);
 
-    const handleAddCustomer = async (data) => {
+    const handleaddNonUser = async (data) => {
         try {
-            await addCustomer({ ...data, type: "CUSTOMER" });
+            await addNonUser({ ...data, type: "CUSTOMER" });
             await loadCustomers();
             setShowAddModal(false);
         } catch (err) {
@@ -44,9 +44,9 @@ const Customer = ({ isSidebarOpen }) => {
         }
     };
 
-    const handleEditCustomer = async (id, data) => {
+    const handleeditNonUser = async (id, data) => {
         try {
-            await editCustomer(id, { ...data, id, type: "CUSTOMER" });
+            await editNonUser(id, { ...data, id, type: "CUSTOMER" });
             await loadCustomers();
             setShowEditModal(false);
         } catch (err) {
@@ -54,9 +54,9 @@ const Customer = ({ isSidebarOpen }) => {
         }
     };
 
-    const handleDeleteCustomer = async (id) => {
+    const handledeleteNonUser = async (id) => {
         try {
-            await deleteCustomer(id);
+            await deleteNonUser(id);
             await loadCustomers();
             setShowDeleteModal(false);
         } catch (err) {
@@ -174,7 +174,7 @@ const Customer = ({ isSidebarOpen }) => {
             {showAddModal && (
                 <AddNonUserForm
                     onClose={() => setShowAddModal(false)}
-                    onSubmit={handleAddCustomer}
+                    onSubmit={handleaddNonUser}
                 />
             )}
 
@@ -182,14 +182,14 @@ const Customer = ({ isSidebarOpen }) => {
                 <EditNonUserForm
                     nonUser={selectedCustomer}
                     onClose={() => setShowEditModal(false)}
-                    onSubmit={(data) => handleEditCustomer(selectedCustomer.id, data)}
+                    onSubmit={(data) => handleeditNonUser(selectedCustomer.id, data)}
                 />
             )}
 
             {showDeleteModal && selectedCustomer && (
                 <DeleteCustomerForm
                     customer={selectedCustomer}
-                    onDelete={handleDeleteCustomer}
+                    onDelete={handledeleteNonUser}
                     onClose={() => setShowDeleteModal(false)}
                 />
             )}

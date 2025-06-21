@@ -4,7 +4,7 @@ import './userForm.css';
 const ConfirmDelete = ({ onClose, onConfirm, user }) => {
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-content delete" onClick={e => e.stopPropagation()}>
                 <h3>Confirm Delete</h3>
                 <p>Are you sure you want to delete <strong>{user.email}</strong>?</p>
                 <div className="form-actions">

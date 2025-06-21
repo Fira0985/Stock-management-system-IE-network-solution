@@ -11,13 +11,29 @@
     z-index: 1000;
 }
 
+
 .modal-content {
+    /* height: 50vh; */
     background: white;
     padding: 30px;
     border-radius: 10px;
     width: 400px;
     max-width: 90%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content-edit {
+    height: 40vh;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content.delete{
+    height: 20vh;
 }
 
 .modal-content h2,

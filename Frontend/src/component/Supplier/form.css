@@ -1,5 +1,5 @@
-/* Modal overlay - dim the background */
-.modal-overlay {
+/* Supplier Modal overlay - dim the background */
+.supplier-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,8 +12,8 @@
     z-index: 1000;
 }
 
-/* Modal container */
-.modal {
+/* Supplier Modal container */
+.supplier-modal {
     background-color: #ffffff;
     padding: 30px 25px;
     border-radius: 8px;
@@ -23,8 +23,8 @@
     animation: slideFadeIn 0.3s ease-in-out;
 }
 
-/* Modal heading */
-.modal h3 {
+/* Supplier Modal heading */
+.supplier-modal h3 {
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 22px;
@@ -32,8 +32,8 @@
     text-align: center;
 }
 
-/* Form inputs */
-.modal input {
+/* Supplier form inputs */
+.supplier-modal input {
     width: 100%;
     padding: 10px 12px;
     margin-bottom: 15px;
@@ -45,14 +45,13 @@
     color: #111827;
 }
 
-.modal input:focus {
+.supplier-modal input:focus {
     border-color: #111827;
     outline: none;
 }
 
-
-/* Form buttons */
-.modal button {
+/* Supplier form buttons */
+.supplier-modal button {
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
@@ -62,10 +61,10 @@
     margin-left: 3vw;
 }
 
-/* Cancel button */
-.cancel-button {
-    background-color: #f3f3f3;
-    color: #333;
+/* Cancel button inside supplier modal */
+.supplier-modal .cancel-button {
+    background-color: #111827;
+    color: white;
 }
 
 /* Optional animation */

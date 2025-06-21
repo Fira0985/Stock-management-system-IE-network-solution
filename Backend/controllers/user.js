@@ -23,10 +23,15 @@ const getAllUsers = async (req, res) => {
 
 // Get user by email
 const getUserByEmail = async (req, res) => {
-  const { email } = req.params; // Expecting email from the route parameter
+  const { email } = req.body; // Get email from body
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
   try {
     const user = await prisma.user.findUnique({
-      where: { email }, // Prisma will match this email exactly
+      where: { email },
       include: {
         usersCreated: true,
         usersDeleted: true,
@@ -42,6 +47,7 @@ const getUserByEmail = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user by email', details: error.message });
   }
 };
+
 
 
 // Add User

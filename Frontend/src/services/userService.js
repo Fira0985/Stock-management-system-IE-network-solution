@@ -19,6 +19,18 @@ export const fetchUsers = async () => {
     });
 };
 
+// Get user by email
+export const getUserByEmail = async (email) => {
+  try {
+    const response = await api.post('/getUserByEmail', { email }, {
+      headers: getAuthHeaders(),
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: 'Failed to fetch user' };
+  }
+};
+
 // Add a new user
 export const addUser = async (userData) => {
     return await api.post('/users', userData, {
@@ -27,7 +39,7 @@ export const addUser = async (userData) => {
 };
 
 // Edit user (email used to identify; only role and phone can be changed)
-export const editUser = async (data) => {
+export const editUser = async ( data) => {
     return await api.put('/editUser', data, {
         headers: getAuthHeaders(),
     });
