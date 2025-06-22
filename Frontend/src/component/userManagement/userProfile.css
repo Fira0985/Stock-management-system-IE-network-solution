@@ -1,114 +1,120 @@
-.profile-modern-card {
-    background-color: #ffffff;
+.profile-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
     padding: 2rem;
-    max-width: 420px;
-    /* margin: 3rem auto; */
-    border-radius: 20px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.profile-image-section {
+    flex: 0 0 250px;
+    max-width: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 0.3s ease;
 }
 
-.profile-image-wrapper {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin-bottom: 1.5rem;
-}
-
-.profile-avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+.profile-avatar,
+.profile-placeholder {
+    width: 200px;
+    height: 250px;
     object-fit: cover;
-    border: 4px solid #4a3cff;
-    box-shadow: 0 4px 12px rgba(74, 60, 255, 0.3);
-    transition: transform 0.3s ease;
-}
-
-.profile-avatar:hover {
-    transform: scale(1.05);
-}
-
-.profile-icon {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: #eaeaea;
+    border-radius: 12px;
+    background-color: #f3f4f6;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 3rem;
-    color: #777;
-    border: 2px dashed #ccc;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.change-photo-text {
+.image-upload-label {
+    position: relative;
+    cursor: pointer;
+    display: block;
+}
+
+.change-photo-overlay {
     position: absolute;
-    bottom: -12px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #4a3cff;
-    color: #fff;
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.change-photo-text:hover {
-    background-color: #372fe4;
-}
-
-.form-field {
-    position: relative;
-    width: 100%;
-    margin-bottom: 1.2rem;
-}
-
-.form-field input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-    font-size: 0.95rem;
-}
-
-.form-field input:focus {
-    outline: none;
-    border-color: #4a3cff;
-    background-color: #fff;
-}
-
-.form-field label {
-    position: absolute;
-    top: -0.7rem;
-    left: 1rem;
-    background: #fff;
-    padding: 0 0.4rem;
-    font-size: 0.8rem;
-    color: #4a3cff;
+    padding: 0.4rem 1rem;
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.85rem;
     font-weight: 500;
+    color: #374151;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.profile-info-section {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-group input {
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    font-size: 0.8rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.input-group label {
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.input-icon {
+    position: absolute;
+    top: 30%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
 }
 
 .save-button {
-    width: 100%;
+    grid-column: span 2;
     padding: 0.75rem;
-    background-color: #4a3cff;
-    color: white;
     font-size: 1rem;
     font-weight: 500;
+    background-color: #2563eb;
+    color: white;
     border: none;
-    border-radius: 999px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+    width: 100%;
 }
 
 .save-button:hover {
-    background-color: #372fe4;
+    background-color: #1e40af;
 }
