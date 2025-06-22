@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './product.css';
-import { FiFolder, FiBox } from 'react-icons/fi';
-
-const demoData = [
-    { categoryName: 'Category 1', products: ['T-shirt', 'Jeans', 'Socks'] },
-    { categoryName: 'Category 2', products: ['Sneakers', 'Boots'] },
-    { categoryName: 'Category 3', products: ['Hat'] },
-    { categoryName: 'Category 4', products: ['Jacket', 'Scarf', 'Gloves', 'Coat'] },
-    { categoryName: 'Category 5', products: ['Shoes', 'Sandals'] },
-    { categoryName: 'Category 6', products: ['Shirt', 'Belt', 'Watch', 'Sweater', 'Blazer'] },
-];
+import { FiFolder, FiBox, FiMoreVertical } from 'react-icons/fi';
+import {
+    fetchCategory,
+    fetchCategoryById,
+    addCategory,
+    editCategory,
+    deleteCategory
+} from '../../services/categoryService'; // Adjust path if needed
 
 const categoriesPerPage = 4;
 const productsPerCategoryPage = 3;
@@ -17,27 +15,78 @@ const flatProductsPerPage = 9;
 
 const Product = ({ isSidebarOpen }) => {
     const [activeTab, setActiveTab] = useState('categories');
+    const [categories, setCategories] = useState([]);
     const [expandedCategory, setExpandedCategory] = useState(null);
     const [categoryPage, setCategoryPage] = useState(1);
     const [productPageMap, setProductPageMap] = useState({});
     const [flatProductPage, setFlatProductPage] = useState(1);
+    const [menuOpen, setMenuOpen] = useState(null);
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
+
+    const loadCategories = async () => {
+        try {
+            const res = await fetchCategory();
+            setCategories(res.data || []);
+        } catch (err) {
+            console.error('Failed to fetch categories:', err);
+        }
+    };
 
     const handleToggleCategory = (index) => {
         setExpandedCategory(prev => (prev === index ? null : index));
     };
 
-    // Category Pagination
-    const totalCategoryPages = Math.ceil(demoData.length / categoriesPerPage);
-    const paginatedCategories = demoData.slice(
+    const handleAddCategory = async () => {
+        const name = prompt('Enter category name:');
+        if (!name) return;
+        try {
+            await addCategory({
+                name,
+                created_by_id: parseInt(localStorage.getItem('id'))
+            });
+            await loadCategories();
+        } catch (err) {
+            alert('Failed to add category');
+        }
+    };
+
+    const handleEditCategory = async (id) => {
+        const existing = await fetchCategoryById(id);
+        const newName = prompt('Edit category name:', existing.name);
+        if (!newName || newName === existing.name) return;
+
+        try {
+            await editCategory({ categoryId: id, name: newName });
+            await loadCategories();
+        } catch (err) {
+            alert('Failed to edit category');
+        }
+    };
+
+    const handleDeleteCategory = async (id) => {
+        if (!window.confirm('Are you sure to delete this category?')) return;
+        try {
+            await deleteCategory(id, parseInt(localStorage.getItem('id')));
+            await loadCategories();
+        } catch (err) {
+            alert(err.message || 'Cannot delete category with products');
+        }
+    };
+
+    // Pagination logic
+    const totalCategoryPages = Math.ceil(categories.length / categoriesPerPage);
+    const paginatedCategories = categories.slice(
         (categoryPage - 1) * categoriesPerPage,
         categoryPage * categoriesPerPage
     );
 
-    // Flat Product Pagination (9 per page)
-    const allFlatProducts = demoData.flatMap(cat =>
+    const allFlatProducts = categories.flatMap(cat =>
         cat.products.map(prod => ({
-            name: prod,
-            category: cat.categoryName
+            name: prod.name || prod,
+            category: cat.name
         }))
     );
     const totalFlatProductPages = Math.ceil(allFlatProducts.length / flatProductsPerPage);
@@ -57,7 +106,8 @@ const Product = ({ isSidebarOpen }) => {
         <div className={isSidebarOpen ? "Product-content" : "Product-content collapse"}>
             <div className="top">
                 <h1 className="page-title">Inventory</h1>
-                <button className="bulk">Bulk Registration</button>
+                <button className="add" onClick={handleAddCategory}>Add Category</button>
+                <button className="bulk" >Bulk Registration</button>
             </div>
 
             <div className="tab-navigation">
@@ -97,21 +147,50 @@ const Product = ({ isSidebarOpen }) => {
                             );
 
                             return (
-                                <li key={globalIndex} className={`category-item ${expandedCategory === globalIndex ? 'expanded' : ''}`}>
+                                <li key={cat.id} className={`category-item ${expandedCategory === globalIndex ? 'expanded' : ''}`}>
                                     <div className="category-header" onClick={() => handleToggleCategory(globalIndex)}>
                                         <div className="category-title">
                                             <FiFolder className="category-icon" />
-                                            <span>{cat.categoryName}</span>
+                                            <span>{cat.name}</span>
                                         </div>
                                         <span className="product-count-badge">{cat.products.length} items</span>
+                                        <div
+                                            className="item-menu"
+                                            style={{ position: 'relative' }}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setMenuOpen(menuOpen === cat.id ? null : cat.id);
+                                            }}
+                                        >
+                                            <FiMoreVertical />
+                                            {menuOpen === cat.id && (
+                                                <div >
+                                                    <div className="popup-menu">
+                                                        <div
+                                                            className="popup-item edit-item"
+                                                            onClick={() => handleEditCategory(cat.id)}
+                                                        >
+                                                            Edit
+                                                        </div>
+                                                        <div
+                                                            className="popup-item delete-item"
+                                                            onClick={() => handleDeleteCategory(cat.id)}
+                                                        >
+                                                            Delete
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
+
                                     {expandedCategory === globalIndex && (
                                         <>
                                             <ul className="category-products">
                                                 {paginatedProducts.map((prod, i) => (
                                                     <li key={i} className="product-in-category">
                                                         <FiBox className="product-icon" />
-                                                        <span className="product-name">{prod}</span>
+                                                        <span className="product-name">{prod.name || prod}</span>
                                                     </li>
                                                 ))}
                                             </ul>

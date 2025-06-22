@@ -29,7 +29,7 @@ router.put('/products/:id', authenticateToken, editProduct);
 
 router.post('/categories', authenticateToken, addCategory);
 router.get('/categories', authenticateToken, getAllCategories);
-router.put('/categories', authenticateToken, editCategory);
+router.post('/editCategories', authenticateToken, editCategory);
 router.post('/getCategoryById', authenticateToken, getCategoryById)
 router.delete('/deleteCategory', authenticateToken, deleteCategory)
 

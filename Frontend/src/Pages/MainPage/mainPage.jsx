@@ -59,7 +59,7 @@ const MainPage = () => {
 
       {showUserProfile && (
         <div className="modal-overlay" onClick={closeProfilePopup}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-contents" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeProfilePopup}>&times;</button>
             <UserProfile onSendToParent={handleDataFromChild} />
           </div>

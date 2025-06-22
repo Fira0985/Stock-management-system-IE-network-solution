@@ -20,7 +20,7 @@ const getAllCategories = async (req, res) => {
 // Get Category by ID
 const getCategoryById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
 
     const category = await prisma.category.findUnique({
       where: { id: Number(id) },

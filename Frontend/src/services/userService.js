@@ -49,7 +49,7 @@ export const editUser = async ( data) => {
 export const deleteUser = async (email, deleted_by_id) => {
     return await api.delete('/deleteUser', {
         headers: getAuthHeaders(),
-        data: { email, deleted_by_id },  // Pass data correctly in DELETE request body
+        data: { email, deleted_by_id }, 
     });
 };
 
