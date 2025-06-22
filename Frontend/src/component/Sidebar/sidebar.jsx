@@ -4,14 +4,20 @@ import {
     LayoutDashboard, Package, ShoppingCart, ShoppingBag,
     CreditCard, BarChart2, Truck, Users, User, Settings
 } from 'lucide-react';
-import { FiChevronLeft, FiChevronRight, FiPhoneCall } from 'react-icons/fi';
-import { uploadProfileImage } from '../../services/userService';  // Make sure this path is correct
+import { FiChevronLeft, FiChevronRight, FiPhoneCall, FiLogOut } from 'react-icons/fi';
+import { uploadProfileImage } from '../../services/userService';
 
 const Sidebar = (props) => {
     const [isOpen, setIsOpen] = useState(true);
-    const [storedName, setStoredName] = useState('');
-    // const [avatar, setAvatar] = useState('');
-    const fileInputRef = useRef();
+    const [userInfo, setUserInfo] = useState({
+        username: '',
+        email: '',
+        phone: '',
+        id: '',
+        role: '',
+    });
+
+    const role = localStorage.getItem('role');
 
     const handleToggle = () => {
         const newState = !isOpen;
@@ -21,24 +27,17 @@ const Sidebar = (props) => {
         }
     };
 
-    // Load name and avatar from localStorage on mount
     useEffect(() => {
-        const nameFromStorage = localStorage.getItem('userName');
-        // const avatarFromStorage = localStorage.getItem('userAvatar');
-        if (nameFromStorage) {
-            setStoredName(nameFromStorage);
-        }
-        // if (avatarFromStorage) {
-        //     setAvatar(avatarFromStorage);
-        // }
+        setUserInfo({
+            username: localStorage.getItem('userName') || '',
+            email: localStorage.getItem('email') || '',
+            phone: localStorage.getItem('phone') || '',
+            id: localStorage.getItem('id') || '',
+            role: localStorage.getItem('role') || '',
+        });
     }, []);
 
-    // Trigger file input when avatar clicked
-    const handleAvatarClick = () => {
-        fileInputRef.current.click();
-    };
-
-    const menuItems = [
+    const allMenuItems = [
         { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
         { icon: <Package size={16} />, label: "Products" },
         { icon: <ShoppingCart size={16} />, label: "Sales" },
@@ -51,48 +50,86 @@ const Sidebar = (props) => {
         { icon: <Settings size={16} />, label: "Settings" },
     ];
 
+    const filteredMenuItems = allMenuItems.filter((item) => {
+        if (role === 'CLERK') {
+            const restrictedLabels = ['User', 'Supplier', 'Report', 'Purchase'];
+            return !restrictedLabels.includes(item.label);
+        }
+        return true;
+    });
+
     return (
         <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
             <div className="sidebar-header">
-                {isOpen ? <div className="brand">Track<span>እቃ</span><span>.</span></div> : <div></div>}
+                <div className="brand">
+                    {isOpen ? (
+                        <>Track<span>እቃ</span><span>.</span></>
+                    ) : (
+                        <>T.</>
+                    )}
+                </div>
                 <button className="toggle-btn" onClick={handleToggle}>
                     {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
                 </button>
             </div>
 
+            {/* User Info Box for CLERK */}
+            {role === 'CLERK' && (
+                isOpen ? (
+                    <div className="user-info-box">
+                        <h4 className="user-info-header">Your Profile</h4>
+                        <div className="user-info-field"><strong>ID:</strong> {userInfo.id}</div>
+                        <div className="user-info-field"><strong>Name:</strong> {userInfo.username}</div>
+                        <div className="user-info-field"><strong>Email:</strong> {userInfo.email}</div>
+                        <div className="user-info-field"><strong>Phone:</strong> {userInfo.phone}</div>
+                        <div className="user-info-field"><strong>Role:</strong> {userInfo.role}</div>
+                    </div>
+                ) : (
+                    <div
+                        className="user-info-icon"
+                        title={`ID: ${userInfo.id}\nName: ${userInfo.username}\nEmail: ${userInfo.email}\nPhone: ${userInfo.phone}\nRole: ${userInfo.role}`}
+                    >
+                        <User size={22} />
+                    </div>
+                )
+            )}
+
             <ul className="menu">
-                {menuItems.map((item) => (
+                {filteredMenuItems.map((item) => (
                     <li key={item.label} onClick={() => props.onMenuSelect(item.label)}>
                         {item.icon} {isOpen && item.label}
                     </li>
                 ))}
             </ul>
 
-            {isOpen ? (
-                <>
-                    <div className="user-profile">
-                        <ul className="sidebar-contact-list">
-                            <li className="contact-item" onClick={() => props.onMenuSelect('Contact')}>
-                                <FiPhoneCall size={16} className="contact-icon" />
-                                <span className="contact-label">Contact</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <button className="logout-btn">Logout</button>
-                </>
-            ) : (
-                <>
-                    <div className="user-profile-collapse">
-                        <ul className="sidebar-contact-list">
-                            <li className="contact-item" onClick={() => props.onMenuSelect('Contact')} title="Contact">
-                                <FiPhoneCall size={20} className="contact-icon" />
-                            </li>
-                        </ul>
-                    </div>
-                    <button className="logout-btn-collopse">Logout</button>
-                </>
-            )}
-
+            <div className="sidebar-footer">
+                {isOpen ? (
+                    <>
+                        <div className="user-profile">
+                            <ul className="sidebar-contact-list">
+                                <li className="contact-item" onClick={() => props.onMenuSelect('Contact')}>
+                                    <FiPhoneCall size={16} className="contact-icon" />
+                                    <span className="contact-label">Contact</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button className="logout-btn">Logout</button>
+                    </>
+                ) : (
+                    <>
+                        <div className="user-profile-collapse">
+                            <ul className="sidebar-contact-list">
+                                <li className="contact-item" onClick={() => props.onMenuSelect('Contact')} title="Contact">
+                                    <FiPhoneCall size={20} className="contact-icon" />
+                                </li>
+                            </ul>
+                        </div>
+                        <button className="logout-btn-collopse" title="Logout">
+                            <FiLogOut size={18} />
+                        </button>
+                    </>
+                )}
+            </div>
         </aside>
     );
 };

@@ -17,7 +17,11 @@ function Login() {
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('userName', data.user.username);
-        localStorage.setItem('email', email);
+        localStorage.setItem('email', data.user.email);
+        localStorage.setItem('role', data.user.role)
+        localStorage.setItem('phone', data.user.phone)
+        localStorage.setItem('id', data.user.id)
+
 
         toast.success('Login successful!', {
           position: 'top-center',
