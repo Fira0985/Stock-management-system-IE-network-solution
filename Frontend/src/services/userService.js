@@ -3,7 +3,7 @@ import api from './api';
 import axios from 'axios';
 
 function getAuthHeaders() {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (!token) {
         throw new Error('Authentication token not found');
     }

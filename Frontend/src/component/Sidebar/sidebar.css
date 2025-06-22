@@ -86,7 +86,7 @@
     border-top: 1px solid #eee;
 }
 
-.user-profile-collapse{
+.user-profile-collapse {
     margin-top: 6vh;
     padding-left: 1vw;
     display: flex;
@@ -112,32 +112,91 @@
     margin-top: 7px;
 }
 
+.logout-btn,
+.logout-btn-collopse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    background-color: black;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+/* Hover effect */
+.logout-btn:hover,
+.logout-btn-collopse:hover {
+    background-color: red;
+    transform: scale(1.02);
+}
+
+/* Different width handling */
 .logout-btn {
-    margin-top: 10px;
     margin-left: 10%;
-    padding: 6px 12px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    width: 50%;
+    width: 70%;
 }
 
- .logout-btn-collopse{
-    margin-top: 10px;
-    margin-left: 10%;
-    padding: 3px 6px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+.logout-btn-collopse {
+    margin-left: 5%;
     width: 90%;
+    padding: 6px 10px;
 }
 
+
+.sidebar-contact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 16px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    color: #444;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    justify-content: flex-start;
+}
+
+.contact-item:hover {
+    background-color: #f3f4f6;
+}
+
+.contact-icon {
+    color: #4b5563;
+    transition: transform 0.2s ease;
+}
+
+.sidebar.collapsed .sidebar-contact-list {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar.collapsed .contact-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .contact-label {
+    display: none;
+}
+
+.contact-item:hover .contact-icon {
+    transform: scale(1.1);
+}
 
 
 @media (max-width: 768px) {

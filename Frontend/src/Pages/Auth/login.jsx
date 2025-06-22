@@ -2,39 +2,47 @@ import React, { useState } from 'react';
 import './Auth.css';
 import { loginUser } from '../../services/authService';
 import { useNavigate, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify'; // Toast imports
+import 'react-toastify/dist/ReactToastify.css'; // Toast styles
 
-function Login(props) {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   async function handleLogin() {
     try {
       const data = await loginUser({ email, password });
 
-      // Save token if returned
       if (data.token) {
         localStorage.setItem('token', data.token);
-        navigate('/dashboard');
-      }
-      localStorage.setItem('userName', data.user.username); 
-      localStorage.setItem('email', email)
+        localStorage.setItem('userName', data.user.username);
+        localStorage.setItem('email', email);
 
-      // Redirect or update UI here
-      alert('Login successful!');
+        toast.success('Login successful!', {
+          position: 'top-center',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+        // Toast here
+
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000); // Give the toast a moment to show before navigating
+      }
     } catch (error) {
-      setErrorMsg(error.message || 'Login failed');
+      toast.error(error.message || 'Login failed',); // Toast error
     }
   }
 
   return (
     <div className="auth-container">
+      <ToastContainer />
+
       <div className="auth-box">
         <h2 className="auth-title">Login</h2>
         <p className="auth-subtitle">Welcome back!</p>
-
-        {errorMsg && <p className="auth-error">{errorMsg}</p>}
 
         <input
           type="email"

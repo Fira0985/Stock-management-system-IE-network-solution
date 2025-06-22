@@ -4,7 +4,7 @@ import {
     LayoutDashboard, Package, ShoppingCart, ShoppingBag,
     CreditCard, BarChart2, Truck, Users, User, Settings
 } from 'lucide-react';
-import { FiChevronLeft, FiChevronRight, FiUser } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiPhoneCall } from 'react-icons/fi';
 import { uploadProfileImage } from '../../services/userService';  // Make sure this path is correct
 
 const Sidebar = (props) => {
@@ -38,22 +38,6 @@ const Sidebar = (props) => {
         fileInputRef.current.click();
     };
 
-    // Handle profile image file selection and upload
-    // const handleImageChange = async (e) => {
-    //     const file = e.target.files[0];
-    //     if (file && file.type.startsWith('image/')) {
-    //         try {
-    //             const result = await uploadProfileImage(file);
-    //             // Assuming result.user.image_url contains relative path
-    //             const imageUrl = `http://localhost:3000/${result.user.image_url}`;
-    //             setAvatar(imageUrl);
-    //             localStorage.setItem('userAvatar', imageUrl);
-    //         } catch (err) {
-    //             console.error('Image upload failed:', err.message);
-    //         }
-    //     }
-    // };
-
     const menuItems = [
         { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
         { icon: <Package size={16} />, label: "Products" },
@@ -70,7 +54,7 @@ const Sidebar = (props) => {
     return (
         <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
             <div className="sidebar-header">
-                {isOpen ? <div className="brand">Sto<span>ck</span><span>.</span></div> : <div></div>}
+                {isOpen ? <div className="brand">Track<span>እቃ</span><span>.</span></div> : <div></div>}
                 <button className="toggle-btn" onClick={handleToggle}>
                     {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
                 </button>
@@ -86,40 +70,29 @@ const Sidebar = (props) => {
 
             {isOpen ? (
                 <>
-                    <div className="user-profile" onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
-                        {/* <div className="avatar">
-                            {avatar ? (
-                                <img src={avatar} alt="User Avatar" className="avatar-img" />
-                            ) : (
-                                <FiUser size={24} />
-                            )}
-                        </div> */}
-                        {/* <div className="name">{storedName}</div> */}
+                    <div className="user-profile">
+                        <ul className="sidebar-contact-list">
+                            <li className="contact-item" onClick={() => props.onMenuSelect('Contact')}>
+                                <FiPhoneCall size={16} className="contact-icon" />
+                                <span className="contact-label">Contact</span>
+                            </li>
+                        </ul>
                     </div>
                     <button className="logout-btn">Logout</button>
                 </>
             ) : (
                 <>
-                    <div className='user-profile-collapse' onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
-                        {/* <div className="avatar">
-                            {avatar ? (
-                                <img src={avatar} alt="User Avatar" className="avatar-img" />
-                            ) : (
-                                <FiUser size={24} />
-                            )}
-                        </div> */}
+                    <div className="user-profile-collapse">
+                        <ul className="sidebar-contact-list">
+                            <li className="contact-item" onClick={() => props.onMenuSelect('Contact')} title="Contact">
+                                <FiPhoneCall size={20} className="contact-icon" />
+                            </li>
+                        </ul>
                     </div>
                     <button className="logout-btn-collopse">Logout</button>
                 </>
             )}
 
-            {/* <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleImageChange}
-            /> */}
         </aside>
     );
 };
