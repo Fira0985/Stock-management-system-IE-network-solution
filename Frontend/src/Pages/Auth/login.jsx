@@ -69,7 +69,7 @@ function Login() {
           Don't have Account? <Link to="/">Register</Link>
         </p>
         <p className="auth-footer">
-          Forget Password? <a href="#">Recover</a>
+          Forget Password? <Link to="/recover">Recover</Link>
         </p>
       </div>
     </div>

@@ -7,7 +7,9 @@ import {
     addCategory,
     editCategory,
     deleteCategory
-} from '../../services/categoryService'; // Adjust path if needed
+} from '../../services/categoryService';
+import ProductForm from './ProductForm';
+import DeleteProductForm from './deleteProductForm';
 
 const categoriesPerPage = 4;
 const productsPerCategoryPage = 3;
@@ -21,6 +23,14 @@ const Product = ({ isSidebarOpen }) => {
     const [productPageMap, setProductPageMap] = useState({});
     const [flatProductPage, setFlatProductPage] = useState(1);
     const [menuOpen, setMenuOpen] = useState(null);
+
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [formInitialData, setFormInitialData] = useState({});
+    const [editingCategoryId, setEditingCategoryId] = useState(null);
+
+    const [isDeleteFormOpen, setIsDeleteFormOpen] = useState(false);
+    const [categoryToDelete, setCategoryToDelete] = useState(null);
 
     useEffect(() => {
         loadCategories();
@@ -39,44 +49,74 @@ const Product = ({ isSidebarOpen }) => {
         setExpandedCategory(prev => (prev === index ? null : index));
     };
 
-    const handleAddCategory = async () => {
-        const name = prompt('Enter category name:');
-        if (!name) return;
+    const handleAddCategory = () => {
+        setFormInitialData({});
+        setIsEditMode(false);
+        setIsFormOpen(true);
+    };
+
+    const handleAddCategorySubmit = async (data) => {
         try {
             await addCategory({
-                name,
+                name: data.name,
                 created_by_id: parseInt(localStorage.getItem('id'))
             });
             await loadCategories();
+            setIsFormOpen(false);
         } catch (err) {
             alert('Failed to add category');
         }
     };
 
     const handleEditCategory = async (id) => {
-        const existing = await fetchCategoryById(id);
-        const newName = prompt('Edit category name:', existing.name);
-        if (!newName || newName === existing.name) return;
-
         try {
-            await editCategory({ categoryId: id, name: newName });
+            const existing = await fetchCategoryById(id);
+            setFormInitialData(existing);
+            setEditingCategoryId(id);
+            setIsEditMode(true);
+            setIsFormOpen(true);
+        } catch (err) {
+            alert('Failed to load category data');
+        }
+    };
+
+    const handleEditCategorySubmit = async (data) => {
+        try {
+            await editCategory({ categoryId: editingCategoryId, name: data.name });
             await loadCategories();
+            setIsFormOpen(false);
         } catch (err) {
             alert('Failed to edit category');
         }
     };
 
-    const handleDeleteCategory = async (id) => {
-        if (!window.confirm('Are you sure to delete this category?')) return;
+    const handleDeleteCategory = (category) => {
+        setCategoryToDelete(category);
+        setIsDeleteFormOpen(true);
+    };
+
+    const confirmDeleteCategory = async () => {
+        if (!categoryToDelete) return;
         try {
-            await deleteCategory(id, parseInt(localStorage.getItem('id')));
-            await loadCategories();
+            await deleteCategory(categoryToDelete.id, parseInt(localStorage.getItem('id')));
+            const updatedRes = await fetchCategory();
+            const updatedCategories = updatedRes.data || [];
+
+            // Compute new total pages
+            const totalAfterDeletion = updatedCategories.length;
+            const maxPage = Math.ceil(totalAfterDeletion / categoriesPerPage);
+            const newPage = categoryPage > maxPage ? Math.max(1, categoryPage - 1) : categoryPage;
+
+            setCategoryPage(newPage);
+            setCategories(updatedCategories);
+            setIsDeleteFormOpen(false);
+            setCategoryToDelete(null);
         } catch (err) {
             alert(err.message || 'Cannot delete category with products');
         }
     };
 
-    // Pagination logic
+
     const totalCategoryPages = Math.ceil(categories.length / categoriesPerPage);
     const paginatedCategories = categories.slice(
         (categoryPage - 1) * categoriesPerPage,
@@ -107,7 +147,8 @@ const Product = ({ isSidebarOpen }) => {
             <div className="top">
                 <h1 className="page-title">Inventory</h1>
                 <button className="add" onClick={handleAddCategory}>Add Category</button>
-                <button className="bulk" >Bulk Registration</button>
+                <button className="bulk" >Add Product</button>
+                <button className="bulk">Bulk Registration</button>
             </div>
 
             <div className="tab-navigation">
@@ -164,7 +205,7 @@ const Product = ({ isSidebarOpen }) => {
                                         >
                                             <FiMoreVertical />
                                             {menuOpen === cat.id && (
-                                                <div >
+                                                <div>
                                                     <div className="popup-menu">
                                                         <div
                                                             className="popup-item edit-item"
@@ -174,7 +215,7 @@ const Product = ({ isSidebarOpen }) => {
                                                         </div>
                                                         <div
                                                             className="popup-item delete-item"
-                                                            onClick={() => handleDeleteCategory(cat.id)}
+                                                            onClick={() => handleDeleteCategory(cat)}
                                                         >
                                                             Delete
                                                         </div>
@@ -277,6 +318,26 @@ const Product = ({ isSidebarOpen }) => {
                         </div>
                     )}
                 </div>
+            )}
+
+            {isFormOpen && (
+                <ProductForm
+                    onClose={() => setIsFormOpen(false)}
+                    onSubmit={isEditMode ? handleEditCategorySubmit : handleAddCategorySubmit}
+                    initialData={formInitialData}
+                    isEdit={isEditMode}
+                />
+            )}
+
+            {isDeleteFormOpen && (
+                <DeleteProductForm
+                    onClose={() => {
+                        setIsDeleteFormOpen(false);
+                        setCategoryToDelete(null);
+                    }}
+                    onConfirm={confirmDeleteCategory}
+                    Category={categoryToDelete}
+                />
             )}
         </div>
     );

@@ -21,7 +21,7 @@ function VerifyCode() {
 
             await changePassword({ email, password: newPassword });
 
-            setSuccessMsg('Registered Successfully! Redirecting...');
+            setSuccessMsg(' Successfull! Redirecting...');
 
             setTimeout(() => {
                 navigate('/login');

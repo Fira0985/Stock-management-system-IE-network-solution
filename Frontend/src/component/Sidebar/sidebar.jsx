@@ -9,13 +9,6 @@ import { uploadProfileImage } from '../../services/userService';
 
 const Sidebar = (props) => {
     const [isOpen, setIsOpen] = useState(true);
-    const [userInfo, setUserInfo] = useState({
-        username: '',
-        email: '',
-        phone: '',
-        id: '',
-        role: '',
-    });
 
     const role = localStorage.getItem('role');
 
@@ -26,16 +19,6 @@ const Sidebar = (props) => {
             props.onToggle(newState);
         }
     };
-
-    useEffect(() => {
-        setUserInfo({
-            username: localStorage.getItem('userName') || '',
-            email: localStorage.getItem('email') || '',
-            phone: localStorage.getItem('phone') || '',
-            id: localStorage.getItem('id') || '',
-            role: localStorage.getItem('role') || '',
-        });
-    }, []);
 
     const allMenuItems = [
         { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
@@ -72,27 +55,6 @@ const Sidebar = (props) => {
                     {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
                 </button>
             </div>
-
-            {/* User Info Box for CLERK */}
-            {role === 'CLERK' && (
-                isOpen ? (
-                    <div className="user-info-box">
-                        <h4 className="user-info-header">Your Profile</h4>
-                        <div className="user-info-field"><strong>ID:</strong> {userInfo.id}</div>
-                        <div className="user-info-field"><strong>Name:</strong> {userInfo.username}</div>
-                        <div className="user-info-field"><strong>Email:</strong> {userInfo.email}</div>
-                        <div className="user-info-field"><strong>Phone:</strong> {userInfo.phone}</div>
-                        <div className="user-info-field"><strong>Role:</strong> {userInfo.role}</div>
-                    </div>
-                ) : (
-                    <div
-                        className="user-info-icon"
-                        title={`ID: ${userInfo.id}\nName: ${userInfo.username}\nEmail: ${userInfo.email}\nPhone: ${userInfo.phone}\nRole: ${userInfo.role}`}
-                    >
-                        <User size={22} />
-                    </div>
-                )
-            )}
 
             <ul className="menu">
                 {filteredMenuItems.map((item) => (

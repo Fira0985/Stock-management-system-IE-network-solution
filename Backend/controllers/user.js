@@ -203,6 +203,35 @@ const verifyUser = async (req, res) => {
   res.json({ message: 'Reset code sent to email' });
 };
 
+const RecoverUser = async (req, res) => {
+  const { email, password, newPassword } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) return res.status(404).json({ message: 'Email not found' });
+
+  if (!newPassword || newPassword.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  }
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+  const expiresAt = new Date(Date.now() + 10 * 60000); // Expires in 10 minutes
+
+  await prisma.user.update({
+    where: { email },
+    data: {
+      verfiy_code: code,
+      verfiyCode_expireAt: expiresAt,
+    },
+  });
+
+  await sendEmail(email, code);
+
+  res.json({ message: 'Reset code sent to email' });
+};
+
 const verifyCode = async (req, res) => {
   const { email, code } = req.body;
 
@@ -263,4 +292,4 @@ const getImage = async (req, res) => {
 }
 
 
-module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage };
+module.exports = { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, RecoverUser, verifyCode, changePassword, getImage };

@@ -44,12 +44,10 @@ const addProduct = async (req, res) => {
     const {
       name,
       barcode,
-      unit,
       image_url,
       sale_price,
       cost_price,
       category_id,
-      archived,
       created_by_id,
     } = req.body;
 
@@ -57,12 +55,10 @@ const addProduct = async (req, res) => {
       data: {
         name,
         barcode,
-        unit,
         image_url,
         sale_price,
         cost_price,
         category_id,
-        archived,
         created_by_id,
       },
     });

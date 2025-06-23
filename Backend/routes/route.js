@@ -5,9 +5,10 @@ const upload = require('../middleware/upload');
 const { authenticateToken } = require('../middleware/auth');
 const {addProduct, editProduct, getAllProducts, getProductById} = require('../controllers/product')
 const {addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory} = require('../controllers/category')
-const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage} = require('../controllers/user')
+const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage, RecoverUser} = require('../controllers/user')
 const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById} = require('../controllers/nonUser');
 const { loginUser } = require('../middleware/auth');
+const { getAllPurchase, addPurchase } = require('../controllers/purchase');
 
 
 router.post('/users', authenticateToken,  addUser);
@@ -18,6 +19,7 @@ router.post('/getUserByEmail', authenticateToken, getUserByEmail);
 router.post('/login', loginUser)
 router.post('/upload-profile', authenticateToken, upload.single('image'), uploadProfileImage);
 router.post('/verify-user', verifyUser)
+router.post('/recover-user', RecoverUser)
 router.post('/verify-code', verifyCode)
 router.post('/change-password', changePassword)
 router.post('/getImage', authenticateToken, getImage);
@@ -39,5 +41,8 @@ router.put("/editNonUser/:id", editNonUser);
 router.delete('/deleteNonUser', authenticateToken,  deleteNonUser)
 router.get('/NonUser', authenticateToken, getAllNonUsers)
 router.post('/getNonUserById', authenticateToken, getNonUserById)
+
+router.post('/getAllPurchase', authenticateToken, getAllPurchase)
+router.post('/purchase', authenticateToken, addPurchase)
 
 module.exports = router;

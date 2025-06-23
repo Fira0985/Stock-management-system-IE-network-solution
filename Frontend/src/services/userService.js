@@ -84,6 +84,11 @@ export const verifyUser = async (data) => {
     return await api.post('/verify-user', data,);
 };
 
+export const RecoverUser = async (data) => {
+    return await api.post('/recover-user', data,);
+};
+
+
 export const verifyCode = async (data) => {
     return await api.post('/verify-code', data,);
 };
