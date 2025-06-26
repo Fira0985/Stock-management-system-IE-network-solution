@@ -26,7 +26,7 @@ router.post('/getImage', authenticateToken, getImage);
 
 router.get('/products', authenticateToken, getAllProducts);
 router.post('/getProductById', authenticateToken, getProductById);
-router.post('/products', authenticateToken,  addProduct);
+router.post('/products', authenticateToken, upload.single('image'),  addProduct);
 router.put('/products/:id', authenticateToken, editProduct);
 
 router.post('/categories', authenticateToken, addCategory);

@@ -40,9 +40,8 @@
 }
 
 .add-customer:hover {
-    background-color: #111827;
+    background-color: blueviolet;
     color: #ffffff;
-    border-color: #111827;
 }
 
 /* Table Styles */

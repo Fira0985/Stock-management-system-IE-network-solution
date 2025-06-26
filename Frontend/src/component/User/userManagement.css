@@ -35,9 +35,8 @@
 }
 
 .add-user-btn:hover {
-    background-color: #111827;
+    background-color: blueviolet;
     color: white;
-    border-color: #111827;
 }
 
 .user-table {

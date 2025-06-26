@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './ProductForm.css';
 
 const AddForm = ({ categories, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
         name: '',
-        image_url: '',
         sale_price: '',
         cost_price: '',
         category: '',
+        image_file: null
     });
 
     const handleChange = (e) => {
@@ -15,12 +15,20 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFormData(prev => ({ ...prev, image_file: file }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
         if (!formData.name || !formData.sale_price || !formData.cost_price || !formData.category) {
             alert('Please fill in all required fields.');
             return;
         }
+
+        // Send full formData object including file to parent
         onSubmit(formData);
     };
 
@@ -37,16 +45,6 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Image URL</label>
-                        <input
-                            type="text"
-                            name="image_url"
-                            value={formData.image_url}
-                            onChange={handleChange}
                         />
                     </div>
 
@@ -91,6 +89,15 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
                                 </option>
                             ))}
                         </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Product Image (file)</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
                     </div>
 
                     <div className="form-actions">

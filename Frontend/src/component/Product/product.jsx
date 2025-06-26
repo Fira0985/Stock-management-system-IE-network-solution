@@ -8,7 +8,9 @@ import {
     editCategory,
     deleteCategory
 } from '../../services/categoryService';
+import { addProduct } from '../../services/productService';
 import ProductForm from './ProductForm';
+import AddForm from './AddForm';
 import DeleteProductForm from './deleteProductForm';
 
 const categoriesPerPage = 4;
@@ -26,6 +28,7 @@ const Product = ({ isSidebarOpen }) => {
 
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isAddFormOpen, setIsAddFormOpen] = useState(false);
     const [formInitialData, setFormInitialData] = useState({});
     const [editingCategoryId, setEditingCategoryId] = useState(null);
 
@@ -68,6 +71,33 @@ const Product = ({ isSidebarOpen }) => {
         }
     };
 
+    const handleAddProduct = () => {
+        setIsAddFormOpen(true);
+    };
+
+    const handleAddProductSubmit = async (data) => {
+        try {
+            const formData = new FormData();
+            formData.append('name', data.name);
+            formData.append('sale_price', parseFloat(data.sale_price));
+            formData.append('cost_price', parseFloat(data.cost_price));
+            formData.append('category_id', parseInt(data.category));
+            formData.append('created_by_id', parseInt(localStorage.getItem('id')));
+            if (data.image_file) {
+                formData.append('image', data.image_file);
+            }
+
+            await addProduct(formData); // This should accept multipart/form-data
+
+            await loadCategories();
+            setIsAddFormOpen(false);
+        } catch (err) {
+            alert(err.message || 'Failed to add product');
+        }
+    };
+
+
+
     const handleEditCategory = async (id) => {
         try {
             const existing = await fetchCategoryById(id);
@@ -101,12 +131,9 @@ const Product = ({ isSidebarOpen }) => {
             await deleteCategory(categoryToDelete.id, parseInt(localStorage.getItem('id')));
             const updatedRes = await fetchCategory();
             const updatedCategories = updatedRes.data || [];
-
-            // Compute new total pages
             const totalAfterDeletion = updatedCategories.length;
             const maxPage = Math.ceil(totalAfterDeletion / categoriesPerPage);
             const newPage = categoryPage > maxPage ? Math.max(1, categoryPage - 1) : categoryPage;
-
             setCategoryPage(newPage);
             setCategories(updatedCategories);
             setIsDeleteFormOpen(false);
@@ -115,7 +142,6 @@ const Product = ({ isSidebarOpen }) => {
             alert(err.message || 'Cannot delete category with products');
         }
     };
-
 
     const totalCategoryPages = Math.ceil(categories.length / categoriesPerPage);
     const paginatedCategories = categories.slice(
@@ -147,7 +173,7 @@ const Product = ({ isSidebarOpen }) => {
             <div className="top">
                 <h1 className="page-title">Inventory</h1>
                 <button className="add" onClick={handleAddCategory}>Add Category</button>
-                <button className="bulk" >Add Product</button>
+                <button className="bulk" onClick={handleAddProduct}>Add Product</button>
                 <button className="bulk">Bulk Registration</button>
             </div>
 
@@ -205,20 +231,18 @@ const Product = ({ isSidebarOpen }) => {
                                         >
                                             <FiMoreVertical />
                                             {menuOpen === cat.id && (
-                                                <div>
-                                                    <div className="popup-menu">
-                                                        <div
-                                                            className="popup-item edit-item"
-                                                            onClick={() => handleEditCategory(cat.id)}
-                                                        >
-                                                            Edit
-                                                        </div>
-                                                        <div
-                                                            className="popup-item delete-item"
-                                                            onClick={() => handleDeleteCategory(cat)}
-                                                        >
-                                                            Delete
-                                                        </div>
+                                                <div className="popup-menu">
+                                                    <div
+                                                        className="popup-item edit-item"
+                                                        onClick={() => handleEditCategory(cat.id)}
+                                                    >
+                                                        Edit
+                                                    </div>
+                                                    <div
+                                                        className="popup-item delete-item"
+                                                        onClick={() => handleDeleteCategory(cat)}
+                                                    >
+                                                        Delete
                                                     </div>
                                                 </div>
                                             )}
@@ -326,6 +350,14 @@ const Product = ({ isSidebarOpen }) => {
                     onSubmit={isEditMode ? handleEditCategorySubmit : handleAddCategorySubmit}
                     initialData={formInitialData}
                     isEdit={isEditMode}
+                />
+            )}
+
+            {isAddFormOpen && (
+                <AddForm
+                    onCancel={() => setIsAddFormOpen(false)}
+                    onSubmit={handleAddProductSubmit}
+                    categories={categories}
                 />
             )}
 
