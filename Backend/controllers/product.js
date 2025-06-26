@@ -37,46 +37,57 @@ const getProductById = async (req, res) => {
   }
 };
 
-
 const addProduct = async (req, res) => {
   try {
     const {
       name,
-      barcode,
+      unit,
       sale_price,
       cost_price,
       category_id,
-      created_by_id
+      created_by_id,
+      archived // optional
     } = req.body;
 
-    // If an image file was uploaded, build its URL
-    let image_url = null;
-    if (req.file) {
-      image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    // Check required fields
+    if (!name || !sale_price || !cost_price || !category_id || !created_by_id) {
+      return res.status(400).json({
+        error: 'Missing required fields: name, barcode, sale_price, cost_price, category_id, created_by_id'
+      });
     }
 
-    // Ensure required fields
-    if (!name || !category_id || !created_by_id) {
-      return res.status(400).json({ error: 'Missing required fields: name, category_id, created_by_id' });
+    // Image URL (optional)
+    let image_url = null;
+
+    if (req.file) {
+      // Safe to access req.file.path or req.file.filename here
+      image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     }
 
     const product = await prisma.product.create({
       data: {
         name,
-        barcode: barcode || null,
+        unit: unit || null,
         image_url,
-        sale_price: sale_price ? parseFloat(sale_price) : null,
-        cost_price: cost_price ? parseFloat(cost_price) : null,
+        sale_price: parseFloat(sale_price),
+        cost_price: parseFloat(cost_price),
         category_id: parseInt(category_id),
-        created_by_id: parseInt(created_by_id)
+        created_by_id: parseInt(created_by_id),
+        archived: archived === 'true' // optional
       }
     });
 
-    res.status(201).json({ message: 'Successfully created the product', product });
+    res.status(201).json({
+      message: 'Successfully created the product',
+      product
+    });
 
   } catch (error) {
     console.error('Error adding product:', error);
-    res.status(500).json({ error: 'Failed to add product', details: error.message });
+    res.status(500).json({
+      error: 'Failed to add product',
+      details: error.message
+    });
   }
 };
 

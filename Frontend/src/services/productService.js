@@ -1,4 +1,4 @@
-import api from './api';
+import axios from 'axios';
 
 function getAuthHeaders() {
     const token = localStorage.getItem('token');

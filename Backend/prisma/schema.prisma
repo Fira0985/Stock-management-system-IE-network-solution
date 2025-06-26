@@ -71,7 +71,7 @@ model NonUser {
 model Product {
   id             Int      @id @default(autoincrement())
   name           String
-  barcode        String   @unique
+  barcode        String?   @unique
   unit           String?   
   image_url      String?
   sale_price     Float
