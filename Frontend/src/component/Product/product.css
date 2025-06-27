@@ -46,8 +46,8 @@
 .top {
   display: flex;
   flex-direction: row;
-  margin-top: 3vh;
-  margin-bottom: 7vh;
+  margin-top: 1.5vh;
+  margin-bottom: 3.5vh;
 }
 
 .page-title {
@@ -56,7 +56,6 @@
   color: #1f2937;
   margin-bottom: 0px;
   padding: 0rem 1rem;
-  margin-top: 0px;
   margin-bottom: 2px;
 }
 
@@ -66,12 +65,12 @@
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   color: #111827;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.25s ease-in-out;
-  margin-left: 45%;
+  margin-left: 50%;
 }
 
 .bulk {
@@ -80,7 +79,7 @@
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   color: #111827;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);

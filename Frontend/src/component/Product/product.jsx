@@ -8,10 +8,11 @@ import {
     editCategory,
     deleteCategory
 } from '../../services/categoryService';
-import { addProduct } from '../../services/productService';
+import { addProduct, fetchProductById } from '../../services/productService';
 import ProductForm from './ProductForm';
 import AddForm from './AddForm';
 import DeleteProductForm from './deleteProductForm';
+import ProductDetailPopup from './productDetail';
 
 const categoriesPerPage = 4;
 const productsPerCategoryPage = 3;
@@ -20,6 +21,7 @@ const flatProductsPerPage = 9;
 const Product = ({ isSidebarOpen }) => {
     const [activeTab, setActiveTab] = useState('categories');
     const [categories, setCategories] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
     const [expandedCategory, setExpandedCategory] = useState(null);
     const [categoryPage, setCategoryPage] = useState(1);
     const [productPageMap, setProductPageMap] = useState({});
@@ -35,8 +37,12 @@ const Product = ({ isSidebarOpen }) => {
     const [isDeleteFormOpen, setIsDeleteFormOpen] = useState(false);
     const [categoryToDelete, setCategoryToDelete] = useState(null);
 
+    const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
     useEffect(() => {
         loadCategories();
+        loadProducts();
     }, []);
 
     const loadCategories = async () => {
@@ -45,6 +51,39 @@ const Product = ({ isSidebarOpen }) => {
             setCategories(res.data || []);
         } catch (err) {
             console.error('Failed to fetch categories:', err);
+        }
+    };
+
+    const loadProducts = async () => {
+        try {
+            const productIds = [];
+
+            // Collect all product IDs from the categories
+            const res = await fetchCategory();
+            const cats = res.data || [];
+
+            cats.forEach(cat => {
+                cat.products.forEach(prod => {
+                    if (!prod.archived) {
+                        productIds.push(prod.id);
+                    }
+                });
+            });
+
+            // Fetch each product by ID
+            const fetchedProducts = [];
+            for (const id of productIds) {
+                try {
+                    const product = await fetchProductById(id);
+                    fetchedProducts.push(product);
+                } catch (err) {
+                    console.warn(`Could not load product with ID ${id}`);
+                }
+            }
+
+            setAllProducts(fetchedProducts);
+        } catch (err) {
+            console.error('Failed to fetch products:', err);
         }
     };
 
@@ -87,16 +126,14 @@ const Product = ({ isSidebarOpen }) => {
                 formData.append('image', data.image_file);
             }
 
-            await addProduct(formData); // This should accept multipart/form-data
-
+            await addProduct(formData);
             await loadCategories();
+            await loadProducts();
             setIsAddFormOpen(false);
         } catch (err) {
             alert(err.message || 'Failed to add product');
         }
     };
-
-
 
     const handleEditCategory = async (id) => {
         try {
@@ -129,13 +166,7 @@ const Product = ({ isSidebarOpen }) => {
         if (!categoryToDelete) return;
         try {
             await deleteCategory(categoryToDelete.id, parseInt(localStorage.getItem('id')));
-            const updatedRes = await fetchCategory();
-            const updatedCategories = updatedRes.data || [];
-            const totalAfterDeletion = updatedCategories.length;
-            const maxPage = Math.ceil(totalAfterDeletion / categoriesPerPage);
-            const newPage = categoryPage > maxPage ? Math.max(1, categoryPage - 1) : categoryPage;
-            setCategoryPage(newPage);
-            setCategories(updatedCategories);
+            await loadCategories();
             setIsDeleteFormOpen(false);
             setCategoryToDelete(null);
         } catch (err) {
@@ -151,10 +182,11 @@ const Product = ({ isSidebarOpen }) => {
 
     const allFlatProducts = categories.flatMap(cat =>
         cat.products.map(prod => ({
-            name: prod.name || prod,
+            ...prod,
             category: cat.name
         }))
     );
+
     const totalFlatProductPages = Math.ceil(allFlatProducts.length / flatProductsPerPage);
     const paginatedFlatProducts = allFlatProducts.slice(
         (flatProductPage - 1) * flatProductsPerPage,
@@ -168,13 +200,23 @@ const Product = ({ isSidebarOpen }) => {
         }));
     };
 
+    const openProductDetail = (product) => {
+        setSelectedProduct(product);
+        setIsProductDetailOpen(true);
+    };
+
+    const closeProductDetail = () => {
+        setIsProductDetailOpen(false);
+        setSelectedProduct(null);
+    };
+
     return (
         <div className={isSidebarOpen ? "Product-content" : "Product-content collapse"}>
             <div className="top">
                 <h1 className="page-title">Inventory</h1>
                 <button className="add" onClick={handleAddCategory}>Add Category</button>
                 <button className="bulk" onClick={handleAddProduct}>Add Product</button>
-                <button className="bulk">Bulk Registration</button>
+                <button className="bulk" >Bulk Registration</button>
             </div>
 
             <div className="tab-navigation">
@@ -221,29 +263,15 @@ const Product = ({ isSidebarOpen }) => {
                                             <span>{cat.name}</span>
                                         </div>
                                         <span className="product-count-badge">{cat.products.length} items</span>
-                                        <div
-                                            className="item-menu"
-                                            style={{ position: 'relative' }}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setMenuOpen(menuOpen === cat.id ? null : cat.id);
-                                            }}
-                                        >
+                                        <div className="item-menu" onClick={(e) => {
+                                            e.stopPropagation();
+                                            setMenuOpen(menuOpen === cat.id ? null : cat.id);
+                                        }}>
                                             <FiMoreVertical />
                                             {menuOpen === cat.id && (
                                                 <div className="popup-menu">
-                                                    <div
-                                                        className="popup-item edit-item"
-                                                        onClick={() => handleEditCategory(cat.id)}
-                                                    >
-                                                        Edit
-                                                    </div>
-                                                    <div
-                                                        className="popup-item delete-item"
-                                                        onClick={() => handleDeleteCategory(cat)}
-                                                    >
-                                                        Delete
-                                                    </div>
+                                                    <div className="popup-item edit-item" onClick={() => handleEditCategory(cat.id)}>Edit</div>
+                                                    <div className="popup-item delete-item" onClick={() => handleDeleteCategory(cat)}>Delete</div>
                                                 </div>
                                             )}
                                         </div>
@@ -252,12 +280,24 @@ const Product = ({ isSidebarOpen }) => {
                                     {expandedCategory === globalIndex && (
                                         <>
                                             <ul className="category-products">
-                                                {paginatedProducts.map((prod, i) => (
-                                                    <li key={i} className="product-in-category">
-                                                        <FiBox className="product-icon" />
-                                                        <span className="product-name">{prod.name || prod}</span>
-                                                    </li>
-                                                ))}
+                                                {paginatedProducts.map((prod, index) => {
+                                                    const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
+
+                                                    return (
+                                                        <li
+                                                            key={`${prod.category}-${index}`}
+                                                            className="product-card"
+                                                            onClick={() => openProductDetail(fullProduct)}
+                                                            style={{ cursor: 'pointer' }}
+                                                        >
+                                                            <div className="product-main-info">
+                                                                <span className="product-name">{prod.name}</span>
+                                                                <span className="product-category-tag">{prod.category}</span>
+                                                            </div>
+                                                            <FiBox className="product-card-icon" />
+                                                        </li>
+                                                    );
+                                                })}
                                             </ul>
                                             {totalProductPages > 1 && (
                                                 <div className="pagination">
@@ -288,7 +328,6 @@ const Product = ({ isSidebarOpen }) => {
                             );
                         })}
                     </ul>
-
                     {totalCategoryPages > 1 && (
                         <div className="pagination">
                             <span
@@ -313,15 +352,24 @@ const Product = ({ isSidebarOpen }) => {
                 <div className="section">
                     <h2 className="section-title">All Products</h2>
                     <ul className="product-list-flat">
-                        {paginatedFlatProducts.map((prod, index) => (
-                            <li key={`${prod.category}-${index}`} className="product-card">
-                                <div className="product-main-info">
-                                    <span className="product-name">{prod.name}</span>
-                                    <span className="product-category-tag">{prod.category}</span>
-                                </div>
-                                <FiBox className="product-card-icon" />
-                            </li>
-                        ))}
+                        {paginatedFlatProducts.map((prod, index) => {
+                            const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
+
+                            return (
+                                <li
+                                    key={`${prod.category}-${index}`}
+                                    className="product-card"
+                                    onClick={() => openProductDetail(fullProduct)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <div className="product-main-info">
+                                        <span className="product-name">{prod.name}</span>
+                                        <span className="product-category-tag">{prod.category}</span>
+                                    </div>
+                                    <FiBox className="product-card-icon" />
+                                </li>
+                            );
+                        })}
                     </ul>
 
                     {totalFlatProductPages > 1 && (
@@ -370,6 +418,10 @@ const Product = ({ isSidebarOpen }) => {
                     onConfirm={confirmDeleteCategory}
                     Category={categoryToDelete}
                 />
+            )}
+
+            {isProductDetailOpen && selectedProduct && (
+                <ProductDetailPopup product={selectedProduct} onClose={closeProductDetail} />
             )}
         </div>
     );

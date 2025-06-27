@@ -42,12 +42,13 @@ const MainPage = () => {
         return <UserManagement isSidebarOpen={isSidebarOpen} />;
       case "Customer":
         return <Customer isSidebarOpen={isSidebarOpen} />;
+     
       default:
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
     }
   };
 
-  function handleDataFromChild(data){
+  function handleDataFromChild(data) {
     setShowUserProfile(data)
   }
 

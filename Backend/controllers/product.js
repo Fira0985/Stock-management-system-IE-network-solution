@@ -19,7 +19,8 @@ const getAllProducts = async (req, res) => {
 
 // Get product by ID
 const getProductById = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.body;
+
   try {
     const product = await prisma.product.findUnique({
       where: { id: parseInt(id) },
@@ -28,9 +29,11 @@ const getProductById = async (req, res) => {
         created_by: true,
       },
     });
+
     if (!product || product.archived) {
       return res.status(404).json({ error: 'Product not found' });
     }
+
     res.json(product);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product', details: error.message });
