@@ -4,7 +4,7 @@ import api from './api';
 export async function loginUser(credentials) {
   try {
     const response = await api.post('/login', credentials, {
-      withCredentials: true, // Still fine if backend uses cookies (optional)
+      withCredentials: true, 
     });
 
     const { token, user } = response.data;

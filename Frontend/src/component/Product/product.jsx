@@ -13,12 +13,14 @@ import ProductForm from './ProductForm';
 import AddForm from './AddForm';
 import DeleteProductForm from './deleteProductForm';
 import ProductDetailPopup from './productDetail';
+import ExcelUpload from './ExcelUpload';
 
 const categoriesPerPage = 4;
 const productsPerCategoryPage = 3;
 const flatProductsPerPage = 9;
 
 const Product = ({ isSidebarOpen }) => {
+    const [modalOpen, setModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('categories');
     const [categories, setCategories] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
@@ -216,7 +218,7 @@ const Product = ({ isSidebarOpen }) => {
                 <h1 className="page-title">Inventory</h1>
                 <button className="add" onClick={handleAddCategory}>Add Category</button>
                 <button className="bulk" onClick={handleAddProduct}>Add Product</button>
-                <button className="bulk" >Bulk Registration</button>
+                <button className="bulk" onClick={() => setModalOpen(true)}>Bulk Registration</button>
             </div>
 
             <div className="tab-navigation">
@@ -423,6 +425,8 @@ const Product = ({ isSidebarOpen }) => {
             {isProductDetailOpen && selectedProduct && (
                 <ProductDetailPopup product={selectedProduct} onClose={closeProductDetail} />
             )}
+
+             <ExcelUpload isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
     );
 };
