@@ -67,7 +67,7 @@ const deleteCategory = async (req, res) => {
       where: { id: categoryId },
       data: {
         archived: true,
-        deleted_by_id: deleted_by_id, 
+        deleted_by_id: deleted_by_id,
         deleted_at: new Date(),
       },
     });
@@ -85,6 +85,17 @@ const addCategory = async (req, res) => {
   try {
     const { name, created_by_id } = req.body;
 
+    const result = await prisma.category.findUnique({
+      where: {
+        name: name,
+        archived: false
+      },
+    });
+
+    if (result) {
+      return res.status(500).json({ message: 'The Category already exist' })
+    }
+
     const category = await prisma.category.create({
       data: {
         name,
@@ -100,7 +111,7 @@ const addCategory = async (req, res) => {
 
 // Edit Category
 const editCategory = async (req, res) => {
-    const { categoryId, ...updateData } = req.body;
+  const { categoryId, ...updateData } = req.body;
 
   try {
     const updatedCategory = await prisma.category.update({
@@ -114,4 +125,4 @@ const editCategory = async (req, res) => {
   }
 };
 
-module.exports ={addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory};
+module.exports = { addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory };

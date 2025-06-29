@@ -1,6 +1,6 @@
 // components/ExcelUpload.jsx
 import React, { useState } from 'react';
-import { uploadExcelFile } from '../../services/uploadService';
+import { uploadExcelFile } from '../../../../services/uploadService';
 import './ExcelUpload.css';
 
 const ExcelUpload = ({ isOpen, onClose }) => {

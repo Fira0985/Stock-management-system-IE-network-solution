@@ -9,11 +9,11 @@ import {
     deleteCategory
 } from '../../services/categoryService';
 import { addProduct, fetchProductById } from '../../services/productService';
-import ProductForm from './ProductForm';
-import AddForm from './AddForm';
-import DeleteProductForm from './deleteProductForm';
-import ProductDetailPopup from './productDetail';
-import ExcelUpload from './ExcelUpload';
+import ProductForm from './Forms/CategoryForm/ProductForm';
+import AddForm from './Forms/ProductForms/AddForm';
+import DeleteProductForm from './Forms/CategoryForm/deleteProductForm'
+import ProductDetailPopup from './Forms/ProductForms/productDetail';
+import ExcelUpload from './Forms/ExcelForm/ExcelUpload';
 
 const categoriesPerPage = 4;
 const productsPerCategoryPage = 3;
@@ -271,7 +271,7 @@ const Product = ({ isSidebarOpen }) => {
                                         }}>
                                             <FiMoreVertical />
                                             {menuOpen === cat.id && (
-                                                <div className="popup-menu">
+                                                <div >
                                                     <div className="popup-item edit-item" onClick={() => handleEditCategory(cat.id)}>Edit</div>
                                                     <div className="popup-item delete-item" onClick={() => handleDeleteCategory(cat)}>Delete</div>
                                                 </div>

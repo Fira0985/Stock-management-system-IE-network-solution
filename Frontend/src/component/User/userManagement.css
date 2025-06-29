@@ -6,91 +6,94 @@
     width: 77vw;
 }
 
+/* Main Content (Collapsed Sidebar) */
 .user-content.collapse {
     margin-left: 6vw;
     transition: margin-left 0.3s ease;
     width: 87vw;
+    padding: 24px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
+/* Header */
 .user-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
 }
 
 .user-header h2 {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
 }
 
 .add-user-btn {
-    background-color: #f3f4f6;
+    background-color: #f9fafb;
     border: 1px solid #d1d5db;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 10px 20px;
-    cursor: pointer;
     font-size: 14px;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    cursor: pointer;
+    color: #1f2937;
+    transition: all 0.25s ease;
 }
 
 .add-user-btn:hover {
-    background-color: blueviolet;
-    color: white;
+    background-color: #7c3aed;
+    color: #ffffff;
+    border-color: transparent;
 }
 
+/* Table Container */
 .user-table {
-    border: 1px solid #eee;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
-    /* overflow: hidden; */
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
+/* Table Rows */
 .user-row {
     display: grid;
     grid-template-columns: 1fr 2fr 3fr 1fr 2fr 2fr 0.5fr;
-    padding: 25px 15px;
-    border-bottom: 1px solid #eee;
+    padding: 20px 16px;
+    border-bottom: 1px solid #f3f4f6;
     font-size: 14px;
+    color: #374151;
     align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.user-row:hover {
+    background-color: #f9fafb;
 }
 
 .user-header-row {
-    background-color: #fafafa;
-    font-weight: bold;
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #1f2937;
 }
 
+/* Dots Menu Button */
 .menu-dots {
-    font-size: 18px;
+    font-size: 20px;
+    color: #6b7280;
     text-align: center;
     cursor: pointer;
-    color: #666;
+    user-select: none;
+    transition: color 0.2s ease;
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 30px;
-    font-size: 14px;
+.menu-dots:hover {
+    color: #374151;
 }
 
-.pagination span {
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.pagination .active {
-    background-color: black;
-    color: white;
-}
-
-.pagination .disabled {
-    color: #aaa;
-    cursor: not-allowed;
-}
-
+/* Popup Menu */
 .menu-container {
     position: relative;
     display: inline-block;
@@ -98,30 +101,58 @@
 
 .popup-menu {
     position: absolute;
+    top: 28px;
     right: 0;
-    top: 25px;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
-    z-index: 999;
-    min-width: 120px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    z-index: 1000;
+    min-width: 140px;
+    padding: 6px 0;
 }
 
 .popup-item {
-    padding: 10px 14px;
+    padding: 10px 16px;
     font-size: 14px;
-    color: #333;
+    color: #1f2937;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .popup-item:hover {
-    background-color: #f0f0f0;
+    background-color: #f3f4f6;
 }
 
-.menu-dots {
-    font-size: 24px;
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.pagination span {
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    user-select: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.pagination span:hover {
+    background-color: #f3f4f6;
+}
+
+.pagination .active {
+    background-color: #111827;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.pagination .disabled {
+    color: #9ca3af;
+    cursor: not-allowed;
 }

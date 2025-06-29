@@ -70,7 +70,7 @@ model NonUser {
 
 model Product {
   id             Int      @id @default(autoincrement())
-  name           String
+  name           String   
   barcode        String?   @unique
   unit           String?   
   image_url      String?
@@ -94,7 +94,7 @@ model Product {
 
 model Category {
   id             Int       @id @default(autoincrement())
-  name           String
+  name           String   
   created_by     User      @relation("CategoryCreatedBy", fields: [created_by_id], references: [id])
   created_by_id  Int
   deleted_by     User?     @relation("CategoryDeletedBy", fields: [deleted_by_id], references: [id])

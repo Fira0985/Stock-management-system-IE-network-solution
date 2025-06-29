@@ -52,6 +52,17 @@ const addProduct = async (req, res) => {
       archived // optional
     } = req.body;
 
+    const result = await prisma.product.findUnique({
+      where: {
+        name: name,
+        archived: false
+      },
+    });
+
+    if (result) {
+      return res.status(500).json({ message: 'The Product already exist' })
+    }
+
     // Check required fields
     if (!name || !sale_price || !cost_price || !category_id || !created_by_id) {
       return res.status(400).json({

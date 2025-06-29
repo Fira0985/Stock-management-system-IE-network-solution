@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ProductForm.css';
+import '../CategoryForm/ProductForm.css';
 
 const AddForm = ({ categories, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({

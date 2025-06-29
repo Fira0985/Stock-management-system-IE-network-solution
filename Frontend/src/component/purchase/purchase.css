@@ -1,0 +1,189 @@
+.purchase-container {
+    padding: 30px 40px;
+    background-color: #fff;
+    margin-left: 15.5vw;
+    font-family: "Segoe UI", sans-serif;
+    width: 77vw;
+}
+
+.purchase-container.collapse {
+    margin-left: 5vw;
+    transition: margin-left 0.3s ease;
+    width: 87vw;
+}
+
+/* Header Section */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    /* Neutral dark */
+    margin: 0;
+}
+
+.purchase-btn {
+    padding: 8px 20px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.purchase-btn:hover {
+    background-color: blueviolet;
+    color: #ffffff;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+.tab {
+    font-size: 15px;
+    font-weight: 500;
+    padding: 6px 0;
+    cursor: pointer;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tab:hover {
+    color: #1f2937;
+}
+
+.tab.active {
+    color: #111827;
+    border-color: #2563eb;
+}
+
+/* Table */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.styled-table thead th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4b5563;
+    text-transform: uppercase;
+}
+
+.styled-table tbody td {
+    font-size: 14px;
+    color: #374151;
+}
+
+.date-link {
+    color: #2563eb;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.date-link:hover {
+    color: #1d4ed8;
+}
+
+/* Type Badge */
+.type-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: capitalize;
+    letter-spacing: 0.2px;
+}
+
+.type-label.single {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.type-label.bulk {
+    background-color: #fef9c3;
+    color: #92400e;
+}
+
+/* Pagination */
+.custom-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    margin-left: 25vw;
+    gap: 10px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.custom-pagination .nav-arrow {
+    cursor: pointer;
+    padding: 6px 14px;
+    transition: color 0.2s ease;
+}
+
+.custom-pagination .nav-arrow:hover:not(.disabled) {
+    color: #2563eb;
+}
+
+.custom-pagination .nav-arrow.disabled {
+    color: #d1d5db;
+    cursor: not-allowed;
+}
+
+.page-circle {
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.page-circle:hover {
+    background-color: #f3f4f6;
+}
+
+.page-circle.active {
+    background-color: #2563eb;
+    color: white;
+    font-weight: 600;
+}
+
+.ellipsis {
+    padding: 6px;
+    color: #9ca3af;
+    pointer-events: none;
+}

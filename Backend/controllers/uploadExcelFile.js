@@ -1,5 +1,3 @@
-// /controllers/upload.controller.js
-
 const XLSX = require('xlsx');
 const fs = require('fs');
 const { PrismaClient } = require('@prisma/client');
@@ -20,33 +18,51 @@ const uploadExcelFile = async (req, res) => {
                 continue; // skip invalid rows
             }
 
-            // Insert or retrieve category
-            const category = await prisma.category.upsert({
-                where: { name: row.category_name },
-                update: {},
-                create: {
+            // Try to find category by name
+            let category = await prisma.category.findFirst({
+                where: {
                     name: row.category_name,
-                    created_by_id: parseInt(row.created_by_id),
                 },
             });
+
+            // If category doesn't exist, create it
+            if (!category) {
+                category = await prisma.category.create({
+                    data: {
+                        name: row.category_name,
+                        created_by_id: parseInt(row.created_by_id),
+                    },
+                });
+            }
+
+            const result = await prisma.product.findUnique({
+                where: {
+                    name: row.product_name,
+                    archived: false
+                },
+            });
+
+            if (result) {
+               return res.status(500).json({ message: 'The Product already exist' })
+            }
+
 
             // Insert product
             await prisma.product.create({
                 data: {
                     name: row.product_name,
-                    barcode: row.barcode || null,
+                    barcode: row.barcode ? String(row.barcode) : null,
                     unit: row.unit || null,
                     image_url: row.image_url || null,
                     sale_price: parseFloat(row.sale_price),
                     cost_price: parseFloat(row.cost_price),
                     category_id: category.id,
                     created_by_id: parseInt(row.created_by_id),
-                    // Optional: don't set deleted_by_id, deleted_at, or archived unless needed
                 },
             });
         }
 
-        fs.unlinkSync(filePath); // optional cleanup
+        fs.unlinkSync(filePath); // remove file after processing
         res.status(200).json({ message: 'Excel data imported successfully!' });
     } catch (error) {
         console.error(error);
