@@ -82,7 +82,6 @@ const Product = ({ isSidebarOpen }) => {
                     console.warn(`Could not load product with ID ${id}`);
                 }
             }
-
             setAllProducts(fetchedProducts);
         } catch (err) {
             console.error('Failed to fetch products:', err);
@@ -101,6 +100,7 @@ const Product = ({ isSidebarOpen }) => {
 
     const handleAddCategorySubmit = async (data) => {
         try {
+            console.log(localStorage.getItem('id'))
             await addCategory({
                 name: data.name,
                 created_by_id: parseInt(localStorage.getItem('id'))

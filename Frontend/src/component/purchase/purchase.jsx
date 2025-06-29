@@ -178,34 +178,35 @@ const PurchaseTable = ({ isSidebarOpen }) => {
                         </tbody>
                     </table>
 
-                    {/* Pagination Controls */}
-                    <div className="custom-pagination">
-                        <button
-                            className="nav-arrow"
-                            disabled={currentPage === 1}
-                            onClick={() => goToPage(currentPage - 1)}
-                        >← Previous</button>
+                    <div className="pagination">
+                        <span
+                            className={`nav-arrow ${currentPage === 1 ? 'disabled' : ''}`}
+                            onClick={() => currentPage > 1 && goToPage(currentPage - 1)}
+                        >
+                            ← Previous
+                        </span>
 
-                        {/* Show pages */}
                         {[...Array(totalPages)].map((_, i) => {
                             const pageNum = i + 1;
                             return (
-                                <button
+                                <span
                                     key={pageNum}
-                                    className={`page-circle ${currentPage === pageNum ? 'active' : ''}`}
+                                    className={currentPage === pageNum ? 'active' : ''}
                                     onClick={() => goToPage(pageNum)}
                                 >
                                     {pageNum}
-                                </button>
+                                </span>
                             );
                         })}
 
-                        <button
-                            className="nav-arrow"
-                            disabled={currentPage === totalPages}
-                            onClick={() => goToPage(currentPage + 1)}
-                        >Next →</button>
+                        <span
+                            className={`nav-arrow ${currentPage === totalPages ? 'disabled' : ''}`}
+                            onClick={() => currentPage < totalPages && goToPage(currentPage + 1)}
+                        >
+                            Next →
+                        </span>
                     </div>
+
                 </>
             )}
 

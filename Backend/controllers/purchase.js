@@ -65,6 +65,15 @@ const addPurchase = async (req, res) => {
             }
         });
 
+        for (const item of items) {
+            await prisma.product.update({
+                where: { id: item.product_id },
+                data: {
+                    unit: item.quantity  
+                }
+            });
+        }
+
         return res.status(201).json({ success: true, data: purchase });
     } catch (error) {
         console.error("Error creating purchase:", error);

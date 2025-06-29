@@ -72,7 +72,7 @@ model Product {
   id             Int      @id @default(autoincrement())
   name           String   
   barcode        String?   @unique
-  unit           String?   
+  unit           Int?   
   image_url      String?
   sale_price     Float
   cost_price     Float
@@ -112,14 +112,14 @@ model Sale {
   id               Int       @id @default(autoincrement())
   type             String    // "CASH", "CREDIT"
   total            Float
-  discount_amount  Float
+  discount_amount  Float?
   paid_amount      Float     @default(0)
   balance_due      Float     @default(0)
   due_date         DateTime?
   payment_status   String    @default("UNPAID")
 
-  customer         NonUser   @relation("SaleCustomer", fields: [customer_id], references: [id])
-  customer_id      Int
+  customer         NonUser?   @relation("SaleCustomer", fields: [customer_id], references: [id])
+  customer_id      Int?
   created_by       User      @relation("SaleCreatedBy", fields: [created_by_id], references: [id])
   created_by_id    Int
   deleted_by       User?     @relation("SaleDeletedBy", fields: [deleted_by_id], references: [id])

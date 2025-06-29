@@ -12,20 +12,22 @@ const uploadExcelFile = async (req, res) => {
         const sheetName = workbook.SheetNames[0];
         const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
+        const skipped = []; // to track skipped rows
+
         for (const row of sheetData) {
             // Validate required fields
             if (!row.category_name || !row.product_name || !row.sale_price || !row.cost_price || !row.created_by_id) {
-                continue; // skip invalid rows
+                skipped.push({ row, reason: 'Missing required fields' });
+                continue;
             }
 
-            // Try to find category by name
+            // Find or create category
             let category = await prisma.category.findFirst({
                 where: {
                     name: row.category_name,
                 },
             });
 
-            // If category doesn't exist, create it
             if (!category) {
                 category = await prisma.category.create({
                     data: {
@@ -35,19 +37,20 @@ const uploadExcelFile = async (req, res) => {
                 });
             }
 
-            const result = await prisma.product.findUnique({
+            // Check if product exists
+            const existingProduct = await prisma.product.findFirst({
                 where: {
                     name: row.product_name,
-                    archived: false
+                    archived: false,
                 },
             });
 
-            if (result) {
-               return res.status(500).json({ message: 'The Product already exist' })
+            if (existingProduct) {
+                skipped.push({ row, reason: 'Product already exists' });
+                continue;
             }
 
-
-            // Insert product
+            // Insert new product
             await prisma.product.create({
                 data: {
                     name: row.product_name,
@@ -62,11 +65,16 @@ const uploadExcelFile = async (req, res) => {
             });
         }
 
-        fs.unlinkSync(filePath); // remove file after processing
-        res.status(200).json({ message: 'Excel data imported successfully!' });
+        fs.unlinkSync(filePath); // Clean up the uploaded file
+
+        res.status(200).json({
+            message: 'Excel data imported successfully!',
+            skipped,
+        });
+
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to process Excel file' });
+        res.status(500).json({ message: 'Failed to process Excel file', error: error.message });
     }
 };
 

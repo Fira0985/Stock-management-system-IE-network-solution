@@ -27,6 +27,7 @@ const getProductById = async (req, res) => {
       include: {
         category: true,
         created_by: true,
+        purchaseItems: true,
       },
     });
 
@@ -39,7 +40,6 @@ const getProductById = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch product', details: error.message });
   }
 };
-
 const addProduct = async (req, res) => {
   try {
     const {
@@ -52,32 +52,32 @@ const addProduct = async (req, res) => {
       archived // optional
     } = req.body;
 
-    const result = await prisma.product.findUnique({
-      where: {
-        name: name,
-        archived: false
-      },
-    });
-
-    if (result) {
-      return res.status(500).json({ message: 'The Product already exist' })
-    }
-
     // Check required fields
     if (!name || !sale_price || !cost_price || !category_id || !created_by_id) {
       return res.status(400).json({
-        error: 'Missing required fields: name, barcode, sale_price, cost_price, category_id, created_by_id'
+        error: 'Missing required fields: name, sale_price, cost_price, category_id, created_by_id'
       });
     }
 
-    // Image URL (optional)
-    let image_url = null;
+    // 🔍 Check if product already exists (by name and not archived)
+    const existingProduct = await prisma.product.findFirst({
+      where: {
+        name: name,
+        archived: false,
+      },
+    });
 
+    if (existingProduct) {
+      return res.status(409).json({ message: 'The product already exists' });
+    }
+
+    // 🖼️ Handle optional image upload
+    let image_url = null;
     if (req.file) {
-      // Safe to access req.file.path or req.file.filename here
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     }
 
+    // ✅ Create product
     const product = await prisma.product.create({
       data: {
         name,
@@ -87,20 +87,20 @@ const addProduct = async (req, res) => {
         cost_price: parseFloat(cost_price),
         category_id: parseInt(category_id),
         created_by_id: parseInt(created_by_id),
-        archived: archived === 'true' // optional
-      }
+        archived: archived === 'true' ? true : false, // ensure boolean
+      },
     });
 
     res.status(201).json({
       message: 'Successfully created the product',
-      product
+      product,
     });
 
   } catch (error) {
     console.error('Error adding product:', error);
     res.status(500).json({
       error: 'Failed to add product',
-      details: error.message
+      details: error.message,
     });
   }
 };

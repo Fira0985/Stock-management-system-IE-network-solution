@@ -30,16 +30,16 @@
 }
 
 .purchase-btn {
-    padding: 8px 20px;
-    background-color: white;
-    color: black;
-    border: none;
+    background-color: #f9f9f9;
+    border: 1px solid #d1d5db;
+    padding: 10px 20px;
     border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
 }
 
 .purchase-btn:hover {

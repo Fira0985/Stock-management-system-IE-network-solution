@@ -85,7 +85,11 @@ const addCategory = async (req, res) => {
   try {
     const { name, created_by_id } = req.body;
 
-    const result = await prisma.category.findUnique({
+    if (!name || !created_by_id) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const result = await prisma.category.findFirst({
       where: {
         name: name,
         archived: false
@@ -93,18 +97,19 @@ const addCategory = async (req, res) => {
     });
 
     if (result) {
-      return res.status(500).json({ message: 'The Category already exist' })
+      return res.status(409).json({ message: 'The category already exists' });
     }
 
     const category = await prisma.category.create({
       data: {
         name,
-        created_by_id,
+        created_by_id: parseInt(created_by_id), // Ensure it's an integer
       },
     });
 
     res.status(201).json({ message: "Successfully created the category", category });
   } catch (error) {
+    console.error('Error creating category:', error);
     res.status(500).json({ error: 'Failed to add category', details: error.message });
   }
 };

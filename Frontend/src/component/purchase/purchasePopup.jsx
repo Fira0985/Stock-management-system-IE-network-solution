@@ -8,9 +8,14 @@ const PurchasePopup = ({ onClose }) => {
     const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedSupplier, setSelectedSupplier] = useState('');
-    const [purchaseItems, setPurchaseItems] = useState([]);
     const [selectedProductId, setSelectedProductId] = useState('');
+    const [purchaseItems, setPurchaseItems] = useState([]);
     const [quantity, setQuantity] = useState(1);
+
+    const [supplierInput, setSupplierInput] = useState('');
+    const [productInput, setProductInput] = useState('');
+    const [showSupplierSuggestions, setShowSupplierSuggestions] = useState(false);
+    const [showProductSuggestions, setShowProductSuggestions] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
@@ -19,19 +24,30 @@ const PurchasePopup = ({ onClose }) => {
                     fetchAllProducts(),
                     fetchNonUser('SUPPLIER'),
                 ]);
-                console.log('Products:', productData);
                 setProducts(productData || []);
                 setSuppliers(supplierData || []);
             } catch (err) {
-                // alert('Failed to load products or suppliers');
+                alert('Failed to load products or suppliers');
             }
         };
         loadData();
     }, []);
 
+    const handleSelectSupplier = (supplier) => {
+        setSelectedSupplier(supplier.id.toString());
+        setSupplierInput(supplier.name);
+        setShowSupplierSuggestions(false);
+    };
+
+    const handleSelectProduct = (product) => {
+        setSelectedProductId(product.id.toString());
+        setProductInput(product.name);
+        setShowProductSuggestions(false);
+    };
+
     const handleAddItem = () => {
         const product = products.find(p => p.id === parseInt(selectedProductId));
-        if (!product) return;
+        if (!product) return alert('Please select a valid product');
 
         const existing = purchaseItems.find(item => item.product_id === product.id);
         if (existing) return alert('Product already added.');
@@ -45,6 +61,7 @@ const PurchasePopup = ({ onClose }) => {
         };
         setPurchaseItems([...purchaseItems, item]);
         setSelectedProductId('');
+        setProductInput('');
         setQuantity(1);
     };
 
@@ -84,26 +101,57 @@ const PurchasePopup = ({ onClose }) => {
                 </div>
 
                 <div className="popup-body">
-                    <div className="form-group">
+                    {/* Supplier input with suggestions */}
+                    <div className="form-group autocomplete">
                         <label>Supplier</label>
-                        <select value={selectedSupplier} onChange={(e) => setSelectedSupplier(e.target.value)}>
-                            <option value="">Select Supplier</option>
-                            {suppliers.map(s => (
-                                <option key={s.id} value={s.id}>{s.name}</option>
-                            ))}
-                        </select>
+                        <input
+                            type="text"
+                            value={supplierInput}
+                            onChange={(e) => {
+                                setSupplierInput(e.target.value);
+                                setShowSupplierSuggestions(true);
+                            }}
+                            onFocus={() => setShowSupplierSuggestions(true)}
+                            onBlur={() => setTimeout(() => setShowSupplierSuggestions(false), 150)}
+                            placeholder="Type to search supplier"
+                        />
+                        {showSupplierSuggestions && (
+                            <div className="suggestions">
+                                {suppliers
+                                    .filter(s => s.name.toLowerCase().includes(supplierInput.toLowerCase()))
+                                    .map(s => (
+                                        <div key={s.id} className="suggestion-item" onClick={() => handleSelectSupplier(s)}>
+                                            {s.name}
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                     </div>
 
-                    <div className="form-inline">
-                        <select
-                            value={selectedProductId}
-                            onChange={(e) => setSelectedProductId(e.target.value)}
-                        >
-                            <option value="">Select Product</option>
-                            {products.map(p => (
-                                <option key={p.id} value={p.id}>{p.name}</option>
-                            ))}
-                        </select>
+                    {/* Product + Quantity Input */}
+                    <div className="form-inline autocomplete">
+                        <input
+                            type="text"
+                            value={productInput}
+                            onChange={(e) => {
+                                setProductInput(e.target.value);
+                                setShowProductSuggestions(true);
+                            }}
+                            onFocus={() => setShowProductSuggestions(true)}
+                            onBlur={() => setTimeout(() => setShowProductSuggestions(false), 150)}
+                            placeholder="Type to search product"
+                        />
+                        {showProductSuggestions && (
+                            <div className="suggestions">
+                                {products
+                                    .filter(p => p.name.toLowerCase().includes(productInput.toLowerCase()))
+                                    .map(p => (
+                                        <div key={p.id} className="suggestion-item" onClick={() => handleSelectProduct(p)}>
+                                            {p.name}
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
 
                         <input
                             type="number"
@@ -116,6 +164,7 @@ const PurchasePopup = ({ onClose }) => {
                         <button className="add-item" onClick={handleAddItem}>Add</button>
                     </div>
 
+                    {/* Display Added Items */}
                     <div className="item-list">
                         {purchaseItems.map((item) => (
                             <div key={item.product_id} className="item">
@@ -125,6 +174,7 @@ const PurchasePopup = ({ onClose }) => {
                         ))}
                     </div>
 
+                    {/* Submit / Cancel */}
                     <div className="popup-actions">
                         <button className="cancel" onClick={onClose}>Cancel</button>
                         <button className="submit" onClick={handleSubmit}>Submit Purchase</button>
