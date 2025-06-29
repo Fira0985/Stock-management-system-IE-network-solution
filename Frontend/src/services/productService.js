@@ -33,9 +33,9 @@ export const addProduct = async (ProductData) => {
 export const fetchAllProducts = async () => {
   try {
     const response = await api.get('/products', {
-      headers: getAuthHeaders(), // Remove this line if your endpoint doesn't require auth
+      headers: getAuthHeaders(),
     });
-    return response.data;
+    return response.data; 
   } catch (error) {
     console.error('Failed to fetch products:', error);
     throw error.response?.data || { message: 'Unable to fetch products' };
@@ -47,7 +47,7 @@ export const fetchProductById = async (id) => {
     const response = await api.post(
       '/getProductById',
       { id }, // send as body
-      { headers: getAuthHeaders() } // include token
+      { headers: getAuthHeaders() } 
     );
     return response.data;
   } catch (error) {

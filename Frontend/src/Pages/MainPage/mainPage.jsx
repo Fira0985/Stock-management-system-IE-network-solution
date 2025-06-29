@@ -37,7 +37,6 @@ const MainPage = () => {
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
       case "Products":
         return <Product isSidebarOpen={isSidebarOpen} />;
-
       case "Purchase":
         return <PurchaseTable isSidebarOpen={isSidebarOpen} />
       case "Supplier":

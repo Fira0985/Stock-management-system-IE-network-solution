@@ -1,66 +1,220 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import './purchase.css';
+import { fetchAllPurchases } from '../../services/purchaseService';
+import PurchasePopup from './purchasePopup';
 
-const purchases = [
-    { id: '#1023', date: 'Jun 23, 2023', supplier: 'Cindy Morris', amount: '$120', type: 'Single' },
-    { id: '#1022', date: 'Jun 22, 2023', supplier: 'Wade Warren', amount: '$60', type: 'Single' },
-    { id: '#1021', date: 'Jun 21, 2023', supplier: 'Grace Johnson', amount: '$90', type: 'Single' },
-    { id: '#1020', date: 'Jun 20, 2023', supplier: 'Mike Smith', amount: '$3000', type: 'Bulk' },
-    { id: '#1019', date: 'Jun 19, 2023', supplier: 'Sarah Brown', amount: '$100', type: 'Single' },
-];
+const ITEMS_PER_PAGE = 10;
 
 const PurchaseTable = ({ isSidebarOpen }) => {
+    const [purchases, setPurchases] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [showPopup, setShowPopup] = useState(false);
+
+    // New states for filtering and pagination
+    const [filter, setFilter] = useState('today');
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Fetch purchases once on mount
+    const loadPurchases = async () => {
+        setLoading(true);
+        try {
+            const response = await fetchAllPurchases();
+            setPurchases(response.data || response || []);
+            setError(null);
+        } catch (err) {
+            console.error('Error loading purchases:', err);
+            setError('Failed to load purchases.');
+            setPurchases([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadPurchases();
+    }, []);
+
+    // Utility function: get date range for filter
+    const getDateRange = (filter) => {
+        const now = new Date();
+        const start = new Date();
+        const end = new Date();
+
+        switch (filter) {
+            case 'today':
+                start.setHours(0, 0, 0, 0);
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'yesterday':
+                start.setDate(now.getDate() - 1);
+                start.setHours(0, 0, 0, 0);
+                end.setDate(now.getDate() - 1);
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'last7days':
+                start.setDate(now.getDate() - 6); // last 7 days including today
+                start.setHours(0, 0, 0, 0);
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'thisMonth':
+                start.setDate(1);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'lastMonth':
+                start.setMonth(now.getMonth() - 1);
+                start.setDate(1);
+                start.setHours(0, 0, 0, 0);
+                end.setMonth(now.getMonth() - 1);
+                end.setDate(new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate()); // last day of last month
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            default:
+                // Default to today if unknown
+                start.setHours(0, 0, 0, 0);
+                end.setHours(23, 59, 59, 999);
+        }
+
+        return { start, end };
+    };
+
+    // Filter purchases by selected date range
+    const filteredPurchases = useMemo(() => {
+        const { start, end } = getDateRange(filter);
+        return purchases.filter(purchase => {
+            const purchaseDate = new Date(purchase.created_at);
+            return purchaseDate >= start && purchaseDate <= end;
+        });
+    }, [purchases, filter]);
+
+    // Pagination logic
+    const totalPages = Math.ceil(filteredPurchases.length / ITEMS_PER_PAGE);
+
+    const paginatedPurchases = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredPurchases.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [filteredPurchases, currentPage]);
+
+    // Handle filter tab click
+    const handleFilterClick = (newFilter) => {
+        setFilter(newFilter);
+        setCurrentPage(1); // reset to first page when filter changes
+    };
+
+    // Handle page navigation
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
     return (
         <div className={isSidebarOpen ? "purchase-container" : "purchase-container collapse"}>
             <div className="header-section">
                 <h2 className="page-title">All Purchases</h2>
-                <button className="purchase-btn">Purchase</button>
+                <button className="purchase-btn" onClick={() => setShowPopup(true)}>Purchase</button>
             </div>
 
             <div className="tabs">
-                <span className="tab active">Today</span>
-                <span className="tab">Yesterday</span>
-                <span className="tab">Last 7 days</span>
-                <span className="tab">This month</span>
-                <span className="tab">Last month</span>
+                <span
+                    className={`tab ${filter === 'today' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('today')}
+                >Today</span>
+                <span
+                    className={`tab ${filter === 'yesterday' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('yesterday')}
+                >Yesterday</span>
+                <span
+                    className={`tab ${filter === 'last7days' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('last7days')}
+                >Last 7 days</span>
+                <span
+                    className={`tab ${filter === 'thisMonth' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('thisMonth')}
+                >This month</span>
+                <span
+                    className={`tab ${filter === 'lastMonth' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('lastMonth')}
+                >Last month</span>
             </div>
 
-            <table className="styled-table">
-                <thead>
-                    <tr>
-                        <th>Purchase ID</th>
-                        <th>Date</th>
-                        <th>Supplier</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {purchases.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td className="date-link">{item.date}</td>
-                            <td>{item.supplier}</td>
-                            <td>{item.amount}</td>
-                            <td>
-                                <span className={`type-label ${item.type.toLowerCase()}`}>
-                                    {item.type}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {loading ? (
+                <p>Loading purchases...</p>
+            ) : error ? (
+                <p style={{ color: 'red' }}>{error}</p>
+            ) : filteredPurchases.length === 0 ? (
+                <p>No purchases found in this period.</p>
+            ) : (
+                <>
+                    <table className="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Purchase ID</th>
+                                <th>Date</th>
+                                <th>Supplier</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {paginatedPurchases.map((item) => {
+                                const total = item.items.reduce((sum, i) => sum + (i.quantity * i.cost_price), 0);
+                                return (
+                                    <tr key={item.id}>
+                                        <td>#{item.id}</td>
+                                        <td className="date-link">{new Date(item.created_at).toLocaleDateString()}</td>
+                                        <td>{item.supplier?.name || 'N/A'}</td>
+                                        <td>${total.toFixed(2)}</td>
+                                        <td><span className="type-label single">Single</span></td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
 
-            <div className="custom-pagination">
-                <span className="nav-arrow disabled">← Previous</span>
-                <span className="page-circle active">1</span>
-                <span className="page-circle">2</span>
-                <span className="page-circle">3</span>
-                <span className="ellipsis">...</span>
-                <span className="page-circle">68</span>
-                <span className="nav-arrow">Next →</span>
-            </div>
+                    {/* Pagination Controls */}
+                    <div className="custom-pagination">
+                        <button
+                            className="nav-arrow"
+                            disabled={currentPage === 1}
+                            onClick={() => goToPage(currentPage - 1)}
+                        >← Previous</button>
+
+                        {/* Show pages */}
+                        {[...Array(totalPages)].map((_, i) => {
+                            const pageNum = i + 1;
+                            return (
+                                <button
+                                    key={pageNum}
+                                    className={`page-circle ${currentPage === pageNum ? 'active' : ''}`}
+                                    onClick={() => goToPage(pageNum)}
+                                >
+                                    {pageNum}
+                                </button>
+                            );
+                        })}
+
+                        <button
+                            className="nav-arrow"
+                            disabled={currentPage === totalPages}
+                            onClick={() => goToPage(currentPage + 1)}
+                        >Next →</button>
+                    </div>
+                </>
+            )}
+
+            {showPopup && (
+                <PurchasePopup
+                    onClose={() => setShowPopup(false)}
+                    onSuccess={loadPurchases}
+                />
+            )}
         </div>
     );
 };
