@@ -3,8 +3,9 @@ import './purchasePopup.css';
 import { fetchAllProducts } from '../../services/productService';
 import { fetchNonUser } from '../../services/nonUserService';
 import { createPurchase } from '../../services/purchaseService';
+import { toast } from 'react-toastify';
 
-const PurchasePopup = ({ onClose }) => {
+const PurchasePopup = ({ onClose, onSuccess }) => {
     const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedSupplier, setSelectedSupplier] = useState('');
@@ -27,7 +28,7 @@ const PurchasePopup = ({ onClose }) => {
                 setProducts(productData || []);
                 setSuppliers(supplierData || []);
             } catch (err) {
-                alert('Failed to load products or suppliers');
+                toast.error('Failed to load products or suppliers');
             }
         };
         loadData();
@@ -47,10 +48,10 @@ const PurchasePopup = ({ onClose }) => {
 
     const handleAddItem = () => {
         const product = products.find(p => p.id === parseInt(selectedProductId));
-        if (!product) return alert('Please select a valid product');
+        if (!product) return toast.error('Please select a valid product');
 
         const existing = purchaseItems.find(item => item.product_id === product.id);
-        if (existing) return alert('Product already added.');
+        if (existing) return toast.error('Product already added.');
 
         const item = {
             product_id: product.id,
@@ -71,7 +72,7 @@ const PurchasePopup = ({ onClose }) => {
 
     const handleSubmit = async () => {
         if (!selectedSupplier || purchaseItems.length === 0) {
-            return alert('Please select supplier and add at least one product.');
+            return toast.warn('Please select supplier and add at least one product.');
         }
 
         const payload = {
@@ -85,10 +86,11 @@ const PurchasePopup = ({ onClose }) => {
 
         try {
             await createPurchase(payload);
-            alert('Purchase recorded successfully!');
+            toast.success('Purchase recorded successfully!');
+            if (onSuccess) onSuccess();
             onClose();
         } catch (err) {
-            alert('Failed to save purchase.');
+            toast.error('Failed to save purchase.');
         }
     };
 
@@ -101,7 +103,6 @@ const PurchasePopup = ({ onClose }) => {
                 </div>
 
                 <div className="popup-body">
-                    {/* Supplier input with suggestions */}
                     <div className="form-group autocomplete">
                         <label>Supplier</label>
                         <input
@@ -128,7 +129,6 @@ const PurchasePopup = ({ onClose }) => {
                         )}
                     </div>
 
-                    {/* Product + Quantity Input */}
                     <div className="form-inline autocomplete">
                         <input
                             type="text"
@@ -164,7 +164,6 @@ const PurchasePopup = ({ onClose }) => {
                         <button className="add-item" onClick={handleAddItem}>Add</button>
                     </div>
 
-                    {/* Display Added Items */}
                     <div className="item-list">
                         {purchaseItems.map((item) => (
                             <div key={item.product_id} className="item">
@@ -174,7 +173,6 @@ const PurchasePopup = ({ onClose }) => {
                         ))}
                     </div>
 
-                    {/* Submit / Cancel */}
                     <div className="popup-actions">
                         <button className="cancel" onClick={onClose}>Cancel</button>
                         <button className="submit" onClick={handleSubmit}>Submit Purchase</button>

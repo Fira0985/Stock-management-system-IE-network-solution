@@ -11,9 +11,12 @@ import {
 import { addProduct, fetchProductById } from '../../services/productService';
 import ProductForm from './Forms/CategoryForm/ProductForm';
 import AddForm from './Forms/ProductForms/AddForm';
-import DeleteProductForm from './Forms/CategoryForm/deleteProductForm'
+import DeleteProductForm from './Forms/CategoryForm/deleteProductForm';
 import ProductDetailPopup from './Forms/ProductForms/productDetail';
 import ExcelUpload from './Forms/ExcelForm/ExcelUpload';
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const categoriesPerPage = 4;
 const productsPerCategoryPage = 3;
@@ -53,6 +56,7 @@ const Product = ({ isSidebarOpen }) => {
             setCategories(res.data || []);
         } catch (err) {
             console.error('Failed to fetch categories:', err);
+            toast.error('Failed to load categories');
         }
     };
 
@@ -85,6 +89,7 @@ const Product = ({ isSidebarOpen }) => {
             setAllProducts(fetchedProducts);
         } catch (err) {
             console.error('Failed to fetch products:', err);
+            toast.error('Failed to load products');
         }
     };
 
@@ -100,15 +105,15 @@ const Product = ({ isSidebarOpen }) => {
 
     const handleAddCategorySubmit = async (data) => {
         try {
-            console.log(localStorage.getItem('id'))
             await addCategory({
                 name: data.name,
                 created_by_id: parseInt(localStorage.getItem('id'))
             });
             await loadCategories();
             setIsFormOpen(false);
+            toast.success('Category added successfully');
         } catch (err) {
-            alert('Failed to add category');
+            toast.error('Failed to add category');
         }
     };
 
@@ -132,8 +137,9 @@ const Product = ({ isSidebarOpen }) => {
             await loadCategories();
             await loadProducts();
             setIsAddFormOpen(false);
+            toast.success('Product added successfully');
         } catch (err) {
-            alert(err.message || 'Failed to add product');
+            toast.error(err.message || 'Failed to add product');
         }
     };
 
@@ -145,7 +151,7 @@ const Product = ({ isSidebarOpen }) => {
             setIsEditMode(true);
             setIsFormOpen(true);
         } catch (err) {
-            alert('Failed to load category data');
+            toast.error('Failed to load category data');
         }
     };
 
@@ -154,8 +160,9 @@ const Product = ({ isSidebarOpen }) => {
             await editCategory({ categoryId: editingCategoryId, name: data.name });
             await loadCategories();
             setIsFormOpen(false);
+            toast.success('Category updated successfully');
         } catch (err) {
-            alert('Failed to edit category');
+            toast.error('Failed to edit category');
         }
     };
 
@@ -171,8 +178,9 @@ const Product = ({ isSidebarOpen }) => {
             await loadCategories();
             setIsDeleteFormOpen(false);
             setCategoryToDelete(null);
+            toast.success('Category deleted successfully');
         } catch (err) {
-            alert(err.message || 'Cannot delete category with products');
+            toast.error(err.message || 'Cannot delete category with products');
         }
     };
 
@@ -426,7 +434,9 @@ const Product = ({ isSidebarOpen }) => {
                 <ProductDetailPopup product={selectedProduct} onClose={closeProductDetail} />
             )}
 
-             <ExcelUpload isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+            <ExcelUpload isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 };

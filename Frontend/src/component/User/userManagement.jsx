@@ -4,6 +4,9 @@ import UserForm from './UserForm';
 import ConfirmDelete from './ConfirmDelete';
 import { fetchUsers, addUser, editUser, deleteUser } from '../../services/userService';
 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const PAGE_SIZE = 3;
 
 const UserManagement = ({ isSidebarOpen, currentUserId }) => {
@@ -54,8 +57,9 @@ const UserManagement = ({ isSidebarOpen, currentUserId }) => {
             });
             await loadUsers();
             closeModal();
+            toast.success('User added successfully');
         } catch (err) {
-            alert(err.response?.data?.error || 'Failed to add user');
+            toast.error(err.response?.data?.error || 'Failed to add user');
         }
     };
 
@@ -66,8 +70,9 @@ const UserManagement = ({ isSidebarOpen, currentUserId }) => {
             await editUser(form);
             await loadUsers();
             closeModal();
+            toast.success('User updated successfully');
         } catch (err) {
-            alert(err.response?.data?.error || 'Failed to update user');
+            toast.error(err.response?.data?.error || 'Failed to update user');
         }
     };
 
@@ -91,8 +96,9 @@ const UserManagement = ({ isSidebarOpen, currentUserId }) => {
 
             setUsers(filteredUsers);
             closeModal();
+            toast.success('User deleted successfully');
         } catch (err) {
-            alert(err.response?.data?.error || 'Failed to delete user');
+            toast.error(err.response?.data?.error || 'Failed to delete user');
         }
     };
 
@@ -192,6 +198,8 @@ const UserManagement = ({ isSidebarOpen, currentUserId }) => {
             {modalType === 'delete' && activeUser && (
                 <ConfirmDelete onClose={closeModal} onConfirm={handleDelete} user={activeUser} />
             )}
+
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 };

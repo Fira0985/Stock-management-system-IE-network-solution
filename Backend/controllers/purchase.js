@@ -69,10 +69,13 @@ const addPurchase = async (req, res) => {
             await prisma.product.update({
                 where: { id: item.product_id },
                 data: {
-                    unit: item.quantity  
+                    unit: {
+                        increment: item.quantity
+                    }
                 }
             });
         }
+
 
         return res.status(201).json({ success: true, data: purchase });
     } catch (error) {

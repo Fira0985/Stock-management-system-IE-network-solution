@@ -17,6 +17,7 @@
     border-radius: 10px;
     width: 500px;
     max-width: 90%;
+    height: 35vh;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     position: relative;
 }

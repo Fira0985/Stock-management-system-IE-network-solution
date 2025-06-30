@@ -104,6 +104,7 @@
 .styled-table tbody td {
     font-size: 14px;
     color: #374151;
+    cursor: pointer;
 }
 
 .date-link {
@@ -186,4 +187,77 @@
     padding: 6px;
     color: #9ca3af;
     pointer-events: none;
+}
+
+/* Bottom Sheet for Purchase Details */
+.popup-overlay {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100%;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.popup-box {
+    background-color: #ffffff;
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.popup-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #111827;
+    font-weight: 600;
+}
+
+.popup-header button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.popup-body p,
+.popup-body li {
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.popup-body ul {
+    padding-left: 18px;
+    margin-top: 10px;
 }

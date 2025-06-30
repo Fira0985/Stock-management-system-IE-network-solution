@@ -13,21 +13,32 @@ body {
   background-color: #ffffff;
 }
 
-.main-content-collapsed{
+.main-content-collapsed {
   flex-grow: 1;
   width: 100%;
   margin-left: 6vw;
   box-sizing: border-box;
-  background-color: #ffffff; 
+  background-color: #ffffff;
 }
 
-/* Overview Section */
 .overview {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 50px;
-  margin-top: 24px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.overview-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 10px;
+  /* For scrollbar spacing */
+}
+
+.overview-row {
+  display: flex;
+  gap: 40px;
+  /* Cards are inline blocks so this works smoothly */
 }
 
 .card {
@@ -37,6 +48,9 @@ body {
   border: solid 1px #DBE0E5;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease;
+  display: inline-block;
+  white-space: normal;
+  width: 260px;
 }
 
 .card:hover {
@@ -55,9 +69,9 @@ body {
   font-size: 20px;
 }
 
+
 /* Statistics Section (no cards, just charts) */
 .statistics {
-  margin-top: 40px;
   padding: 20px;
 }
 
@@ -113,7 +127,6 @@ body {
 
 /* Activity Section */
 .activity {
-  margin-top: 40px;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;

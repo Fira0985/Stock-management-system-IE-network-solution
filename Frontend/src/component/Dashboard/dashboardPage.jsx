@@ -34,34 +34,58 @@ const annualData = [
 
 const pieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const Dashboard = ({ isSidebarOpen } ) => {
+const Dashboard = ({ isSidebarOpen }) => {
+  // Define the sales overview cards
+  const salesOverview = [
+    { label: "Total Sales Value", amount: "$15,000" },
+    { label: "Daily Sales", amount: "$200" },
+    { label: "Weekly Sales", amount: "$1,500" },
+    { label: "Monthly Sales", amount: "$6,000" },
+  ];
+
+  // Define the purchase overview cards
+  const purchaseOverview = [
+    { label: "Total Purchase Value", amount: "$10,000" },
+    { label: "Daily Purchase", amount: "$180" },
+    { label: "Weekly Purchase", amount: "$1,200" },
+    { label: "Monthly Purchase", amount: "$5,000" },
+  ];
+
   return (
-    <main className={isSidebarOpen? "main-content" : "main-content-collapsed"}>
-
-   
-      <section className="overview">
-        {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
-          <div className="card" key={i}>
-            <p>{label}</p>
-            <h3 className="amount">
-              {label === "Daily Sales" ? "$200" :
-                label === "Monthly Sales" ? "$6,000" : "$1,500"}
-            </h3>
-          </div>
-        ))}
-      </section>
+    <main className={isSidebarOpen ? "main-content" : "main-content-collapsed"}>
 
       <section className="overview">
-        {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
-          <div className="card" key={i}>
-            <p>{label}</p>
-            <h3 className="amount">
-              {label === "Daily Sales" ? "$200" :
-                label === "Monthly Sales" ? "$6,000" : "$1,500"}
-            </h3>
+        {/* First row: Sales */}
+        <div className="overview-scroll">
+          <div className="overview-row">
+            {["Total Stock Value", "Daily Sales", "Weekly Sales", "Monthly Sales"].map((label, i) => (
+              <div className="card" key={`sale-${i}`}>
+                <p>{label}</p>
+                <h3 className="amount">
+                  {label === "Daily Sales" ? "$200" :
+                    label === "Monthly Sales" ? "$6,000" : "$1,500"}
+                </h3>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Second row: Purchases */}
+        <div className="overview-scroll">
+          <div className="overview-row">
+            {["Total Purchase Value", "Daily Purchase", "Weekly Purchase", "Monthly Purchase"].map((label, i) => (
+              <div className="card" key={`purchase-${i}`}>
+                <p>{label}</p>
+                <h3 className="amount">
+                  {label === "Daily Purchase" ? "$180" :
+                    label === "Monthly Purchase" ? "$5,400" : "$1,200"}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
+
 
       {/* Updated Statistics with Recharts */}
       <section className="statistics">

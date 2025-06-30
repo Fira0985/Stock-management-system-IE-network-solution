@@ -40,6 +40,7 @@ const getProductById = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch product', details: error.message });
   }
 };
+
 const addProduct = async (req, res) => {
   try {
     const {
@@ -59,7 +60,7 @@ const addProduct = async (req, res) => {
       });
     }
 
-    // 🔍 Check if product already exists (by name and not archived)
+    // Check if product already exists (by name and not archived)
     const existingProduct = await prisma.product.findFirst({
       where: {
         name: name,
@@ -71,13 +72,13 @@ const addProduct = async (req, res) => {
       return res.status(409).json({ message: 'The product already exists' });
     }
 
-    // 🖼️ Handle optional image upload
+    // Handle optional image upload
     let image_url = null;
     if (req.file) {
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     }
 
-    // ✅ Create product
+    // Create product
     const product = await prisma.product.create({
       data: {
         name,

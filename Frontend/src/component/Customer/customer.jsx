@@ -10,6 +10,9 @@ import EditNonUserForm from "./EditNonUserForm";
 import DeleteCustomerForm from "./DeleteCustomerForm";
 import "./customer.css";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Customer = ({ isSidebarOpen }) => {
     const [customers, setCustomers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +30,7 @@ const Customer = ({ isSidebarOpen }) => {
             setCustomers(customersData);
         } catch (err) {
             console.error("Failed to load customers:", err.message);
+            toast.error("Failed to load customers");
         }
     };
 
@@ -39,8 +43,10 @@ const Customer = ({ isSidebarOpen }) => {
             await addNonUser({ ...data, type: "CUSTOMER" });
             await loadCustomers();
             setShowAddModal(false);
+            toast.success("Customer added successfully");
         } catch (err) {
             console.error("Add customer failed:", err.message);
+            toast.error(err.message || "Failed to add customer");
         }
     };
 
@@ -49,8 +55,10 @@ const Customer = ({ isSidebarOpen }) => {
             await editNonUser(id, { ...data, id, type: "CUSTOMER" });
             await loadCustomers();
             setShowEditModal(false);
+            toast.success("Customer updated successfully");
         } catch (err) {
             console.error("Edit customer failed:", err.message);
+            toast.error(err.message || "Failed to update customer");
         }
     };
 
@@ -59,8 +67,10 @@ const Customer = ({ isSidebarOpen }) => {
             await deleteNonUser(id);
             await loadCustomers();
             setShowDeleteModal(false);
+            toast.success("Customer deleted successfully");
         } catch (err) {
             console.error("Delete failed:", err.message);
+            toast.error(err.message || "Failed to delete customer");
         }
     };
 
@@ -193,6 +203,8 @@ const Customer = ({ isSidebarOpen }) => {
                     onClose={() => setShowDeleteModal(false)}
                 />
             )}
+
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 };

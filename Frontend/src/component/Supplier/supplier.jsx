@@ -5,10 +5,13 @@ import {
     editNonUser,
     deleteNonUser,
 } from "../../services/nonUserService";
-import AddSupplierForm from "./AddSupplierForm"
-import EditSupplierForm from "./EditSupplierForm"
-import DeleteSupplierForm from "./DeleteSupplierForm"
+import AddSupplierForm from "./AddSupplierForm";
+import EditSupplierForm from "./EditSupplierForm";
+import DeleteSupplierForm from "./DeleteSupplierForm";
 import "./supplier.css";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Supplier = ({ isSidebarOpen }) => {
     const [suppliers, setsuppliers] = useState([]);
@@ -27,6 +30,7 @@ const Supplier = ({ isSidebarOpen }) => {
             setsuppliers(suppliersData);
         } catch (err) {
             console.error("Failed to load suppliers:", err.message);
+            toast.error("Failed to load suppliers");
         }
     };
 
@@ -39,8 +43,10 @@ const Supplier = ({ isSidebarOpen }) => {
             await addNonUser({ ...data, type: "SUPPLIER" });
             await loadsuppliers();
             setShowAddModal(false);
+            toast.success("Supplier added successfully");
         } catch (err) {
             console.error("Add supplier failed:", err.message);
+            toast.error(err.message || "Failed to add supplier");
         }
     };
 
@@ -49,8 +55,10 @@ const Supplier = ({ isSidebarOpen }) => {
             await editNonUser(id, { ...data, id, type: "SUPPLIER" });
             await loadsuppliers();
             setShowEditModal(false);
+            toast.success("Supplier updated successfully");
         } catch (err) {
             console.error("Edit supplier failed:", err.message);
+            toast.error(err.message || "Failed to update supplier");
         }
     };
 
@@ -59,8 +67,10 @@ const Supplier = ({ isSidebarOpen }) => {
             await deleteNonUser(id);
             await loadsuppliers();
             setShowDeleteModal(false);
+            toast.success("Supplier deleted successfully");
         } catch (err) {
             console.error("Delete supplier failed:", err.message);
+            toast.error(err.message || "Failed to delete supplier");
         }
     };
 
@@ -190,6 +200,8 @@ const Supplier = ({ isSidebarOpen }) => {
                     onClose={() => setShowDeleteModal(false)}
                 />
             )}
+
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 };
