@@ -1,0 +1,452 @@
+/* Modal Backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+    padding: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Main Form Container */
+.sale-form {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 40px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Close Button */
+.sale-form button[aria-label="Close"] {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    font-weight: 300;
+    cursor: pointer;
+    color: #6b7280;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.sale-form button[aria-label="Close"]:hover {
+    background: #f3f4f6;
+    color: #374151;
+    transform: scale(1.1);
+}
+
+/* Form Title */
+.sale-form h2 {
+    margin: 0 0 32px 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+/* Form Layout - Two Column Grid */
+.sale-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.sale-form-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.sale-form-right {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Labels */
+.sale-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    margin-top: 20px;
+}
+
+.sale-form label:first-of-type {
+    margin-top: 0;
+}
+
+/* Input and Select Styling */
+.sale-form select,
+.sale-form input[type="number"],
+.sale-form input[type="date"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #111827;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.sale-form select:focus,
+.sale-form input[type="number"]:focus,
+.sale-form input[type="date"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: #fafbff;
+}
+
+.sale-form select:hover,
+.sale-form input[type="number"]:hover,
+.sale-form input[type="date"]:hover {
+    border-color: #d1d5db;
+}
+
+/* Disabled/ReadOnly Input Styling */
+.sale-form input[readonly],
+.sale-form input[disabled] {
+    background: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+    border-color: #e5e7eb;
+}
+
+.sale-form input[readonly]:hover,
+.sale-form input[disabled]:hover {
+    border-color: #e5e7eb;
+}
+
+/* Items Section - Full Width */
+.sale-items-section {
+    grid-column: 1 / -1;
+    margin-top: 24px;
+}
+
+.sale-items-section label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 16px;
+}
+
+/* Item Rows */
+.item-row {
+    display: grid;
+    grid-template-columns: 2fr 120px 140px;
+    gap: 16px;
+    align-items: end;
+    margin: 16px 0;
+    padding: 24px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.item-row:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.item-row select,
+.item-row input {
+    margin: 0;
+    font-size: 15px;
+}
+
+.item-row select {
+    font-weight: 500;
+}
+
+.item-row input[type="number"] {
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Add Item Button */
+.sale-form button[type="button"]:not([aria-label="Close"]):not(.cancel-btn) {
+    margin: 20px 0;
+    padding: 12px 24px;
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+}
+
+.sale-form button[type="button"]:not([aria-label="Close"]):not(.cancel-btn):hover {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+}
+
+.sale-form button[type="button"]:not([aria-label="Close"]):not(.cancel-btn):active {
+    transform: translateY(0);
+}
+
+/* Summary Information */
+.sale-summary {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.sale-summary h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.sale-form p {
+    margin: 12px 0;
+    font-size: 16px;
+    color: #374151;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.sale-form p:last-of-type {
+    margin-bottom: 0;
+    padding-top: 12px;
+    border-top: 2px solid #e2e8f0;
+    font-size: 18px;
+}
+
+.sale-form p strong {
+    font-weight: 700;
+    color: #111827;
+}
+
+/* Action Buttons Container */
+.sale-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid #f3f4f6;
+}
+
+/* Primary Submit Button */
+.sale-actions button[type="submit"] {
+    padding: 16px 40px;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
+}
+
+.sale-actions button[type="submit"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: #ffffff;
+    box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.sale-actions button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.3);
+}
+
+/* Cancel Button */
+.sale-actions button[type="button"],
+.sale-actions .cancel-btn {
+    padding: 16px 32px;
+    background: #ffffff;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sale-actions button[type="button"]:hover,
+.sale-actions .cancel-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #374151;
+    transform: translateY(-1px);
+}
+
+.sale-actions button[type="button"]:active,
+.sale-actions .cancel-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sale-form {
+        max-width: 900px;
+        padding: 32px;
+    }
+
+    .sale-form-grid {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-backdrop {
+        padding: 16px;
+    }
+
+    .sale-form {
+        padding: 24px;
+        max-width: 100%;
+        max-height: 95vh;
+        border-radius: 12px;
+    }
+
+    .sale-form h2 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .sale-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .item-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .sale-actions {
+        flex-direction: column-reverse;
+    }
+
+    .sale-actions button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .sale-form {
+        padding: 20px;
+    }
+
+    .sale-form h2 {
+        font-size: 22px;
+    }
+}
+
+/* Focus Indicators for Accessibility */
+.sale-form *:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Loading State (if needed) */
+.sale-form.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.sale-form.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    margin: -16px 0 0 -16px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Custom Scrollbar */
+.sale-form::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sale-form::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.sale-form::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.sale-form::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

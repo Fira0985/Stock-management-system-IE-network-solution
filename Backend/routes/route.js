@@ -10,6 +10,7 @@ const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById} 
 const { loginUser } = require('../middleware/auth');
 const { getAllPurchase, addPurchase } = require('../controllers/purchase');
 const { uploadExcelFile } = require('../controllers/uploadExcelFile');
+const { getAllSales, addSales } = require('../controllers/sale');
 
 
 
@@ -46,6 +47,10 @@ router.post('/getNonUserById', authenticateToken, getNonUserById)
 
 router.post('/getAllPurchase', authenticateToken, getAllPurchase)
 router.post('/purchase', authenticateToken, addPurchase)
+
+router.get('/getAllSales', authenticateToken, getAllSales)
+router.post('/sale', authenticateToken, addSales)
+
 
 // POST route to upload Excel and insert data into DB
 router.post('/upload-excel', upload.single('excelFile'), uploadExcelFile);

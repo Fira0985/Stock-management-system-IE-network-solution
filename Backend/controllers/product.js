@@ -28,6 +28,7 @@ const getProductById = async (req, res) => {
         category: true,
         created_by: true,
         purchaseItems: true,
+        saleItems: true,
       },
     });
 

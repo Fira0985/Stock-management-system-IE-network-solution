@@ -9,6 +9,7 @@ import Customer from '../../component/Customer/customer';
 import UserProfile from '../../component/userManagement/userProfile';
 import './MainPage.css';
 import PurchaseTable from '../../component/purchase/purchase';
+import Sales from '../../component/Sale/sale';
 
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -37,6 +38,9 @@ const MainPage = () => {
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
       case "Products":
         return <Product isSidebarOpen={isSidebarOpen} />;
+
+      case "Sales":
+        return <Sales isSidebarOpen={isSidebarOpen} />
       case "Purchase":
         return <PurchaseTable isSidebarOpen={isSidebarOpen} />
       case "Supplier":
