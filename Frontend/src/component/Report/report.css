@@ -1,0 +1,95 @@
+/* === Layout shift for sidebar === */
+.report-page {
+  transition: margin-left 0.3s ease;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #222;
+}
+
+/* When sidebar is open */
+.report-page.with-sidebar {
+  margin-left: 220px; /* your full sidebar width */
+}
+
+/* When sidebar is collapsed */
+.report-page.full-width {
+  margin-left: 80px; /* your collapsed sidebar width */
+}
+
+/* === Filters and buttons === */
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #333;
+}
+
+.filters input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filters button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Blue export button */
+.filters button:nth-of-type(1) {
+  background-color: #007bff;
+}
+
+.filters button:nth-of-type(1):hover {
+  background-color: #0056b3;
+}
+
+/* Purple print button (important) */
+.filters button:nth-of-type(2) {
+  background-color: #6f42c1;
+}
+
+.filters button:nth-of-type(2):hover {
+  background-color: #5a34a6;
+}
+
+/* === Table Styles === */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.report-table th {
+  background-color: #e6f0ff;
+  color: #003366;
+}
+
+/* === Summary section === */
+.summary {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #333;
+}
