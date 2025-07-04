@@ -1,0 +1,119 @@
+.settings-page {
+  padding: 2rem 3rem;
+  background: white;
+  color: #222;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 80vh;
+  transition: margin-left 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.settings-page.dark {
+  background: #121331;
+  color: #ddd;
+  box-shadow: none;
+}
+
+.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #ddd;
+}
+
+.settings-tabs button {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #4b4b8b;
+  cursor: pointer;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.settings-tabs button.active {
+  border-bottom-color: #6f42c1; /* purple */
+  color: #6f42c1;
+}
+
+.settings-tabs button:hover:not(.active) {
+  color: #7a7aaf;
+}
+
+.tab-section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tab-section label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.tab-section input[type="text"],
+.tab-section input[type="email"],
+.tab-section input[type="password"],
+.tab-section select {
+  margin-top: 0.3rem;
+  padding: 10px;
+  width: 100%;
+  border: 1.5px solid #bbb;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.tab-section input[type="text"]:focus,
+.tab-section input[type="email"]:focus,
+.tab-section input[type="password"]:focus,
+.tab-section select:focus {
+  border-color: #6f42c1; /* purple */
+  outline: none;
+}
+
+.purple-btn {
+  background-color: #6f42c1;
+  border: none;
+  padding: 0.7rem 1.8rem;
+  color: white;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.purple-btn:hover {
+  background-color: #572ea6;
+}
+
+.blue-btn {
+  background-color: #007bff;
+  border: none;
+  padding: 0.7rem 1.8rem;
+  color: white;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 700;
+  margin-right: 1rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.blue-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Filters checkbox style */
+.tab-section label input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}

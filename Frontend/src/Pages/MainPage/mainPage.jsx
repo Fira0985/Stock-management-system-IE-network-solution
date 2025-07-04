@@ -11,6 +11,7 @@ import "./MainPage.css";
 import PurchaseTable from "../../component/purchase/purchase";
 import Sales from "../../component/Sale/sale";
 import Report from "../../component/Report/report";
+import Settings from "../../component/Settings/settings";
 
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -52,6 +53,8 @@ const MainPage = () => {
         return <Customer isSidebarOpen={isSidebarOpen} />;
       case "Report":
         return <Report isSidebarOpen={isSidebarOpen} />;
+      case "Settings":
+        return <Settings isSidebarOpen={isSidebarOpen} />;
 
       default:
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
