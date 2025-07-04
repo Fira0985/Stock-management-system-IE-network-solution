@@ -1,27 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import './sale.css';
-import { fetchAllSales, addSale } from '../../services/saleService';
+import { fetchAllSales } from '../../services/saleService';
 import { fetchAllProducts } from '../../services/productService';
 import { fetchNonUser } from '../../services/nonUserService';
 import NewSaleForm from './newSaleForm';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const ITEMS_PER_PAGE = 5;
+
 const Sales = ({ isSidebarOpen }) => {
-    const [allSalesData, setAllSalesData] = useState([]);
-    const [filteredSales, setFilteredSales] = useState([]);
+    const [allSales, setAllSales] = useState([]);
     const [products, setProducts] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('today');
-    const [page, setPage] = useState(1);
+    const [error, setError] = useState(null);
+    const [filter, setFilter] = useState('today');
+    const [currentPage, setCurrentPage] = useState(1);
     const [showForm, setShowForm] = useState(false);
+    const [selectedSale, setSelectedSale] = useState(null);
 
-    const pageSize = 5;
-    const totalPages = Math.ceil(filteredSales.length / pageSize);
-    const paginatedSales = filteredSales.slice((page - 1) * pageSize, page * pageSize);
+    const loadSales = async () => {
+        setLoading(true);
+        try {
+            const data = await fetchAllSales();
+            setAllSales(data || []);
+            setError(null);
+        } catch (err) {
+            console.error('Error loading sales:', err);
+            setError('Failed to load sales.');
+            setAllSales([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    const calculateDateRange = (filter) => {
+    const loadProducts = async () => {
+        try {
+            const data = await fetchAllProducts();
+            setProducts(data);
+        } catch (e) {
+            toast.error("Failed to load products");
+        }
+    };
+
+    const loadCustomers = async () => {
+        try {
+            const data = await fetchNonUser('CUSTOMER');
+            setCustomers(data);
+        } catch (e) {
+            toast.error("Failed to load customers");
+        }
+    };
+
+    useEffect(() => {
+        loadSales();
+        loadProducts();
+        loadCustomers();
+    }, []);
+
+    const getDateRange = (filter) => {
         const now = new Date();
         const start = new Date();
         const end = new Date();
@@ -60,137 +98,144 @@ const Sales = ({ isSidebarOpen }) => {
                 end.setHours(23, 59, 59, 999);
         }
 
-        return { startDate: start, endDate: end };
+        return { start, end };
     };
 
-    const filterSales = (tab) => {
-        const { startDate, endDate } = calculateDateRange(tab);
-        setFilteredSales(
-            allSalesData.filter(sale => {
-                const d = new Date(sale.created_at);
-                return d >= startDate && d <= endDate;
-            })
-        );
-    };
+    const filteredSales = useMemo(() => {
+        const { start, end } = getDateRange(filter);
+        return allSales.filter(sale => {
+            const date = new Date(sale.created_at);
+            return date >= start && date <= end;
+        });
+    }, [allSales, filter]);
 
-    const loadProducts = async () => {
-        try {
-            const data = await fetchAllProducts();
-            setProducts(data);
-        } catch (e) {
-            console.error("Failed to load products", e);
-            toast.error("Failed to load products");
+    const totalPages = Math.ceil(filteredSales.length / ITEMS_PER_PAGE);
+
+    const paginatedSales = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredSales.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [filteredSales, currentPage]);
+
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
         }
     };
-
-    const loadCustomers = async () => {
-        try {
-            const data = await fetchNonUser('CUSTOMER');
-            setCustomers(data);
-        } catch (e) {
-            console.error("Failed to load customers", e);
-            toast.error("Failed to load customers");
-        }
-    };
-
-    const loadSales = async () => {
-        setLoading(true);
-        try {
-            const sales = await fetchAllSales();
-            setAllSalesData(sales);
-            filterSales(activeTab);
-        } catch (err) {
-            toast.error("Failed to load sales");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        loadSales();
-        loadProducts();
-        loadCustomers();
-    }, []);
-
-    useEffect(() => {
-        filterSales(activeTab);
-        setPage(1);
-    }, [activeTab, allSalesData]);
 
     return (
-        <div className={isSidebarOpen ? 'sales-container' : 'sales-container collapse'}>
+        <div className={isSidebarOpen ? "sales-container" : "sales-container collapse"}>
             <div className="header-section">
                 <h2 className="page-title">All Sales</h2>
-                <div>
-                    <button className="sale-btn normal" onClick={() => setShowForm(true)}>Normal Sale</button>
-                </div>
+                <button className="sale-btn" onClick={() => setShowForm(true)}>New Sale</button>
             </div>
 
             <div className="tabs">
-                {['today', 'yesterday', 'last7', 'thisMonth', 'lastMonth'].map(tab => (
-                    <div key={tab}
-                        className={`tab ${activeTab === tab ? 'active' : ''}`}
-                        onClick={() => setActiveTab(tab)}>
-                        {tab === 'today' ? 'Today'
-                            : tab === 'yesterday' ? 'Yesterday'
-                                : tab === 'last7' ? 'Last 7 days'
-                                    : tab === 'thisMonth' ? 'This month'
-                                        : 'Last month'}
-                    </div>
+                {['today', 'yesterday', 'last7', 'thisMonth', 'lastMonth'].map(f => (
+                    <span
+                        key={f}
+                        className={`tab ${filter === f ? 'active' : ''}`}
+                        onClick={() => { setFilter(f); setCurrentPage(1); }}
+                    >
+                        {f === 'today' ? 'Today' :
+                            f === 'yesterday' ? 'Yesterday' :
+                                f === 'last7' ? 'Last 7 days' :
+                                    f === 'thisMonth' ? 'This month' : 'Last month'}
+                    </span>
                 ))}
             </div>
 
-            {loading && <p>Loading sales...</p>}
-
-            {!loading &&
+            {loading ? (
+                <p>Loading sales...</p>
+            ) : error ? (
+                <p style={{ color: 'red' }}>{error}</p>
+            ) : filteredSales.length === 0 ? (
+                <p>No sales found in this period.</p>
+            ) : (
                 <>
                     <table className="styled-table">
                         <thead>
                             <tr>
-                                <th>SALE ID</th><th>DATE</th><th>CUSTOMER</th><th>AMOUNT</th><th>TYPE</th>
+                                <th>Sale ID</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Type</th>
                             </tr>
                         </thead>
                         <tbody>
                             {paginatedSales.map(sale => (
-                                <tr key={sale.id}>
+                                <tr key={sale.id} onClick={() => setSelectedSale(sale)}>
                                     <td>#{sale.id}</td>
                                     <td>{new Date(sale.created_at).toLocaleDateString()}</td>
                                     <td>{sale.customer?.name || 'N/A'}</td>
                                     <td>${sale.total.toFixed(2)}</td>
-                                    <td><span className={`type-label ${sale.type.toLowerCase()}`}>{sale.type}</span></td>
+                                    <td>
+                                        <span className={`type-label ${sale.type.toLowerCase()}`}>
+                                            {sale.type}
+                                        </span>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
-                    {totalPages > 1 &&
-                        <div className="custom-pagination">
-                            <div className={`nav-arrow ${page === 1 ? 'disabled' : ''}`}
-                                onClick={() => page > 1 && setPage(page - 1)}>← Previous</div>
-                            {[...Array(totalPages)].map((_, i) => (
-                                <div key={i}
-                                    className={`page-circle ${page === i + 1 ? 'active' : ''}`}
-                                    onClick={() => setPage(i + 1)}>{i + 1}</div>
-                            ))}
-                            <div className={`nav-arrow ${page === totalPages ? 'disabled' : ''}`}
-                                onClick={() => page < totalPages && setPage(page + 1)}>Next →</div>
-                        </div>
-                    }
-                </>
-            }
+                    <div className="pagination">
+                        <span
+                            className={`nav-arrow ${currentPage === 1 ? 'disabled' : ''}`}
+                            onClick={() => goToPage(currentPage - 1)}
+                        >← Previous</span>
 
-            {showForm &&
+                        {[...Array(totalPages)].map((_, i) => (
+                            <span
+                                key={i}
+                                className={currentPage === i + 1 ? 'active' : ''}
+                                onClick={() => goToPage(i + 1)}
+                            >{i + 1}</span>
+                        ))}
+
+                        <span
+                            className={`nav-arrow ${currentPage === totalPages ? 'disabled' : ''}`}
+                            onClick={() => goToPage(currentPage + 1)}
+                        >Next →</span>
+                    </div>
+                </>
+            )}
+
+            {showForm && (
                 <NewSaleForm
                     products={products}
                     customers={customers}
                     onClose={() => setShowForm(false)}
                     onSuccess={() => {
-                        toast.success('Sale successfully created');
                         loadSales();
                         setShowForm(false);
+                        toast.success("Sale added successfully");
                     }}
                 />
-            }
+            )}
+
+            {selectedSale && (
+                <div className="popup-overlay" onClick={() => setSelectedSale(null)}>
+                    <div className="popup-box-sale" onClick={e => e.stopPropagation()}>
+                        <div className="popup-header">
+                            <h3>Sale #{selectedSale.id} Details</h3>
+                            <button onClick={() => setSelectedSale(null)}>×</button>
+                        </div>
+                        <div className="popup-body">
+                            <p><strong>Customer:</strong> {selectedSale.customer?.name || 'N/A'}</p>
+                            <p><strong>Date:</strong> {new Date(selectedSale.created_at).toLocaleString()}</p>
+                            <h4>Items:</h4>
+                            <ul>
+                                {selectedSale.items?.map((item, index) => (
+                                    <li key={index}>
+                                        {item.product?.name || 'Unknown'} – {item.quantity} × ${item.sale_price}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <ToastContainer position="top-right" autoClose={3000} />
         </div>

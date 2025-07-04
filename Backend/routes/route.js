@@ -3,20 +3,28 @@ const router = express.Router();
 const upload = require('../middleware/upload');
 
 const { authenticateToken } = require('../middleware/auth');
-const {addProduct, editProduct, getAllProducts, getProductById} = require('../controllers/product')
-const {addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory} = require('../controllers/category')
-const {addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage, RecoverUser} = require('../controllers/user')
-const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById} = require('../controllers/nonUser');
+const { addProduct, editProduct, getAllProducts, getProductById } = require('../controllers/product')
+const { addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory } = require('../controllers/category')
+const { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage, RecoverUser } = require('../controllers/user')
+const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById } = require('../controllers/nonUser');
 const { loginUser } = require('../middleware/auth');
 const { getAllPurchase, addPurchase } = require('../controllers/purchase');
 const { uploadExcelFile } = require('../controllers/uploadExcelFile');
 const { getAllSales, addSales } = require('../controllers/sale');
 
+const {
+    getSalesOverview,
+    getPurchaseOverview,
+    getWeeklySalesChart,
+    getMonthlyCategoryChart,
+    getAnnualSalesChart,
+    getRecentActivity
+} = require('../controllers/statistics');
 
 
-router.post('/users', authenticateToken,  addUser);
-router.put('/editUser', authenticateToken , editUser);
-router.delete('/deleteUser', authenticateToken,  deleteUser);
+router.post('/users', authenticateToken, addUser);
+router.put('/editUser', authenticateToken, editUser);
+router.delete('/deleteUser', authenticateToken, deleteUser);
 router.get('/users', authenticateToken, getAllUsers);
 router.post('/getUserByEmail', authenticateToken, getUserByEmail);
 router.post('/login', loginUser)
@@ -29,7 +37,7 @@ router.post('/getImage', authenticateToken, getImage);
 
 router.get('/products', authenticateToken, getAllProducts);
 router.post('/getProductById', authenticateToken, getProductById);
-router.post('/products', authenticateToken, upload.single('image'),  addProduct);
+router.post('/products', authenticateToken, upload.single('image'), addProduct);
 router.put('/products/:id', authenticateToken, editProduct);
 
 router.post('/categories', authenticateToken, addCategory);
@@ -38,10 +46,10 @@ router.post('/editCategories', authenticateToken, editCategory);
 router.post('/getCategoryById', authenticateToken, getCategoryById)
 router.delete('/deleteCategory', authenticateToken, deleteCategory)
 
-router.post('/NonUser', authenticateToken,  addNonUser)
+router.post('/NonUser', authenticateToken, addNonUser)
 router.put("/editNonUser/:id", editNonUser);
 
-router.delete('/deleteNonUser', authenticateToken,  deleteNonUser)
+router.delete('/deleteNonUser', authenticateToken, deleteNonUser)
 router.get('/NonUser', authenticateToken, getAllNonUsers)
 router.post('/getNonUserById', authenticateToken, getNonUserById)
 
@@ -51,8 +59,29 @@ router.post('/purchase', authenticateToken, addPurchase)
 router.get('/getAllSales', authenticateToken, getAllSales)
 router.post('/sale', authenticateToken, addSales)
 
+// Sales overview stats
+router.get('/sales/overview', authenticateToken, getSalesOverview);
 
-// POST route to upload Excel and insert data into DB
-router.post('/upload-excel', upload.single('excelFile'), uploadExcelFile);
+// Purchase overview stats
+router.get('/purchase/overview', authenticateToken, getPurchaseOverview);
+
+// Weekly sales bar chart
+router.get('/sales/chart/weekly', authenticateToken, getWeeklySalesChart);
+
+// Monthly sales by category pie chart
+router.get('/sales/chart/by-category', authenticateToken, getMonthlyCategoryChart);
+
+// Annual sales line chart
+router.get('/sales/chart/annual', authenticateToken, getAnnualSalesChart);
+
+// Recent sales/purchases activity
+router.get('/recent-activity', authenticateToken, getRecentActivity);
+
+// Excel upload (if needed)
+router.post('/upload-excel', upload.single('excelFile'), (req, res) => {
+    // You can handle file upload here or import from controller
+    res.json({ message: 'Excel uploaded successfully' });
+});
+
 
 module.exports = router;
