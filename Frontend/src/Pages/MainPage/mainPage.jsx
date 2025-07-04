@@ -33,8 +33,9 @@ const MainPage = () => {
     setShowUserProfile(true);
   };
 
-  const closeProfilePopup = () => {
+  const closeProfilePopup = (e) => {
     setShowUserProfile(false);
+    e.stopPropagation()
   };
 
   const renderPage = () => {
@@ -88,13 +89,8 @@ const MainPage = () => {
       {renderPage()}
 
       {showUserProfile && (
-        <div className="modal-overlay" onClick={closeProfilePopup}>
-          <div className="modal-contents" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeProfilePopup}>
-              &times;
-            </button>
-            <UserProfile onSendToParent={handleDataFromChild} />
-          </div>
+        <div className="modal-overlay">
+          <UserProfile onSendToParent={handleDataFromChild} />
         </div>
       )}
     </div>

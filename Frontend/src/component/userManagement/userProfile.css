@@ -4,12 +4,28 @@
     justify-content: space-between;
     gap: 2rem;
     padding: 2rem;
-    width: 100%;
+    width: 70%;
     max-width: 100%;
     box-sizing: border-box;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Modal Close Button */
+.modal-close {
+    margin-top: 20vh;
+    padding-left: 70vw;
+    font-size: 2rem;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.modal-close:hover {
+    color: #111827;
 }
 
 .profile-image-section {

@@ -41,6 +41,7 @@
     cursor: pointer;
     color: #1f2937;
     transition: all 0.25s ease;
+    width: 10vw;
 }
 
 .add-user-btn:hover {

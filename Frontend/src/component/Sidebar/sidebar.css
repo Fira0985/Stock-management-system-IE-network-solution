@@ -45,6 +45,7 @@
     transition: background-color 0.3s;
     padding: 5px;
     margin-right: 5px;
+    width: 3vw;
 }
 
 .toggle-btn:hover {

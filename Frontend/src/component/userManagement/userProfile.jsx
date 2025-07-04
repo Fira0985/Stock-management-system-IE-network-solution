@@ -9,6 +9,7 @@ const UserProfile = (props) => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [showUserProfile, setShowUserProfile] = useState(false);
 
     const profileImage = `http://localhost:3000/${imageUrl}`;
 
@@ -49,8 +50,17 @@ const UserProfile = (props) => {
         }
     };
 
+    const closeProfilePopup = (e) => {
+        setShowUserProfile(false);
+        e.stopPropagation()
+        sendToParent(false);
+    };
+
     return (
         <section className="profile-card">
+            <button className="modal-close" onClick={closeProfilePopup}>
+                &times;
+            </button>
             <div className="profile-image-section">
                 <label htmlFor="imageUpload" className="image-upload-label">
                     {imageUrl ? (

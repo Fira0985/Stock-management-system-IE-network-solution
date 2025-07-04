@@ -41,6 +41,7 @@
     align-items: center;
     justify-content: center;
     transition: background 0.3s;
+    color: black;
 }
 
 .popup-close:hover {
