@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./Settings.css";
+import "./settings.css";
 
-const Settings = ({ isSidebarOpen }) => {
+const settings = ({ isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState("profile");
   const [darkMode, setDarkMode] = useState(false);
 
@@ -168,4 +168,4 @@ const Settings = ({ isSidebarOpen }) => {
   );
 };
 
-export default Settings;
+export default settings;

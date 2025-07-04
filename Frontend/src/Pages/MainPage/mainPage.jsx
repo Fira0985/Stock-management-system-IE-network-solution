@@ -12,6 +12,8 @@ import PurchaseTable from "../../component/purchase/purchase";
 import Sales from "../../component/Sale/sale";
 import Report from "../../component/Report/report";
 import Settings from "../../component/Settings/settings";
+import Notificaton from "../../component/Notificaton/notification";
+import Contact from "../../component/Contact/Contact";
 
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -55,6 +57,10 @@ const MainPage = () => {
         return <Report isSidebarOpen={isSidebarOpen} />;
       case "Settings":
         return <Settings isSidebarOpen={isSidebarOpen} />;
+      case "Notificaton":
+        return <Notificaton isSidebarOpen={isSidebarOpen} />;
+      case "Contact":
+        return <Contact isSidebarOpen={isSidebarOpen} />;
 
       default:
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
