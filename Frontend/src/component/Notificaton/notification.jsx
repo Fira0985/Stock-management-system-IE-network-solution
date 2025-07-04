@@ -1,76 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "./notification.css";
 
-const notification = ({ isSidebarOpen }) => {
-  const [prefs, setPrefs] = useState({
-    enabled: true,
-    email: true,
-    inApp: false,
-    summary: false,
-  });
-
-  const handleChange = (key) => {
-    setPrefs((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const handleSave = () => {
-    alert("Preferences saved!");
-  };
-
+const Notification = ({ onClose }) => {
   return (
-    <div
-      className={`notification-page ${
-        isSidebarOpen ? "with-sidebar" : "full-width"
-      }`}
-    >
-      <h2>🔔 Notification Settings</h2>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h2>🔔 Notifications</h2>
+        <p>You have no new notifications.</p>
 
-      <div className="notification-options">
-        <label>
-          <input
-            type="checkbox"
-            checked={prefs.enabled}
-            onChange={() => handleChange("enabled")}
-          />
-          Enable All Notifications
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            checked={prefs.email}
-            onChange={() => handleChange("email")}
-            disabled={!prefs.enabled}
-          />
-          Email Notifications
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            checked={prefs.inApp}
-            onChange={() => handleChange("inApp")}
-            disabled={!prefs.enabled}
-          />
-          In-App Notifications
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            checked={prefs.summary}
-            onChange={() => handleChange("summary")}
-            disabled={!prefs.enabled}
-          />
-          Daily Summary Email
-        </label>
-
-        <button className="purple-btn" onClick={handleSave}>
-          Save Preferences
-        </button>
+        <div className="form-actions">
+          <button onClick={onClose}>Close</button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default notification;
+export default Notification;
