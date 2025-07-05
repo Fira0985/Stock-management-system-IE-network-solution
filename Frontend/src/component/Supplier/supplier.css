@@ -37,6 +37,8 @@
     color: #111827;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all 0.25s ease-in-out;
+    width: 10vw;
+    margin-top: -2vh;
 }
 
 .add-supplier:hover {

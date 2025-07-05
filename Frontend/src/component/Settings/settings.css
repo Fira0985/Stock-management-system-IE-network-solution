@@ -1,0 +1,78 @@
+/* Vertical sidebar tabs on left + content on right */
+
+.settings-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+  box-sizing: border-box;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.settings-page.dark {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Sidebar tabs vertical on left */
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  border-right: 2px solid #ddd;
+  padding-right: 1rem;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.settings-tabs button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: #555;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: color 0.3s ease, border-left-color 0.3s ease;
+  border-radius: 4px 0 0 4px;
+}
+
+.settings-tabs button:hover {
+  color: #7b68ee;
+}
+
+.settings-tabs button.active {
+  color: #7b68ee;
+  border-left-color: #7b68ee;
+  font-weight: 600;
+  background-color: #efefff;
+  border-radius: 4px 0 0 4px;
+}
+
+.settings-page.dark .settings-tabs button.active {
+  background-color: #333;
+}
+
+/* Content area on right */
+.settings-content {
+  flex-grow: 1;
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 6px 12px rgb(123 104 238 / 0.1);
+  margin-left: 2rem;
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.settings-page.dark .settings-content {
+  background-color: #222;
+  box-shadow: none;
+  color: #e0e0e0;
+}
+
+/* Other styles (labels, inputs, buttons) same as before */
+/* ... Keep previous styles for inputs, buttons, labels, dark mode, etc. ... */

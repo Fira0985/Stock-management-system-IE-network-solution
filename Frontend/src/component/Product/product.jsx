@@ -24,7 +24,7 @@ const flatProductsPerPage = 9;
 
 const Product = ({ isSidebarOpen }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState('categories');
+    const [activeTab, setActiveTab] = useState('products');
     const [categories, setCategories] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const [expandedCategory, setExpandedCategory] = useState(null);
@@ -230,17 +230,19 @@ const Product = ({ isSidebarOpen }) => {
             </div>
 
             <div className="tab-navigation">
-                <button
-                    className={`tab-button ${activeTab === 'categories' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('categories')}
-                >
-                    Categories
-                </button>
+
                 <button
                     className={`tab-button ${activeTab === 'products' ? 'active' : ''}`}
                     onClick={() => setActiveTab('products')}
                 >
                     Products
+                </button>
+
+                <button
+                    className={`tab-button ${activeTab === 'categories' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('categories')}
+                >
+                    Categories
                 </button>
             </div>
 
@@ -251,6 +253,51 @@ const Product = ({ isSidebarOpen }) => {
                 />
                 <button className="close-btn">×</button>
             </div>
+
+            {activeTab === 'products' && (
+                <div className="section">
+                    <h2 className="section-title">All Products</h2>
+                    <ul className="product-list-flat">
+                        {paginatedFlatProducts.map((prod, index) => {
+                            const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
+
+                            return (
+                                <li
+                                    key={`${prod.category}-${index}`}
+                                    className="product-card"
+                                    onClick={() => openProductDetail(fullProduct)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <div className="product-main-info">
+                                        <span className="product-name">{prod.name}</span>
+                                        <span className="product-category-tag">{prod.category}</span>
+                                    </div>
+                                    <FiBox className="product-card-icon" />
+                                </li>
+                            );
+                        })}
+                    </ul>
+
+                    {totalFlatProductPages > 1 && (
+                        <div className="pagination">
+                            <span
+                                className={flatProductPage === 1 ? "disabled" : ""}
+                                onClick={() => flatProductPage > 1 && setFlatProductPage(flatProductPage - 1)}
+                            >
+                                ←
+                            </span>
+                            <span className="active">{flatProductPage}</span>
+                            <span
+                                className={flatProductPage === totalFlatProductPages ? "disabled" : ""}
+                                onClick={() => flatProductPage < totalFlatProductPages && setFlatProductPage(flatProductPage + 1)}
+                            >
+                                →
+                            </span>
+                        </div>
+                    )}
+                </div>
+            )}
+
 
             {activeTab === 'categories' && (
                 <div className="section">
@@ -350,50 +397,6 @@ const Product = ({ isSidebarOpen }) => {
                             <span
                                 className={categoryPage === totalCategoryPages ? "disabled" : ""}
                                 onClick={() => categoryPage < totalCategoryPages && setCategoryPage(categoryPage + 1)}
-                            >
-                                →
-                            </span>
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {activeTab === 'products' && (
-                <div className="section">
-                    <h2 className="section-title">All Products</h2>
-                    <ul className="product-list-flat">
-                        {paginatedFlatProducts.map((prod, index) => {
-                            const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
-
-                            return (
-                                <li
-                                    key={`${prod.category}-${index}`}
-                                    className="product-card"
-                                    onClick={() => openProductDetail(fullProduct)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <div className="product-main-info">
-                                        <span className="product-name">{prod.name}</span>
-                                        <span className="product-category-tag">{prod.category}</span>
-                                    </div>
-                                    <FiBox className="product-card-icon" />
-                                </li>
-                            );
-                        })}
-                    </ul>
-
-                    {totalFlatProductPages > 1 && (
-                        <div className="pagination">
-                            <span
-                                className={flatProductPage === 1 ? "disabled" : ""}
-                                onClick={() => flatProductPage > 1 && setFlatProductPage(flatProductPage - 1)}
-                            >
-                                ←
-                            </span>
-                            <span className="active">{flatProductPage}</span>
-                            <span
-                                className={flatProductPage === totalFlatProductPages ? "disabled" : ""}
-                                onClick={() => flatProductPage < totalFlatProductPages && setFlatProductPage(flatProductPage + 1)}
                             >
                                 →
                             </span>

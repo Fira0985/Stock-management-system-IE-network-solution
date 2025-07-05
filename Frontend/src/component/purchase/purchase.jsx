@@ -5,7 +5,7 @@ import PurchasePopup from './purchasePopup';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 5;
 
 const PurchaseTable = ({ isSidebarOpen }) => {
     const [purchases, setPurchases] = useState([]);

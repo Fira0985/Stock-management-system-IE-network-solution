@@ -17,7 +17,7 @@
     border-radius: 10px;
     width: 500px;
     max-width: 90%;
-    height: 35vh;
+    height: 48vh;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     position: relative;
 }
@@ -39,6 +39,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
+    margin-top: -5vh;
 }
 
 .popup-body .form-group {
@@ -57,6 +58,7 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    width: 20vw;
 }
 
 .add-item {
