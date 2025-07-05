@@ -1,156 +1,275 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #ffffff;
-  /* White background */
+/* ====== LAYOUT BASE ====== */
+.main-content {
+  padding: 30px 40px;
+  background-color: #fff;
+  margin-left: 16.6vw;
+  font-family: "Segoe UI", sans-serif;
+  width: 77vw;
 }
 
-.main-content {
-  flex-grow: 1;
-  width: 100%;
-  margin-left: 16.6vw;
-  box-sizing: border-box;
-  background-color: #ffffff;
-}
 
 .main-content-collapsed {
-  flex-grow: 1;
-  width: 100%;
   margin-left: 6vw;
-  box-sizing: border-box;
-  background-color: #ffffff;
+  transition: margin-left 0.3s ease;
+  width: 87vw;
+  padding: 24px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
-.overview {
-  padding: 20px;
+.main-content-collapsed .dashboard-btn.primary {
+  margin-left: 56vw;
+}
+
+/* ====== HEADERS ====== */
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0;
+  padding-bottom: 4px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+
+.overview-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 14px;
+}
+
+/* ====== OVERVIEW CARD SCROLL ====== */
+.overview-scroll-wrapper {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.overview-scroll {
+.overview-horizontal-scroll {
+  display: flex;
   overflow-x: auto;
-  white-space: nowrap;
-  padding-bottom: 10px;
-  /* For scrollbar spacing */
+  gap: 16px;
+  padding: 6px 4px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
 
-.overview-row {
+.overview-horizontal-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overview-horizontal-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 6px;
+}
+
+/* Scroll arrows */
+.scroll-arrow {
+  background: white;
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 20px;
+  cursor: pointer;
   display: flex;
-  gap: 40px;
-  /* Cards are inline blocks so this works smoothly */
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  transition: background 0.2s ease;
 }
 
+.scroll-arrow:hover {
+  background: white;
+}
+
+.scroll-arrow.left {
+  margin-right: 8px;
+}
+
+.scroll-arrow.right {
+  margin-left: 8px;
+}
+
+/* ====== CARDS ====== */
 .card {
-  background-color: #fefefe;
-  padding: 18px 20px;
-  border-radius: 10px;
-  border: solid 1px #DBE0E5;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease;
-  display: inline-block;
-  white-space: normal;
-  width: 260px;
+  min-width: 220px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 16px whitesmoke;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card p {
-  font-size: 15px;
+  margin: 0;
+  font-size: 14px;
   color: #666;
-  margin-bottom: 8px;
 }
 
 .card .amount {
-  color: #001aff;
-  font-weight: 600;
+  margin-top: 8px;
   font-size: 20px;
+  font-weight: bold;
+  color: blueviolet;
 }
 
-
-/* Statistics Section (no cards, just charts) */
-.statistics {
-  padding: 20px;
+/* ====== TABS ====== */
+.dashboard-tab-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.statistics h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #222;
+.tab-buttons {
+  display: flex;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
-.charts {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+.tab-buttons button {
+  background-color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #374151;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab-buttons button.active {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+}
+
+/* ====== CHARTS SECTION ====== */
+.dashboard-charts {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  overflow: auto;
+  padding-right: 4px;
 }
 
 .chart {
-  flex: 1;
-  min-width: 240px;
+  background: white;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.chart:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .chart p {
+  font-weight: 600;
   font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #333;
 }
 
-.bars {
-  display: flex;
-  gap: 6px;
-  align-items: flex-end;
-  height: 120px;
+/* ====== RECENT ACTIVITY SECTION ====== */
+.activity-section {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
-.bars .bar {
-  width: 16px;
-  height: 100%;
-  background-color: #ccc;
-  border-radius: 3px;
-}
-
-.bars.blue .bar {
-  background-color: #001aff;
-  height: calc(60% + 20px);
-}
-
-.bars.gray .bar {
-  background-color: #bbb;
-  height: calc(50% + 10px);
-}
-
-/* Activity Section */
-.activity {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.activity h2 {
-  font-size: 18px;
+.activity-section p {
   font-weight: 600;
-  color: #222;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
 }
 
 .activity-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  font-size: 14px;
+  color: #444;
 }
 
 .activity-list li {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-  color: #444;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.activity-list li span:last-child {
+  color: #888;
+  font-size: 12px;
+}
+
+/* Scrollbar in activity */
+.activity-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.activity-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dashboard-btn {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-btn:hover {
+  background: blueviolet;
+  color: white;
+}
+
+.dashboard-btn.primary {
+  margin-left: 47vw;
+}
+
+.dashboard-btn.secondary {
+  margin-left: 2vw;
+}
+
+.btn-icon {
+  margin-right: 6px;
+  font-size: 16px;
+  vertical-align: middle;
 }

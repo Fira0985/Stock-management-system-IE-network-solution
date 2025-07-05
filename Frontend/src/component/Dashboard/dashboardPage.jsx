@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
-import Navbar from '../Navbar/navbar';
+import { FiUpload, FiDownload } from 'react-icons/fi';
 
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -41,6 +41,17 @@ const Dashboard = ({ isSidebarOpen }) => {
   const [annualData, setAnnualData] = useState([]);
   const [activity, setActivity] = useState([]);
 
+  const [activeTab, setActiveTab] = useState('charts');
+
+  const scrollRef = React.useRef(null);
+
+  const scrollHorizontal = (direction) => {
+    if (!scrollRef.current) return;
+    const amount = 220;
+    scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
+
+
   useEffect(() => {
     Promise.all([
       fetchSalesOverview(),
@@ -63,72 +74,79 @@ const Dashboard = ({ isSidebarOpen }) => {
       });
   }, []);
 
-  const salesCards = [
+  const cards = [
     { label: 'Total Sales Value', amount: `$${salesOverview.totalSales.toLocaleString()}` },
     { label: 'Daily Sales', amount: `$${salesOverview.dailySales.toLocaleString()}` },
     { label: 'Weekly Sales', amount: `$${salesOverview.weeklySales.toLocaleString()}` },
-    { label: 'Monthly Sales', amount: `$${salesOverview.monthlySales.toLocaleString()}` }
-  ];
-
-  const purchaseCards = [
+    { label: 'Monthly Sales', amount: `$${salesOverview.monthlySales.toLocaleString()}` },
     { label: 'Total Purchase Value', amount: `$${purchaseOverview.totalPurchases.toLocaleString()}` },
     { label: 'Daily Purchase', amount: `$${purchaseOverview.dailyPurchases.toLocaleString()}` },
     { label: 'Weekly Purchase', amount: `$${purchaseOverview.weeklyPurchases.toLocaleString()}` },
-    { label: 'Monthly Purchase', amount: `$${purchaseOverview.monthlyPurchases.toLocaleString()}` }
+    { label: 'Monthly Purchase', amount: `$${purchaseOverview.monthlyPurchases.toLocaleString()}` },
   ];
 
   return (
-    <>
-      <main className={isSidebarOpen ? 'main-content' : 'main-content-collapsed'}>
-        <section className="overview">
-          {/* Sales Overview Cards */}
-          <div className="overview-scroll">
-            <div className="overview-row">
-              {salesCards.map((card, i) => (
-                <div className="card" key={`sale-${i}`}>
-                  <p>{card.label}</p>
-                  <h3 className="amount">{card.amount}</h3>
-                </div>
-              ))}
+    <main className={isSidebarOpen ? 'main-content' : 'main-content-collapsed'}>
+      <div className='dashboard-actions'>
+        <h1 className="dashboard-title">QuickView</h1>
+        <button className="dashboard-btn primary">
+          <FiUpload className="btn-icon" />
+          Import
+        </button>
+        <button className="dashboard-btn secondary">
+          <FiDownload className="btn-icon" />
+          Export
+        </button>
+
+      </div>
+      <h2 className="overview-title">Overview</h2>
+      <section className="overview-scroll-wrapper">
+        <button className="scroll-arrow left" onClick={() => scrollHorizontal('left')}>&#8249;</button>
+        <div className="overview-horizontal-scroll" ref={scrollRef}>
+          {cards.map((card, i) => (
+            <div className="card" key={`card-${i}`}>
+              <p>{card.label}</p>
+              <h3 className="amount">{card.amount}</h3>
             </div>
-          </div>
+          ))}
+        </div>
+        <button className="scroll-arrow right" onClick={() => scrollHorizontal('right')}>&#8250;</button>
+      </section>
 
-          {/* Purchase Overview Cards */}
-          <div className="overview-scroll">
-            <div className="overview-row">
-              {purchaseCards.map((card, i) => (
-                <div className="card" key={`purchase-${i}`}>
-                  <p>{card.label}</p>
-                  <h3 className="amount">{card.amount}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+      <div className="dashboard-tab-container">
+        <div className="tab-buttons">
+          <button
+            className={activeTab === 'charts' ? 'active' : ''}
+            onClick={() => setActiveTab('charts')}
+          >
+            Charts
+          </button>
+          <button
+            className={activeTab === 'activity' ? 'active' : ''}
+            onClick={() => setActiveTab('activity')}
+          >
+            Recent Activity
+          </button>
+        </div>
 
-        {/* Charts Section */}
-        <section className="statistics">
-          <h2>Statistics</h2>
-          <div className="charts">
-
-            {/* Weekly Sales Bar Chart */}
+        {activeTab === 'charts' ? (
+          <div className="dashboard-charts">
             <div className="chart">
               <p>Weekly Sales</p>
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={weeklyData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="sales" fill="#001aff" />
+                  <Bar dataKey="sales" fill="#001aff" animationDuration={1000} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Monthly Sales by Category Pie Chart */}
             <div className="chart">
               <p>Monthly Sales by Category</p>
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie
                     data={monthlyData}
@@ -136,8 +154,10 @@ const Dashboard = ({ isSidebarOpen }) => {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={70}
                     label
+                    isAnimationActive={true}
+                    animationDuration={800}
                   >
                     {monthlyData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
@@ -149,41 +169,39 @@ const Dashboard = ({ isSidebarOpen }) => {
               </ResponsiveContainer>
             </div>
 
-            {/* Annual Sales Line Chart */}
             <div className="chart">
               <p>Annual Sales</p>
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={180}>
                 <LineChart data={annualData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#001aff" strokeWidth={2} />
+                  <Line type="monotone" dataKey="value" stroke="#001aff" strokeWidth={2} animationDuration={1000} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
-
           </div>
-        </section>
+        ) : (
+          <div className="activity-section">
+            <p>Recent Activity</p>
+            <ul className="activity-list">
+              {activity.length === 0 ? (
+                <li><span>No recent activity</span></li>
+              ) : (
+                activity.map((item, index) => (
+                  <li key={index}>
+                    <span>{item.description}</span>
+                    <span>{new Date(item.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
 
-        {/* Recent Activity Section */}
-        <section className="activity">
-          <h2>Recent Activity</h2>
-          <ul className="activity-list">
-            {activity.length === 0 ? (
-              <li><span>No recent activity</span></li>
-            ) : (
-              activity.map((item, index) => (
-                <li key={index}>
-                  <span>{item.description}</span>
-                  <span>{new Date(item.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                </li>
-              ))
-            )}
-          </ul>
-        </section>
-      </main>
-    </>
+    </main>
   );
 };
 
