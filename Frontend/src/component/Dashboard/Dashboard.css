@@ -5,6 +5,7 @@
   margin-left: 16.6vw;
   font-family: "Segoe UI", sans-serif;
   width: 77vw;
+  margin-top: -5vh;
 }
 
 
@@ -20,24 +21,20 @@
   margin-left: 56vw;
 }
 
+.dashboard-actions {
+  margin-top: 2vh;
+  margin-bottom: 4vh;
+}
+
 /* ====== HEADERS ====== */
 .dashboard-title {
-  font-size: 32px;
+  font-size: 27px;
   font-weight: 700;
   color: #1a202c;
   margin: 0;
-  padding-bottom: 4px;
   letter-spacing: -0.5px;
-  line-height: 1.2;
 }
 
-
-.overview-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #444;
-  margin-bottom: 14px;
-}
 
 /* ====== OVERVIEW CARD SCROLL ====== */
 .overview-scroll-wrapper {
@@ -123,23 +120,16 @@
   color: blueviolet;
 }
 
-/* ====== TABS ====== */
-.dashboard-tab-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
 .tab-buttons {
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
-  width: 10vw;
+
+  width: 17vw;
 }
 
 .tab-buttons button {
-  background-color: white;
+  background-color: #f3f4f6;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
@@ -147,6 +137,8 @@
   cursor: pointer;
   color: #374151;
   transition: background-color 0.3s, color 0.3s;
+  width: 16vw;
+  height: 7vh;
 }
 
 .tab-buttons button.active {

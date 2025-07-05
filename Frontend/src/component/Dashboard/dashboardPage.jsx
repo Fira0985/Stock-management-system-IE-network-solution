@@ -88,7 +88,7 @@ const Dashboard = ({ isSidebarOpen }) => {
   return (
     <main className={isSidebarOpen ? 'main-content' : 'main-content-collapsed'}>
       <div className='dashboard-actions'>
-        <h1 className="dashboard-title">QuickView</h1>
+        <h1 className="dashboard-title">Overview</h1>
         <button className="dashboard-btn primary">
           <FiUpload className="btn-icon" />
           Import
@@ -99,7 +99,6 @@ const Dashboard = ({ isSidebarOpen }) => {
         </button>
 
       </div>
-      <h2 className="overview-title">Overview</h2>
       <section className="overview-scroll-wrapper">
         <button className="scroll-arrow left" onClick={() => scrollHorizontal('left')}>&#8249;</button>
         <div className="overview-horizontal-scroll" ref={scrollRef}>
