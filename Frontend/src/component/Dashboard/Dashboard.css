@@ -135,6 +135,7 @@
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
+  width: 10vw;
 }
 
 .tab-buttons button {
