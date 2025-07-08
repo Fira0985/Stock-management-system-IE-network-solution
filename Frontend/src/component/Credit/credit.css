@@ -1,0 +1,402 @@
+.credit-container {
+  padding: 30px 40px;
+  background-color: #fff;
+  margin-left: 15.5vw;
+  font-family: "Segoe UI", sans-serif;
+  width: 77vw;
+}
+
+.credit-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.credit-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 2.0rem;
+  font-weight: 700;
+  color: black;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: -3vh;
+}
+
+.credit-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 120px;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.credit-content {
+  background: white;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  width: 79vw;
+}
+
+.credit-container.collapse .credit-content {
+  width: 90vw;
+}
+
+
+.credit-container.collapse {
+  margin-left: 5vw;
+  transition: margin-left 0.3s ease;
+  width: 87vw;
+}
+
+.credit-controls {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.search-container {
+  position: relative;
+  margin-bottom: 2rem;
+  width: 80vw;
+  margin-left: -2vw;
+  margin-top: -3vh;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.tab-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+  margin-bottom: -3vh;
+  
+}
+
+.tab-button {
+  border: none;
+  cursor: pointer;
+}
+
+.tab-button:hover {
+  color: #1f2937;
+}
+
+.tab-button.tab-actives {
+  color: #111827;
+  border-bottom: #2563eb 2px solid;
+}
+
+
+.tab-label {
+  font-size: 0.875rem;
+}
+
+.tab-count {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.tab-button.tab-active .tab-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.credit-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header {
+  background: #f8fafc;
+  border-bottom: 2px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table-header th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table-row {
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+}
+
+.table-row:hover {
+  background: #f8fafc;
+}
+
+.table-row td {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+  vertical-align: middle;
+}
+
+.sale-id {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.customer-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.phone-number {
+  color: #6b7280;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.location {
+  color: #6b7280;
+}
+
+.amount {
+  font-weight: 600;
+  color: #111827;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.product-id {
+  color: #6b7280;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.8rem;
+}
+
+.status-cell {
+  padding: 0.5rem 1rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.status-badge.status-paid {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.status-unpaid {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.status-badge.status-partial {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.remaining-amount {
+  font-weight: 600;
+  color: #dc2626;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.action-cell {
+  padding: 0.5rem 1rem;
+}
+
+.pay-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.pay-button:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+}
+
+.pay-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.empty-icon {
+  width: 4rem;
+  height: 4rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .credit-container {
+    padding: 1rem;
+  }
+
+  .credit-title {
+    font-size: 2rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .credit-stats {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .stat-item {
+    padding: 0.75rem;
+    min-width: 100px;
+  }
+
+  .credit-controls {
+    padding: 1.5rem;
+  }
+
+  .tab-container {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .table-container {
+    max-height: 60vh;
+  }
+
+  .credit-table {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 480px) {
+  .credit-stats {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .stat-item {
+    width: 100%;
+  }
+}

@@ -14,7 +14,7 @@ import Report from "../../component/Report/report";
 import Settings from "../../component/Settings/settings";
 import Notificaton from "../../component/Notificaton/notification";
 import Contact from "../../component/Contact/Contact";
-import Credits from "../Credit/credit";
+import Credits from "../../component/Credit/credit";
 
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

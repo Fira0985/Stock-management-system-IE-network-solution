@@ -221,65 +221,63 @@ const Product = ({ isSidebarOpen }) => {
     };
 
     return (
-        <div className={isSidebarOpen ? "Product-content" : "Product-content collapse"}>
-            <div className="top">
-                <h1 className="page-title">Inventory</h1>
-                <button className="add" onClick={handleAddCategory}>Add Category</button>
-                <button className="bulk" onClick={handleAddProduct}>Add Product</button>
-                <button className="bulk" onClick={() => setModalOpen(true)}>Bulk Registration</button>
+        <div className={isSidebarOpen ? "pd-Product-content" : "pd-Product-content pd-collapse"}>
+            <div className="pd-top">
+                <h1 className="pd-page-title">Inventory</h1>
+                <button className="pd-add" onClick={handleAddCategory}>Add Category</button>
+                <button className="pd-bulk" onClick={handleAddProduct}>Add Product</button>
+                <button className="pd-bulk" onClick={() => setModalOpen(true)}>Bulk Registration</button>
             </div>
 
-            <div className="tab-navigation">
-
+            <div className="pd-tab-navigation">
                 <button
-                    className={`tab-button ${activeTab === 'products' ? 'active' : ''}`}
+                    className={`pd-tab-button ${activeTab === 'products' ? 'active' : ''}`}
                     onClick={() => setActiveTab('products')}
                 >
                     Products
                 </button>
 
                 <button
-                    className={`tab-button ${activeTab === 'categories' ? 'active' : ''}`}
+                    className={`pd-tab-button ${activeTab === 'categories' ? 'active' : ''}`}
                     onClick={() => setActiveTab('categories')}
                 >
                     Categories
                 </button>
             </div>
 
-            <div className="search-bar">
+            <div className="pd-search-bar">
                 <input
                     type="text"
                     placeholder={`Search by ${activeTab === 'categories' ? 'Category Name' : 'Product Name'}`}
                 />
-                <button className="close-btn">×</button>
             </div>
 
             {activeTab === 'products' && (
-                <div className="section">
-                    <h2 className="section-title">All Products</h2>
-                    <ul className="product-list-flat">
+                <div className="pd-section">
+                    <h2 className="pd-section-title">All Products</h2>
+                    <ul className="pd-product-list-flat">
                         {paginatedFlatProducts.map((prod, index) => {
                             const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
 
                             return (
                                 <li
                                     key={`${prod.category}-${index}`}
-                                    className="product-card"
+                                    className="pd-product-card"
                                     onClick={() => openProductDetail(fullProduct)}
                                     style={{ cursor: 'pointer' }}
                                 >
-                                    <div className="product-main-info">
-                                        <span className="product-name">{prod.name}</span>
-                                        <span className="product-category-tag">{prod.category}</span>
+                                    <div className="pd-product-main-info">
+                                        <span className="pd-product-name">{prod.name}</span>
+                                        <span className="pd-product-category-tag">{prod.category}</span>
                                     </div>
-                                    <FiBox className="product-card-icon" />
+                                    <FiBox className="pd-product-card-icon" />
                                 </li>
                             );
                         })}
                     </ul>
 
                     {totalFlatProductPages > 1 && (
-                        <div className="pagination">
+                        <div className="pd-pagination">
                             <span
                                 className={flatProductPage === 1 ? "disabled" : ""}
                                 onClick={() => flatProductPage > 1 && setFlatProductPage(flatProductPage - 1)}
@@ -300,9 +298,9 @@ const Product = ({ isSidebarOpen }) => {
 
 
             {activeTab === 'categories' && (
-                <div className="section">
-                    <h2 className="section-title">Categories</h2>
-                    <ul className="category-list">
+                <div className="pd-section">
+                    <h2 className="pd-section-title">Categories</h2>
+                    <ul className="pd-category-list">
                         {paginatedCategories.map((cat, index) => {
                             const globalIndex = (categoryPage - 1) * categoriesPerPage + index;
                             const currentProductPage = productPageMap[globalIndex] || 1;
@@ -313,22 +311,22 @@ const Product = ({ isSidebarOpen }) => {
                             );
 
                             return (
-                                <li key={cat.id} className={`category-item ${expandedCategory === globalIndex ? 'expanded' : ''}`}>
-                                    <div className="category-header" onClick={() => handleToggleCategory(globalIndex)}>
-                                        <div className="category-title">
-                                            <FiFolder className="category-icon" />
+                                <li key={cat.id} className={`pd-category-item ${expandedCategory === globalIndex ? 'expanded' : ''}`}>
+                                    <div className="pd-category-header" onClick={() => handleToggleCategory(globalIndex)}>
+                                        <div className="pd-category-title">
+                                            <FiFolder className="pd-category-icon" />
                                             <span>{cat.name}</span>
                                         </div>
-                                        <span className="product-count-badge">{cat.products.length} items</span>
-                                        <div className="item-menu" onClick={(e) => {
+                                        <span className="pd-product-count-badge">{cat.products.length} items</span>
+                                        <div className="pd-item-menu" onClick={(e) => {
                                             e.stopPropagation();
                                             setMenuOpen(menuOpen === cat.id ? null : cat.id);
                                         }}>
                                             <FiMoreVertical />
                                             {menuOpen === cat.id && (
                                                 <div >
-                                                    <div className="popup-item edit-item" onClick={() => handleEditCategory(cat.id)}>Edit</div>
-                                                    <div className="popup-item delete-item" onClick={() => handleDeleteCategory(cat)}>Delete</div>
+                                                    <div className="pd-popup-item pd-edit-item" onClick={() => handleEditCategory(cat.id)}>Edit</div>
+                                                    <div className="pd-popup-item pd-delete-item" onClick={() => handleDeleteCategory(cat)}>Delete</div>
                                                 </div>
                                             )}
                                         </div>
@@ -336,28 +334,28 @@ const Product = ({ isSidebarOpen }) => {
 
                                     {expandedCategory === globalIndex && (
                                         <>
-                                            <ul className="category-products">
+                                            <ul className="pd-category-products">
                                                 {paginatedProducts.map((prod, index) => {
                                                     const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
 
                                                     return (
                                                         <li
                                                             key={`${prod.category}-${index}`}
-                                                            className="product-card"
+                                                            className="pd-product-card"
                                                             onClick={() => openProductDetail(fullProduct)}
                                                             style={{ cursor: 'pointer' }}
                                                         >
-                                                            <div className="product-main-info">
-                                                                <span className="product-name">{prod.name}</span>
-                                                                <span className="product-category-tag">{prod.category}</span>
+                                                            <div className="pd-product-main-info">
+                                                                <span className="pd-product-name">{prod.name}</span>
+                                                                <span className="pd-product-category-tag">{prod.category}</span>
                                                             </div>
-                                                            <FiBox className="product-card-icon" />
+                                                            <FiBox className="pd-product-card-icon" />
                                                         </li>
                                                     );
                                                 })}
                                             </ul>
                                             {totalProductPages > 1 && (
-                                                <div className="pagination">
+                                                <div className="pd-pagination">
                                                     <span
                                                         className={currentProductPage === 1 ? "disabled" : ""}
                                                         onClick={() =>
@@ -386,7 +384,7 @@ const Product = ({ isSidebarOpen }) => {
                         })}
                     </ul>
                     {totalCategoryPages > 1 && (
-                        <div className="pagination">
+                        <div className="pd-pagination">
                             <span
                                 className={categoryPage === 1 ? "disabled" : ""}
                                 onClick={() => categoryPage > 1 && setCategoryPage(categoryPage - 1)}

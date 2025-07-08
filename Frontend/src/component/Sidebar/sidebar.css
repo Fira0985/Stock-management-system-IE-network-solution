@@ -71,7 +71,7 @@
     white-space: nowrap;
 }
 
-.menu li:hover {
+.menu li:hover:not(.report-parent) {
     background-color: #e6e6ff;
     color: #001aff;
     padding-left: 16px;

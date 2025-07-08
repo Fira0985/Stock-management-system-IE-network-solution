@@ -1,4 +1,4 @@
-.supplier-content {
+.sp-supplier-content {
     padding: 30px 40px;
     background-color: #fff;
     margin-left: 16.6vw;
@@ -6,27 +6,27 @@
     width: 77vw;
 }
 
-.supplier-content.collapse {
+.sp-supplier-content.sp-collapse {
     margin-left: 6vw;
     transition: margin-left 0.3s ease;
     width: 87vw;
 }
 
 /* Header Section */
-.supplier-header {
+.sp-supplier-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
 }
 
-.supplier-header h2 {
+.sp-supplier-header h2 {
     font-size: 24px;
     font-weight: bold;
 }
 
 /* Add Supplier Button */
-.add-supplier {
+.sp-add-supplier {
     background-color: #f9f9f9;
     border: 1px solid #d1d5db;
     padding: 10px 20px;
@@ -41,19 +41,19 @@
     margin-top: -2vh;
 }
 
-.add-supplier:hover {
+.sp-add-supplier:hover {
     background-color: blueviolet;
     color: #ffffff;
 }
 
 /* Table Styles */
-.supplier-table {
+.sp-supplier-table {
     width: 100%;
     border: 1px solid #e5e7eb;
     border-radius: 10px;
 }
 
-.supplier-row {
+.sp-supplier-row {
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 2fr 0.5fr;
     padding: 15px 15px;
@@ -63,14 +63,14 @@
     position: relative;
 }
 
-.supplier-row.header {
+.sp-supplier-row.sp-header {
     font-weight: bold;
     background-color: #f3f4f6;
     border-bottom: 2px solid #d1d5db;
 }
 
 /* Dots Menu */
-.dots {
+.sp-dots {
     font-size: 20px;
     color: #666;
     cursor: pointer;
@@ -79,7 +79,7 @@
 }
 
 /* Popup Menu */
-.popup-menu {
+.sp-popup-menu {
     position: absolute;
     top: 40px;
     right: 10px;
@@ -93,27 +93,27 @@
     flex-direction: column;
 }
 
-.popup-item {
+.sp-popup-item {
     padding: 10px 14px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
-.popup-item:hover {
+.sp-popup-item:hover {
     background-color: #f2f2f2;
 }
 
-.edit-item {
+.sp-edit-item {
     color: #333;
 }
 
-.delete-item {
+.sp-delete-item {
     color: #333;
 }
 
 /* Pagination Styles */
-.pagination {
+.sp-pagination {
     margin-top: 30px;
     display: flex;
     gap: 10px;
@@ -122,20 +122,18 @@
     justify-content: center;
 }
 
-.pagination span {
+.sp-pagination span {
     padding: 5px 12px;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.pagination .active {
+.sp-pagination .sp-active {
     background-color: black;
     color: white;
 }
 
-.pagination .disabled {
+.sp-pagination .sp-disabled {
     color: #aaa;
     cursor: not-allowed;
 }
-
-

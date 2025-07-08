@@ -98,18 +98,18 @@ const Supplier = ({ isSidebarOpen }) => {
 
     return (
         <div
-            className={isSidebarOpen ? "supplier-content" : "supplier-content collapse"}
+            className={isSidebarOpen ? "sp-supplier-content" : "sp-supplier-content sp-collapse"}
             onClick={() => setMenuIndex(null)}
         >
-            <div className="supplier-header">
+            <div className="sp-supplier-header">
                 <h2>All suppliers</h2>
-                <button className="add-supplier" onClick={() => setShowAddModal(true)}>
+                <button className="sp-add-supplier" onClick={() => setShowAddModal(true)}>
                     New Supplier
                 </button>
             </div>
 
-            <div className="supplier-table">
-                <div className="supplier-row header">
+            <div className="sp-supplier-table">
+                <div className="sp-supplier-row sp-header">
                     <span>ID</span>
                     <span>Name</span>
                     <span>Phone</span>
@@ -118,13 +118,13 @@ const Supplier = ({ isSidebarOpen }) => {
                 </div>
 
                 {paginatedsuppliers.map((supplier, index) => (
-                    <div className="supplier-row" key={supplier.id}>
+                    <div className="sp-supplier-row" key={supplier.id}>
                         <span>#{supplier.id}</span>
                         <span>{supplier.name}</span>
                         <span>{supplier.phone}</span>
                         <span>{supplier.address}</span>
                         <span
-                            className="dots"
+                            className="sp-dots"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuIndex(menuIndex === index ? null : index);
@@ -132,15 +132,15 @@ const Supplier = ({ isSidebarOpen }) => {
                         >
                             ⋯
                             {menuIndex === index && (
-                                <div className="popup-menu">
+                                <div className="sp-popup-menu">
                                     <div
-                                        className="popup-item edit-item"
+                                        className="sp-popup-item sp-edit-item"
                                         onClick={() => handleEditClick(supplier)}
                                     >
                                         Edit
                                     </div>
                                     <div
-                                        className="popup-item delete-item"
+                                        className="sp-popup-item sp-delete-item"
                                         onClick={() => handleDeleteClick(supplier)}
                                     >
                                         Delete
@@ -152,9 +152,9 @@ const Supplier = ({ isSidebarOpen }) => {
                 ))}
             </div>
 
-            <div className="pagination">
+            <div className="sp-pagination">
                 <span
-                    className={currentPage === 1 ? "disabled" : ""}
+                    className={currentPage === 1 ? "sp-disabled" : ""}
                     onClick={() => goToPage(currentPage - 1)}
                 >
                     ← Previous
@@ -163,7 +163,7 @@ const Supplier = ({ isSidebarOpen }) => {
                 {Array.from({ length: totalPages }, (_, i) => (
                     <span
                         key={i + 1}
-                        className={currentPage === i + 1 ? "active" : ""}
+                        className={currentPage === i + 1 ? "sp-active" : ""}
                         onClick={() => goToPage(i + 1)}
                     >
                         {i + 1}
@@ -171,7 +171,7 @@ const Supplier = ({ isSidebarOpen }) => {
                 ))}
 
                 <span
-                    className={currentPage === totalPages ? "disabled" : ""}
+                    className={currentPage === totalPages ? "sp-disabled" : ""}
                     onClick={() => goToPage(currentPage + 1)}
                 >
                     Next →

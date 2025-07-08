@@ -99,18 +99,18 @@ const Customer = ({ isSidebarOpen }) => {
 
     return (
         <div
-            className={isSidebarOpen ? "customer-content" : "customer-content collapse"}
+            className={isSidebarOpen ? "cs-customer-content" : "cs-customer-content cs-collapse"}
             onClick={() => setMenuIndex(null)}
         >
-            <div className="customer-header">
+            <div className="cs-customer-header">
                 <h2>All Customers</h2>
-                <button className="add-customer" onClick={() => setShowAddModal(true)}>
+                <button className="cs-add-customer" onClick={() => setShowAddModal(true)}>
                     New Customer
                 </button>
             </div>
 
-            <div className="customer-table">
-                <div className="customer-row header">
+            <div className="cs-customer-table">
+                <div className="cs-customer-row cs-header">
                     <span>ID</span>
                     <span>Name</span>
                     <span>Phone</span>
@@ -120,14 +120,14 @@ const Customer = ({ isSidebarOpen }) => {
                 </div>
 
                 {paginatedCustomers.map((customer, index) => (
-                    <div className="customer-row" key={customer.id}>
+                    <div className="cs-customer-row" key={customer.id}>
                         <span>#{customer.id}</span>
                         <span>{customer.name}</span>
                         <span>{customer.phone}</span>
                         <span>{customer.address}</span>
                         <span>{customer.credit_limit?.toLocaleString()}</span>
                         <span
-                            className="dots"
+                            className="cs-dots"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuIndex(menuIndex === index ? null : index);
@@ -135,15 +135,15 @@ const Customer = ({ isSidebarOpen }) => {
                         >
                             ⋯
                             {menuIndex === index && (
-                                <div className="popup-menu">
+                                <div className="cs-popup-menu">
                                     <div
-                                        className="popup-item edit-item"
+                                        className="cs-popup-item cs-edit-item"
                                         onClick={() => handleEditClick(customer)}
                                     >
                                         Edit
                                     </div>
                                     <div
-                                        className="popup-item delete-item"
+                                        className="cs-popup-item cs-delete-item"
                                         onClick={() => handleDeleteClick(customer)}
                                     >
                                         Delete
@@ -155,9 +155,9 @@ const Customer = ({ isSidebarOpen }) => {
                 ))}
             </div>
 
-            <div className="pagination">
+            <div className="cs-pagination">
                 <span
-                    className={currentPage === 1 ? "disabled" : ""}
+                    className={currentPage === 1 ? "cs-disabled" : ""}
                     onClick={() => goToPage(currentPage - 1)}
                 >
                     ← Previous
@@ -166,7 +166,7 @@ const Customer = ({ isSidebarOpen }) => {
                 {Array.from({ length: totalPages }, (_, i) => (
                     <span
                         key={i + 1}
-                        className={currentPage === i + 1 ? "active" : ""}
+                        className={currentPage === i + 1 ? "cs-active" : ""}
                         onClick={() => goToPage(i + 1)}
                     >
                         {i + 1}
@@ -174,7 +174,7 @@ const Customer = ({ isSidebarOpen }) => {
                 ))}
 
                 <span
-                    className={currentPage === totalPages ? "disabled" : ""}
+                    className={currentPage === totalPages ? "cs-disabled" : ""}
                     onClick={() => goToPage(currentPage + 1)}
                 >
                     Next →

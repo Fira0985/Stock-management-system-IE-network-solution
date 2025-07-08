@@ -1,4 +1,4 @@
-.customer-content {
+.cs-customer-content {
     padding: 30px 40px;
     background-color: #fff;
     margin-left: 16.6vw;
@@ -7,7 +7,7 @@
 }
 
 /* Customer Content (Collapsed Sidebar) */
-.customer-content.collapse {
+.cs-customer-content.cs-collapse {
     margin-left: 6vw;
     transition: margin-left 0.3s ease;
     width: 87vw;
@@ -16,7 +16,7 @@
 }
 
 /* Header Section */
-.customer-header {
+.cs-customer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,7 +24,7 @@
     margin-bottom: 24px;
 }
 
-.customer-header h2 {
+.cs-customer-header h2 {
     font-size: 22px;
     font-weight: 700;
     color: #1f2937;
@@ -32,7 +32,7 @@
 }
 
 /* Add Customer Button */
-.add-customer {
+.cs-add-customer {
     background-color: #f9fafb;
     border: 1px solid #d1d5db;
     padding: 10px 20px;
@@ -47,14 +47,14 @@
     margin-top: 1vh;
 }
 
-.add-customer:hover {
+.cs-add-customer:hover {
     background-color: #7c3aed;
     color: #ffffff;
     border-color: transparent;
 }
 
 /* Table Wrapper */
-.customer-table {
+.cs-customer-table {
     width: 100%;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
@@ -63,7 +63,7 @@
 }
 
 /* Table Rows */
-.customer-row {
+.cs-customer-row {
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 2fr 2fr 0.5fr;
     padding: 18px 16px;
@@ -74,11 +74,11 @@
     transition: background-color 0.2s ease;
 }
 
-.customer-row:hover {
+.cs-customer-row:hover {
     background-color: #f9fafb;
 }
 
-.customer-row.header {
+.cs-customer-row.cs-header {
     font-weight: 600;
     background-color: #f3f4f6;
     color: #1f2937;
@@ -86,13 +86,13 @@
 }
 
 /* Container holding the dots icon and menu */
-.menu-container {
+.cs-menu-container {
     position: relative;
     display: inline-block;
 }
 
 /* Dots icon */
-.dots {
+.cs-dots {
     font-size: 20px;
     color: #6b7280;
     cursor: pointer;
@@ -101,12 +101,12 @@
     transition: color 0.2s ease;
 }
 
-.dots:hover {
+.cs-dots:hover {
     color: #374151;
 }
 
 /* Popup Menu */
-.popup-menu {
+.cs-popup-menu {
     position: absolute;
     top: 100%;
     right: 0;
@@ -123,7 +123,7 @@
 }
 
 /* Menu Item Styling */
-.popup-item {
+.cs-popup-item {
     padding: 10px 16px;
     font-size: 14px;
     color: #1f2937;
@@ -131,21 +131,20 @@
     transition: background-color 0.2s ease;
 }
 
-.popup-item:hover {
+.cs-popup-item:hover {
     background-color: #f3f4f6;
 }
 
-.edit-item {
+.cs-edit-item {
     color: #333;
 }
 
-.delete-item {
+.cs-delete-item {
     color: #333;
 }
-
 
 /* Pagination */
-.pagination {
+.cs-pagination {
     margin-top: 30px;
     display: flex;
     justify-content: center;
@@ -155,24 +154,24 @@
     color: #4b5563;
 }
 
-.pagination span {
+.cs-pagination span {
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.pagination span:hover {
+.cs-pagination span:hover {
     background-color: #f3f4f6;
 }
 
-.pagination .active {
+.cs-pagination .cs-active {
     background-color: #111827;
     color: #ffffff;
     font-weight: 600;
 }
 
-.pagination .disabled {
+.cs-pagination .cs-disabled {
     color: #9ca3af;
     cursor: not-allowed;
 }

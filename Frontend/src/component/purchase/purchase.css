@@ -3,6 +3,7 @@
     background-color: #fff;
     margin-left: 15.5vw;
     font-family: "Segoe UI", sans-serif;
+    margin-top: 3vh;
     width: 77vw;
 }
 
@@ -195,7 +196,7 @@
     position: fixed;
     left: 0;
     bottom: 0;
-    width: 100%;
+
     background-color: rgba(0, 0, 0, 0.4);
     height: 100%;
     z-index: 999;

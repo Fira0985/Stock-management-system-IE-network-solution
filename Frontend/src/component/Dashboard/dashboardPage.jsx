@@ -88,11 +88,7 @@ const Dashboard = ({ isSidebarOpen }) => {
   return (
     <main className={isSidebarOpen ? 'main-content' : 'main-content-collapsed'}>
       <div className='dashboard-actions'>
-        <h1 className="dashboard-title">Overview</h1>
-        <button className="dashboard-btn primary">
-          <FiUpload className="btn-icon" />
-          Import
-        </button>
+        <h1 className="dashboard-titles">Overview</h1>
         <button className="dashboard-btn secondary">
           <FiDownload className="btn-icon" />
           Export
@@ -103,7 +99,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         <button className="scroll-arrow left" onClick={() => scrollHorizontal('left')}>&#8249;</button>
         <div className="overview-horizontal-scroll" ref={scrollRef}>
           {cards.map((card, i) => (
-            <div className="card" key={`card-${i}`}>
+            <div className="cards" key={`card-${i}`}>
               <p>{card.label}</p>
               <h3 className="amount">{card.amount}</h3>
             </div>

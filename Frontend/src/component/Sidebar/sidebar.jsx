@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "./sidebar.css";
 import {
   LayoutDashboard,
@@ -12,17 +12,10 @@ import {
   User,
   Settings,
 } from "lucide-react";
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiPhoneCall,
-  FiLogOut,
-} from "react-icons/fi";
-import { uploadProfileImage } from "../../services/userService";
+import { FiChevronLeft, FiChevronRight, FiPhoneCall, FiLogOut } from "react-icons/fi";
 
 const Sidebar = (props) => {
   const [isOpen, setIsOpen] = useState(true);
-
   const role = localStorage.getItem("role");
 
   const handleToggle = () => {

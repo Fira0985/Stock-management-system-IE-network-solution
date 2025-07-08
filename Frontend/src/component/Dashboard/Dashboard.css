@@ -27,11 +27,11 @@
 }
 
 /* ====== HEADERS ====== */
-.dashboard-title {
+.dashboard-titles {
   font-size: 27px;
   font-weight: 700;
   color: #1a202c;
-  margin: 0;
+  margin-left: 2vw;
   letter-spacing: -0.5px;
 }
 
@@ -91,7 +91,7 @@
 }
 
 /* ====== CARDS ====== */
-.card {
+.cards {
   min-width: 220px;
   flex-shrink: 0;
   background: white;
@@ -102,22 +102,30 @@
   cursor: pointer;
 }
 
-.card:hover {
+.cards:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.card p {
+.cards p {
   margin: 0;
   font-size: 14px;
   color: #666;
 }
 
-.card .amount {
+.cards .amount {
   margin-top: 8px;
   font-size: 20px;
   font-weight: bold;
   color: blueviolet;
+}
+
+.dashboard-tab-container{
+  margin-left: 2vw;
+}
+
+.main-content-collapsed .dashboard-tab-container {
+  margin-left: 0;
 }
 
 .tab-buttons {
@@ -246,6 +254,8 @@
   cursor: pointer;
   transition: all 0.25s ease-in-out;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: 10vw;
+  height: 5vh;
 }
 
 .dashboard-btn:hover {
@@ -253,12 +263,8 @@
   color: white;
 }
 
-.dashboard-btn.primary {
-  margin-left: 47vw;
-}
-
 .dashboard-btn.secondary {
-  margin-left: 2vw;
+  margin-left: 57vw;
 }
 
 .btn-icon {
