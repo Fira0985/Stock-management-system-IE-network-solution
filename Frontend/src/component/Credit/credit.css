@@ -6,8 +6,17 @@
   width: 77vw;
 }
 
+.credit-container.collapse {
+  margin-left: 5vw;
+  transition: margin-left 0.3s ease;
+  width: 87vw;
+}
+
+
 .credit-header {
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
 }
 
 .header-content {
@@ -18,11 +27,12 @@
   gap: 1rem;
 }
 
+
 .credit-title {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 2.0rem;
+  font-size: 20px;
   font-weight: 700;
   color: black;
   margin: 0;
@@ -72,13 +82,6 @@
   width: 90vw;
 }
 
-
-.credit-container.collapse {
-  margin-left: 5vw;
-  transition: margin-left 0.3s ease;
-  width: 87vw;
-}
-
 .credit-controls {
   padding: 2rem;
   border-bottom: 1px solid #e2e8f0;
@@ -87,9 +90,13 @@
 .search-container {
   position: relative;
   margin-bottom: 2rem;
-  width: 80vw;
+  width: 70vw;
   margin-left: -2vw;
   margin-top: -3vh;
+}
+
+.search-container input{
+  width: 100%;
 }
 
 .search-icon {

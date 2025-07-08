@@ -11,6 +11,7 @@ const { loginUser } = require('../middleware/auth');
 const { getAllPurchase, addPurchase } = require('../controllers/purchase');
 const { uploadExcelFile } = require('../controllers/uploadExcelFile');
 const { getAllSales, addSales } = require('../controllers/sale');
+const creditController = require("../controllers/credit");
 
 const {
     getSalesOverview,
@@ -83,5 +84,11 @@ router.post('/upload-excel', upload.single('excelFile'), (req, res) => {
     res.json({ message: 'Excel uploaded successfully' });
 });
 
+
+router.get("/credits", authenticateToken, creditController.getAllCredits);
+router.get("/paid", authenticateToken, creditController.getPaidCredits);
+router.get("/unpaid", authenticateToken, creditController.getUnpaidCredits);
+router.get("/partial", authenticateToken, creditController.getPartialCredits);
+router.post('/makePayment', authenticateToken, creditController.makePayment);
 
 module.exports = router;

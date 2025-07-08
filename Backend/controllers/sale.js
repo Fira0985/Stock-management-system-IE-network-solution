@@ -69,7 +69,6 @@ const addSales = async (req, res) => {
         paid_amount = 0,
         balance_due,
         due_date,
-        payment_status = 'UNPAID',
         customer_id = null,
         items = [],
     } = req.body;
@@ -82,24 +81,28 @@ const addSales = async (req, res) => {
         const parsedPaid = parseFloat(paid_amount);
         const parsedBalance = parseFloat(balance_due);
 
-
         if (!type || isNaN(parsedTotal) || items.length === 0) {
-            return res.status(400).json({ error: 'Missing or invalid required sale data.' });
+            return res
+                .status(400)
+                .json({ error: 'Missing or invalid required sale data.' });
         }
 
         // Validate customer (optional)
         if (customer_id !== null) {
-            const customer = await prisma.nonUser.findUnique({ where: { id: parseInt(customer_id) } });
+            const customer = await prisma.nonUser.findUnique({
+                where: { id: parseInt(customer_id) },
+            });
 
-            if (type == "CREDIT") {
-                if(parsedBalance > customer.credit_limit) {
+            if (!customer || customer.type !== 'CUSTOMER') {
+                return res.status(400).json({ error: 'Invalid customer ID.' });
+            }
+
+            if (type === 'CREDIT') {
+                if (parsedBalance > customer.credit_limit) {
                     return res.status(400).json({
                         error: `Credit limit exceeded for customer ID ${customer_id}. Limit: ${customer.credit_limit}, Requested: ${parsedBalance}`,
                     });
                 }
-            }
-            if (!customer || customer.type !== 'CUSTOMER') {
-                return res.status(400).json({ error: 'Invalid customer ID.' });
             }
         }
 
@@ -113,10 +116,14 @@ const addSales = async (req, res) => {
                 return res.status(400).json({ error: 'Invalid item data.' });
             }
 
-            const product = await prisma.product.findUnique({ where: { id: product_id } });
+            const product = await prisma.product.findUnique({
+                where: { id: product_id },
+            });
 
             if (!product || product.archived) {
-                return res.status(404).json({ error: `Product with ID ${product_id} not found or archived.` });
+                return res
+                    .status(404)
+                    .json({ error: `Product with ID ${product_id} not found or archived.` });
             }
 
             const availableStock = parseInt(product.unit);
@@ -129,7 +136,7 @@ const addSales = async (req, res) => {
             parsedItems.push({
                 product_id,
                 quantity,
-                unit_price: parseFloat(product.sale_price), // use DB value
+                unit_price: parseFloat(product.sale_price),
             });
         }
 
@@ -143,21 +150,26 @@ const addSales = async (req, res) => {
                     paid_amount: parsedPaid,
                     balance_due: parsedBalance,
                     due_date: due_date ? new Date(due_date) : null,
-                    payment_status,
+                    payment_status: (() => {
+                        if (parsedPaid === 0) return 'UNPAID';
+                        if (parsedPaid < parsedTotal) return 'PARTIAL';
+                        return 'PAID';
+                    })(),
                     customer_id: customer_id ? parseInt(customer_id) : null,
                     created_by_id,
                     items: {
                         create: parsedItems,
                     },
-                    payments: parsedPaid > 0
-                        ? {
-                            create: {
-                                amount: parsedPaid,
-                                paid_at: new Date(),
-                                created_by_id,
-                            },
-                        }
-                        : undefined,
+                    payments:
+                        parsedPaid > 0
+                            ? {
+                                create: {
+                                    amount: parsedPaid,
+                                    paid_at: new Date(),
+                                    created_by_id,
+                                },
+                            }
+                            : undefined,
                 },
                 include: {
                     items: true,
@@ -165,7 +177,7 @@ const addSales = async (req, res) => {
                 },
             });
 
-           // If the sale is a credit sale, update customer credit 
+            // If credit sale, reduce customer's credit_limit
             if (type === 'CREDIT' && customer_id) {
                 await tx.nonUser.update({
                     where: { id: parseInt(customer_id) },
@@ -193,12 +205,14 @@ const addSales = async (req, res) => {
         });
 
         res.status(201).json({ message: 'Sale successfully created', sale });
-
     } catch (error) {
         console.error('Error adding sale:', error);
         res.status(500).json({ error: 'Failed to add sale', details: error.message });
     }
 };
+
+module.exports = { addSales };
+
 
 module.exports = {
     getAllSales,
