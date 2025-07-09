@@ -516,16 +516,6 @@ async function getBusinessHealthSummary(req, res) {
             s.percentage = totalSupplierQuantity > 0 ? ((s.percentage / totalSupplierQuantity) * 100).toFixed(2) + '%' : '0%';
         });
 
-        
-         console.log("Returning inventory summary:", {
-            grossProfitByDay: Object.fromEntries(grossProfitByDayMap),
-            grossProfitByWeek: Object.fromEntries(grossProfitByWeekMap),
-            grossProfitByMonth: Object.fromEntries(grossProfitByMonthMap),
-            revenueForecastNextMonth,
-            customerPurchaseFrequency,
-            supplierDependence,
-        });
-
         return res.json({
             grossProfitByDay: Object.fromEntries(grossProfitByDayMap),
             grossProfitByWeek: Object.fromEntries(grossProfitByWeekMap),
