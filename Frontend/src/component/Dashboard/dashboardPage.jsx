@@ -1,14 +1,24 @@
 // src/components/Dashboard/Dashboard.jsx
 
-import React, { useState, useEffect } from 'react';
-import './Dashboard.css';
-import { FiUpload, FiDownload } from 'react-icons/fi';
+import React, { useState, useEffect } from "react";
+import "./Dashboard.css";
+import { FiUpload, FiDownload } from "react-icons/fi";
 
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend,
-  LineChart, Line
-} from 'recharts';
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  LineChart,
+  Line,
+} from "recharts";
 
 import {
   fetchSalesOverview,
@@ -16,24 +26,24 @@ import {
   fetchWeeklySalesChart,
   fetchMonthlyCategoryChart,
   fetchAnnualSalesChart,
-  fetchRecentActivity
-} from '../../services/statisticsApi';
+  fetchRecentActivity,
+} from "../../services/statisticsApi";
 
-const pieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const pieColors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const Dashboard = ({ isSidebarOpen }) => {
   const [salesOverview, setSalesOverview] = useState({
     totalSales: 0,
     dailySales: 0,
     weeklySales: 0,
-    monthlySales: 0
+    monthlySales: 0,
   });
 
   const [purchaseOverview, setPurchaseOverview] = useState({
     totalPurchases: 0,
     dailyPurchases: 0,
     weeklyPurchases: 0,
-    monthlyPurchases: 0
+    monthlyPurchases: 0,
   });
 
   const [weeklyData, setWeeklyData] = useState([]);
@@ -41,16 +51,18 @@ const Dashboard = ({ isSidebarOpen }) => {
   const [annualData, setAnnualData] = useState([]);
   const [activity, setActivity] = useState([]);
 
-  const [activeTab, setActiveTab] = useState('charts');
+  const [activeTab, setActiveTab] = useState("charts");
 
   const scrollRef = React.useRef(null);
 
   const scrollHorizontal = (direction) => {
     if (!scrollRef.current) return;
     const amount = 220;
-    scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
   };
-
 
   useEffect(() => {
     Promise.all([
@@ -59,44 +71,74 @@ const Dashboard = ({ isSidebarOpen }) => {
       fetchWeeklySalesChart(),
       fetchMonthlyCategoryChart(),
       fetchAnnualSalesChart(),
-      fetchRecentActivity()
+      fetchRecentActivity(),
     ])
       .then(([salesOv, purchaseOv, weekly, monthlyCat, annual, recent]) => {
         setSalesOverview(salesOv);
         setPurchaseOverview(purchaseOv);
-        setWeeklyData(weekly.map(d => ({ name: d.day, sales: d.sales })));
-        setMonthlyData(monthlyCat.map(d => ({ name: d.category, value: d.value })));
-        setAnnualData(annual.map(d => ({ month: d.month, value: d.value })));
+        setWeeklyData(weekly.map((d) => ({ name: d.day, sales: d.sales })));
+        setMonthlyData(
+          monthlyCat.map((d) => ({ name: d.category, value: d.value }))
+        );
+        setAnnualData(annual.map((d) => ({ month: d.month, value: d.value })));
         setActivity(recent);
       })
-      .catch(err => {
-        console.error('Failed to load dashboard data:', err);
+      .catch((err) => {
+        console.error("Failed to load dashboard data:", err);
       });
   }, []);
 
   const cards = [
-    { label: 'Total Sales Value', amount: `$${salesOverview.totalSales.toLocaleString()}` },
-    { label: 'Daily Sales', amount: `$${salesOverview.dailySales.toLocaleString()}` },
-    { label: 'Weekly Sales', amount: `$${salesOverview.weeklySales.toLocaleString()}` },
-    { label: 'Monthly Sales', amount: `$${salesOverview.monthlySales.toLocaleString()}` },
-    { label: 'Total Purchase Value', amount: `$${purchaseOverview.totalPurchases.toLocaleString()}` },
-    { label: 'Daily Purchase', amount: `$${purchaseOverview.dailyPurchases.toLocaleString()}` },
-    { label: 'Weekly Purchase', amount: `$${purchaseOverview.weeklyPurchases.toLocaleString()}` },
-    { label: 'Monthly Purchase', amount: `$${purchaseOverview.monthlyPurchases.toLocaleString()}` },
+    {
+      label: "Total Sales Value",
+      amount: `$${salesOverview.totalSales.toLocaleString()}`,
+    },
+    {
+      label: "Daily Sales",
+      amount: `$${salesOverview.dailySales.toLocaleString()}`,
+    },
+    {
+      label: "Weekly Sales",
+      amount: `$${salesOverview.weeklySales.toLocaleString()}`,
+    },
+    {
+      label: "Monthly Sales",
+      amount: `$${salesOverview.monthlySales.toLocaleString()}`,
+    },
+    {
+      label: "Total Purchase Value",
+      amount: `$${purchaseOverview.totalPurchases.toLocaleString()}`,
+    },
+    {
+      label: "Daily Purchase",
+      amount: `$${purchaseOverview.dailyPurchases.toLocaleString()}`,
+    },
+    {
+      label: "Weekly Purchase",
+      amount: `$${purchaseOverview.weeklyPurchases.toLocaleString()}`,
+    },
+    {
+      label: "Monthly Purchase",
+      amount: `$${purchaseOverview.monthlyPurchases.toLocaleString()}`,
+    },
   ];
 
   return (
-    <main className={isSidebarOpen ? 'main-content' : 'main-content-collapsed'}>
-      <div className='dashboard-actions'>
+    <main className={isSidebarOpen ? "main-content" : "main-content-collapsed"}>
+      <div className="dashboard-actions">
         <h1 className="dashboard-titles">Overview</h1>
         <button className="dashboard-btn secondary">
           <FiDownload className="btn-icon" />
           Export
         </button>
-
       </div>
       <section className="overview-scroll-wrapper">
-        <button className="scroll-arrow left" onClick={() => scrollHorizontal('left')}>&#8249;</button>
+        <button
+          className="scroll-arrow left"
+          onClick={() => scrollHorizontal("left")}
+        >
+          &#8249;
+        </button>
         <div className="overview-horizontal-scroll" ref={scrollRef}>
           {cards.map((card, i) => (
             <div className="cards" key={`card-${i}`}>
@@ -105,26 +147,31 @@ const Dashboard = ({ isSidebarOpen }) => {
             </div>
           ))}
         </div>
-        <button className="scroll-arrow right" onClick={() => scrollHorizontal('right')}>&#8250;</button>
+        <button
+          className="scroll-arrow right"
+          onClick={() => scrollHorizontal("right")}
+        >
+          &#8250;
+        </button>
       </section>
 
       <div className="dashboard-tab-container">
         <div className="tab-buttons">
           <button
-            className={activeTab === 'charts' ? 'active' : ''}
-            onClick={() => setActiveTab('charts')}
+            className={activeTab === "charts" ? "active" : ""}
+            onClick={() => setActiveTab("charts")}
           >
             Charts
           </button>
           <button
-            className={activeTab === 'activity' ? 'active' : ''}
-            onClick={() => setActiveTab('activity')}
+            className={activeTab === "activity" ? "active" : ""}
+            onClick={() => setActiveTab("activity")}
           >
             Recent Activity
           </button>
         </div>
 
-        {activeTab === 'charts' ? (
+        {activeTab === "charts" ? (
           <div className="dashboard-charts">
             <div className="chart">
               <p>Weekly Sales</p>
@@ -134,7 +181,11 @@ const Dashboard = ({ isSidebarOpen }) => {
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="sales" fill="#001aff" animationDuration={1000} />
+                  <Bar
+                    dataKey="sales"
+                    fill="#001aff"
+                    animationDuration={1000}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -155,7 +206,10 @@ const Dashboard = ({ isSidebarOpen }) => {
                     animationDuration={800}
                   >
                     {monthlyData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={pieColors[index % pieColors.length]}
+                      />
                     ))}
                   </Pie>
                   <Legend />
@@ -172,7 +226,13 @@ const Dashboard = ({ isSidebarOpen }) => {
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#001aff" strokeWidth={2} animationDuration={1000} />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#001aff"
+                    strokeWidth={2}
+                    animationDuration={1000}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -182,12 +242,19 @@ const Dashboard = ({ isSidebarOpen }) => {
             <p>Recent Activity</p>
             <ul className="activity-list">
               {activity.length === 0 ? (
-                <li><span>No recent activity</span></li>
+                <li>
+                  <span>No recent activity</span>
+                </li>
               ) : (
                 activity.map((item, index) => (
                   <li key={index}>
                     <span>{item.description}</span>
-                    <span>{new Date(item.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span>
+                      {new Date(item.time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
                   </li>
                 ))
               )}
@@ -195,7 +262,6 @@ const Dashboard = ({ isSidebarOpen }) => {
           </div>
         )}
       </div>
-
     </main>
   );
 };
