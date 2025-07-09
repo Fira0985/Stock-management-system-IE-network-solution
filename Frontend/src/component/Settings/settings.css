@@ -62,6 +62,7 @@
 
 .settings-tabs button.active {
   border-color: #2563eb;
+  color: #ffffff;
   font-weight: 600;
   background: linear-gradient(90deg, #2563eb 80%, #2563eb 100%);
   border-radius: 8px 0 0 8px;
@@ -131,9 +132,9 @@
     width: auto;
   }
   .settings-tabs button.active {
-    background: linear-gradient(180deg, #7b68ee 80%, #efefff 100%);
+    background: linear-gradient(180deg, #2563eb 80%, #2563eb 100%);
     color: #fff;
-    border-bottom: 4px solid #7b68ee;
+    border-bottom: 4px solid #2563eb;
     border-radius: 12px 12px 0 0;
     border-left: none;
   }
@@ -206,20 +207,20 @@
   transition: background 0.2s, color 0.2s;
 }
 .purple-btn {
-  background: linear-gradient(90deg, #7b68ee 70%, #a594f9 100%);
+  background: linear-gradient(90deg, #2563eb 70%, #2563eb 100%);
   color: #fff;
   box-shadow: 0 2px 8px rgba(123,104,238,0.10);
 }
 .purple-btn:hover {
-  background: linear-gradient(90deg, #6a5acd 70%, #7b68ee 100%);
+  background: linear-gradient(90deg, #2563eb 70%, #2563eb 100%);
 }
 .blue-btn {
-  background: linear-gradient(90deg, #4f8cff 70%, #aee1ff 100%);
+  background: linear-gradient(90deg, #2563eb 70%, #2563eb 100%);
   color: #fff;
   box-shadow: 0 2px 8px rgba(79,140,255,0.10);
 }
 .blue-btn:hover {
-  background: linear-gradient(90deg, #357ae8 70%, #4f8cff 100%);
+  background: linear-gradient(90deg, #2563eb 70%, #2563eb 100%);
 }
 
 /* Other styles (labels, inputs, buttons) same as before */

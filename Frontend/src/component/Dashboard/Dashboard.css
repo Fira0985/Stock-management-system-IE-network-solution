@@ -117,7 +117,7 @@
   margin-top: 8px;
   font-size: 20px;
   font-weight: bold;
-  color: blueviolet;
+  color: rgb(82, 201, 78);
 }
 
 .dashboard-tab-container{
@@ -259,7 +259,7 @@
 }
 
 .dashboard-btn:hover {
-  background: blueviolet;
+  background: #2563eb;
   color: white;
 }
 
