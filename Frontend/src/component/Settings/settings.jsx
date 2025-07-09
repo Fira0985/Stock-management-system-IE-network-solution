@@ -52,18 +52,7 @@ const settings = ({ isSidebarOpen }) => {
           className={activeTab === "roles" ? "active" : ""}
           onClick={() => setActiveTab("roles")}
         >
-          User Roles
-        </button>
-        <button
-          className={activeTab === "api" ? "active" : ""}
-          onClick={() => setActiveTab("api")}
-        >
-          API Keys
-        </button>
-        <button
-          className={activeTab === "privacy" ? "active" : ""}
-          onClick={() => setActiveTab("privacy")}
-        >
+        
           Privacy & Logout
         </button>
       </nav>
@@ -141,30 +130,18 @@ const settings = ({ isSidebarOpen }) => {
           <div className="tab-section">
             <h3>Backup & Restore</h3>
             <button className="blue-btn">Export Data</button>
-            <button className="blue-btn">Import Data</button>
+            
           </div>
         )}
 
         {activeTab === "roles" && (
           <div className="tab-section">
-            <h3>User Roles & Permissions</h3>
-            <p>Manage roles here (placeholder)</p>
-          </div>
-        )}
-
-        {activeTab === "api" && (
-          <div className="tab-section">
-            <h3>API Keys</h3>
-            <p>Manage your API keys here (placeholder)</p>
-          </div>
-        )}
-
-        {activeTab === "privacy" && (
-          <div className="tab-section">
             <h3>Privacy & Logout</h3>
             <button className="purple-btn">Logout</button>
           </div>
         )}
+
+
       </section>
     </div>
     </div>

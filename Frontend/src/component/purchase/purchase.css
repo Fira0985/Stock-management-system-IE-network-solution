@@ -45,7 +45,7 @@
 }
 
 .purchase-btn:hover {
-    background-color: blueviolet;
+    background-color: #2563eb;
     color: #ffffff;
 }
 
@@ -133,7 +133,7 @@
 
 .type-label.single {
     background-color: #dbeafe;
-    color: #1e40af;
+    color: #2563eb;
 }
 
 .type-label.bulk {
