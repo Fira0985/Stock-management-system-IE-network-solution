@@ -21,6 +21,7 @@ function Login() {
         localStorage.setItem('role', data.user.role)
         localStorage.setItem('phone', data.user.phone)
         localStorage.setItem('id', data.user.id)
+        localStorage.setItem('loginTime', new Date().toISOString());
 
 
         toast.success('Login successful!', {
