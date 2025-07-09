@@ -57,14 +57,13 @@
 }
 
 .settings-tabs button:hover {
-  color: #7b68ee;
+  color: #2563eb;
 }
 
 .settings-tabs button.active {
-  color: #fff;
-  border-left-color: #7b68ee;
+  border-color: #2563eb;
   font-weight: 600;
-  background: linear-gradient(90deg, #7b68ee 80%, #efefff 100%);
+  background: linear-gradient(90deg, #2563eb 80%, #2563eb 100%);
   border-radius: 8px 0 0 8px;
   box-shadow: 0 2px 8px rgba(123,104,238,0.08);
 }
