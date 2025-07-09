@@ -280,7 +280,7 @@
 /* Action Buttons Container */
 .sale-actions {
     display: flex;
-    gap: 16px;
+    gap: 12x;
     justify-content: flex-end;
     margin-top: 32px;
     padding-top: 24px;
@@ -289,13 +289,14 @@
 
 /* Primary Submit Button */
 .sale-actions button[type="submit"] {
-    padding: 16px 40px;
+   padding: 16px 40px;
+   margin: 19px 19px;
     background: white;
     color: black;
     border: none;
     border-radius: 12px;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);

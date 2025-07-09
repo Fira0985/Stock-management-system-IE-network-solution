@@ -2,15 +2,21 @@
 
 .settings-page {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 0;
   box-sizing: border-box;
   color: #333;
-  background: linear-gradient(120deg, #f9f9f9 60%, #e9e6ff 100%);
   transition: background-color 0.3s, color 0.3s;
   align-items: center;
   justify-content: center;
+}
+
+.settings-container{
+  display: flex;
+  flex-direction: row;
+  margin-left: 25vw;
 }
 
 .settings-page.dark {
@@ -83,6 +89,9 @@
   gap: 2rem;
   align-items: center;
   justify-content: center;
+  padding-top: 15vh;
+  margin-top: 20vh;
+  
 }
 
 .settings-page.dark .settings-content {

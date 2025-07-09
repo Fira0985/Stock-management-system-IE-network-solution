@@ -15,12 +15,13 @@ const settings = ({ isSidebarOpen }) => {
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   return (
+    <div className="settings-container">
     <div
       className={`settings-page ${
         isSidebarOpen ? "with-sidebar" : "full-width"
       } ${darkMode ? "dark" : ""}`}
     >
-      <h2>⚙️ Settings</h2>
+      <h2>Settings</h2>
 
       <nav className="settings-tabs">
         <button
@@ -66,7 +67,8 @@ const settings = ({ isSidebarOpen }) => {
           Privacy & Logout
         </button>
       </nav>
-
+    </div>
+    <div>
       <section className="settings-content">
         {activeTab === "profile" && (
           <div className="tab-section">
@@ -164,6 +166,7 @@ const settings = ({ isSidebarOpen }) => {
           </div>
         )}
       </section>
+    </div>
     </div>
   );
 };
