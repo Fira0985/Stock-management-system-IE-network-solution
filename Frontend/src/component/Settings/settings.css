@@ -3,12 +3,14 @@
 .settings-page {
   display: flex;
   min-height: 100vh;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0;
   box-sizing: border-box;
   color: #333;
-  background-color: #f9f9f9;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: linear-gradient(120deg, #f9f9f9 60%, #e9e6ff 100%);
+  transition: background-color 0.3s, color 0.3s;
+  align-items: center;
+  justify-content: center;
 }
 
 .settings-page.dark {
@@ -20,24 +22,32 @@
 .settings-tabs {
   display: flex;
   flex-direction: column;
-  min-width: 220px;
-  border-right: 2px solid #ddd;
-  padding-right: 1rem;
+  min-width: 200px;
+  border-right: 2px solid #eee;
+  padding-right: 1.5rem;
   gap: 0.5rem;
   user-select: none;
+  background: #fff;
+  border-radius: 16px 0 0 16px;
+  box-shadow: 0 2px 12px rgba(123,104,238,0.07);
+  margin-bottom: 1rem;
+  align-items: flex-end;
 }
 
 .settings-tabs button {
   background: none;
   border: none;
-  text-align: left;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  text-align: right;
+  padding: 0.85rem 1.2rem;
+  font-size: 1.08rem;
   color: #555;
   border-left: 4px solid transparent;
   cursor: pointer;
-  transition: color 0.3s ease, border-left-color 0.3s ease;
-  border-radius: 4px 0 0 4px;
+  transition: color 0.3s, border-left-color 0.3s, background 0.3s;
+  border-radius: 8px 0 0 8px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  width: 100%;
 }
 
 .settings-tabs button:hover {
@@ -45,11 +55,12 @@
 }
 
 .settings-tabs button.active {
-  color: #7b68ee;
+  color: #fff;
   border-left-color: #7b68ee;
   font-weight: 600;
-  background-color: #efefff;
-  border-radius: 4px 0 0 4px;
+  background: linear-gradient(90deg, #7b68ee 80%, #efefff 100%);
+  border-radius: 8px 0 0 8px;
+  box-shadow: 0 2px 8px rgba(123,104,238,0.08);
 }
 
 .settings-page.dark .settings-tabs button.active {
@@ -59,19 +70,148 @@
 /* Content area on right */
 .settings-content {
   flex-grow: 1;
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 6px 12px rgb(123 104 238 / 0.1);
-  margin-left: 2rem;
-  max-width: 100%;
+  background: #fff;
+  border-radius: 0 16px 16px 0;
+  padding: 2.5rem 2.5rem;
+  box-shadow: 0 8px 32px rgb(123 104 238 / 0.10);
+  margin-left: 0;
+  max-width: 600px;
+  min-width: 320px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .settings-page.dark .settings-content {
   background-color: #222;
   box-shadow: none;
   color: #e0e0e0;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .settings-page {
+    flex-direction: column;
+    padding: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .settings-tabs {
+    flex-direction: row;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 2px solid #eee;
+    padding-right: 0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: none;
+    border-radius: 12px 12px 0 0;
+    overflow-x: auto;
+    background: #fff;
+    align-items: flex-start;
+  }
+  .settings-tabs button {
+    border-radius: 12px 12px 0 0;
+    border-left: none;
+    border-bottom: 4px solid transparent;
+    text-align: center;
+    min-width: 120px;
+    font-size: 0.98rem;
+    width: auto;
+  }
+  .settings-tabs button.active {
+    background: linear-gradient(180deg, #7b68ee 80%, #efefff 100%);
+    color: #fff;
+    border-bottom: 4px solid #7b68ee;
+    border-radius: 12px 12px 0 0;
+    border-left: none;
+  }
+  .settings-content {
+    margin-left: 0;
+    padding: 1.2rem 0.5rem;
+    border-radius: 0 0 16px 16px;
+    max-width: 100vw;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-page {
+    padding: 0;
+    align-items: stretch;
+  }
+  .settings-content {
+    padding: 0.7rem 0.2rem;
+    border-radius: 0 0 10px 10px;
+    font-size: 0.97rem;
+    min-width: 0;
+    max-width: 100vw;
+  }
+  .settings-tabs button {
+    min-width: 90px;
+    font-size: 0.93rem;
+    padding: 0.5rem 0.3rem;
+  }
+}
+
+/* Pretty form elements */
+.tab-section label {
+  display: block;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+  color: #5a5a5a;
+}
+.settings-page.dark .tab-section label {
+  color: #bdbdbd;
+}
+.tab-section input[type="text"],
+.tab-section input[type="email"],
+.tab-section input[type="password"],
+.tab-section select {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-top: 0.4rem;
+  border: 1.5px solid #d1d1e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f7f7ff;
+  transition: border 0.2s;
+  outline: none;
+}
+.tab-section input:focus,
+.tab-section select:focus {
+  border-color: #7b68ee;
+}
+.tab-section button,
+.purple-btn, .blue-btn {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.purple-btn {
+  background: linear-gradient(90deg, #7b68ee 70%, #a594f9 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(123,104,238,0.10);
+}
+.purple-btn:hover {
+  background: linear-gradient(90deg, #6a5acd 70%, #7b68ee 100%);
+}
+.blue-btn {
+  background: linear-gradient(90deg, #4f8cff 70%, #aee1ff 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+}
+.blue-btn:hover {
+  background: linear-gradient(90deg, #357ae8 70%, #4f8cff 100%);
 }
 
 /* Other styles (labels, inputs, buttons) same as before */
