@@ -207,7 +207,7 @@
 
 .popup-box {
     background-color: #ffffff;
-    width: 100%;
+    width: 50%;
     max-height: 60vh;
     overflow-y: auto;
     border-top-left-radius: 16px;

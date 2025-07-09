@@ -12,6 +12,7 @@ const { getAllPurchase, addPurchase } = require('../controllers/purchase');
 const { uploadExcelFile } = require('../controllers/uploadExcelFile');
 const { getAllSales, addSales } = require('../controllers/sale');
 const creditController = require("../controllers/credit");
+const reportController = require('../controllers/reportController');
 
 const {
     getSalesOverview,
@@ -90,5 +91,12 @@ router.get("/paid", authenticateToken, creditController.getPaidCredits);
 router.get("/unpaid", authenticateToken, creditController.getUnpaidCredits);
 router.get("/partial", authenticateToken, creditController.getPartialCredits);
 router.post('/makePayment', authenticateToken, creditController.makePayment);
+
+router.get('/summarySales', authenticateToken, reportController.getSalesSummary);
+router.get('/summaryInventory', authenticateToken, reportController.getInventorySummary);
+router.get('/summaryPurchases', authenticateToken, reportController.getPurchaseSummary);  
+router.get('/summaryPayments', authenticateToken, reportController.getPaymentSummary);    
+router.get('/summaryUsers', authenticateToken, reportController.getUserActivitySummary);  
+router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHealthSummary); 
 
 module.exports = router;

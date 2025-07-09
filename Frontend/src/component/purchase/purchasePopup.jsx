@@ -95,15 +95,15 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
     };
 
     return (
-        <div className="popup-overlay">
-            <div className="popup-box">
-                <div className="popup-header">
+        <div className="pr-popup-overlay">
+            <div className="pr-popup-box">
+                <div className="pr-popup-header">
                     <h3>New Purchase</h3>
                     <button onClick={onClose}>×</button>
                 </div>
 
-                <div className="popup-body">
-                    <div className="form-group autocomplete">
+                <div className="pr-popup-body">
+                    <div className="pr-form-group pr-autocomplete">
                         <label>Supplier</label>
                         <input
                             type="text"
@@ -117,11 +117,11 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
                             placeholder="Type to search supplier"
                         />
                         {showSupplierSuggestions && (
-                            <div className="suggestions">
+                            <div className="pr-suggestions">
                                 {suppliers
                                     .filter(s => s.name.toLowerCase().includes(supplierInput.toLowerCase()))
                                     .map(s => (
-                                        <div key={s.id} className="suggestion-item" onClick={() => handleSelectSupplier(s)}>
+                                        <div key={s.id} className="pr-suggestion-item" onClick={() => handleSelectSupplier(s)}>
                                             {s.name}
                                         </div>
                                     ))}
@@ -129,7 +129,7 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
                         )}
                     </div>
 
-                    <div className="form-inline autocomplete">
+                    <div className="pr-form-inline pr-autocomplete">
                         <input
                             type="text"
                             value={productInput}
@@ -142,11 +142,11 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
                             placeholder="Type to search product"
                         />
                         {showProductSuggestions && (
-                            <div className="suggestions">
+                            <div className="pr-suggestions">
                                 {products
                                     .filter(p => p.name.toLowerCase().includes(productInput.toLowerCase()))
                                     .map(p => (
-                                        <div key={p.id} className="suggestion-item" onClick={() => handleSelectProduct(p)}>
+                                        <div key={p.id} className="pr-suggestion-item" onClick={() => handleSelectProduct(p)}>
                                             {p.name}
                                         </div>
                                     ))}
@@ -161,21 +161,21 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
                             placeholder="Qty"
                         />
 
-                        <button className="add-item" onClick={handleAddItem}>Add</button>
+                        <button className="pr-add-item" onClick={handleAddItem}>Add</button>
                     </div>
 
-                    <div className="item-list">
+                    <div className="pr-item-list">
                         {purchaseItems.map((item) => (
-                            <div key={item.product_id} className="item">
+                            <div key={item.product_id} className="pr-item">
                                 <span>{item.name} - {item.unit} - {item.quantity} × ${item.cost_price}</span>
                                 <button onClick={() => handleRemoveItem(item.product_id)}>Remove</button>
                             </div>
                         ))}
                     </div>
 
-                    <div className="popup-actions">
-                        <button className="cancel" onClick={onClose}>Cancel</button>
-                        <button className="submit" onClick={handleSubmit}>Submit Purchase</button>
+                    <div className="pr-popup-actions">
+                        <button className="pr-cancel" onClick={onClose}>Cancel</button>
+                        <button className="pr-submit" onClick={handleSubmit}>Submit Purchase</button>
                     </div>
                 </div>
             </div>

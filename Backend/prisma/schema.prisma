@@ -66,6 +66,8 @@ model NonUser {
 
   sales          Sale[]   @relation("SaleCustomer")
   purchases      Purchase[] @relation("PurchaseSupplier")
+
+   @@map("nonuser")
 }
 
 model Product {

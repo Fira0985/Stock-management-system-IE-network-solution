@@ -19,7 +19,15 @@ import {
   fetchRecentActivity
 } from '../../services/statisticsApi';
 
-const pieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const getColorFromString = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const color = `hsl(${hash % 360}, 65%, 60%)`; // nice pastel hues
+  return color;
+};
+
 
 const Dashboard = ({ isSidebarOpen }) => {
   const [salesOverview, setSalesOverview] = useState({
@@ -155,10 +163,11 @@ const Dashboard = ({ isSidebarOpen }) => {
                     animationDuration={800}
                   >
                     {monthlyData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                      <Cell key={`cell-${index}`} fill={getColorFromString(entry.name)} />
                     ))}
+
                   </Pie>
-                  <Legend />
+                  <Legend className='legend' />
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
