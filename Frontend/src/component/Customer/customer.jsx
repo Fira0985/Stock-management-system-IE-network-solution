@@ -5,6 +5,7 @@ import {
     editNonUser,
     deleteNonUser,
 } from "../../services/nonUserService";
+import { exportCustomers } from "../../services/exportService";
 import AddNonUserForm from "./AddNonUserForm";
 import EditNonUserForm from "./EditNonUserForm";
 import DeleteCustomerForm from "./DeleteCustomerForm";
@@ -12,6 +13,7 @@ import "./customer.css";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FiDownload } from "react-icons/fi";
 
 const Customer = ({ isSidebarOpen }) => {
     const [customers, setCustomers] = useState([]);
@@ -104,9 +106,18 @@ const Customer = ({ isSidebarOpen }) => {
         >
             <div className="cs-customer-header">
                 <h2>All Customers</h2>
-                <button className="cs-add-customer" onClick={() => setShowAddModal(true)}>
-                    New Customer
-                </button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button className="cs-add-customer" onClick={() => setShowAddModal(true)}>
+                        New Customer
+                    </button>
+                    <button
+                        className="cs-export-btn"
+                        onClick={() => exportCustomers(customers)}
+                    >
+                        <FiDownload style={{ marginRight: 4 }} />
+                        Export
+                    </button>
+                </div>
             </div>
 
             <div className="cs-customer-table">
@@ -155,9 +166,9 @@ const Customer = ({ isSidebarOpen }) => {
                 ))}
             </div>
 
-            <div className="cs-pagination">
+            <div className="pagination">
                 <span
-                    className={currentPage === 1 ? "cs-disabled" : ""}
+                    className={currentPage === 1 ? "disabled" : ""}
                     onClick={() => goToPage(currentPage - 1)}
                 >
                     ← Previous
@@ -166,7 +177,7 @@ const Customer = ({ isSidebarOpen }) => {
                 {Array.from({ length: totalPages }, (_, i) => (
                     <span
                         key={i + 1}
-                        className={currentPage === i + 1 ? "cs-active" : ""}
+                        className={currentPage === i + 1 ? "active" : ""}
                         onClick={() => goToPage(i + 1)}
                     >
                         {i + 1}
@@ -174,7 +185,7 @@ const Customer = ({ isSidebarOpen }) => {
                 ))}
 
                 <span
-                    className={currentPage === totalPages ? "cs-disabled" : ""}
+                    className={currentPage === totalPages ? "disabled" : ""}
                     onClick={() => goToPage(currentPage + 1)}
                 >
                     Next →

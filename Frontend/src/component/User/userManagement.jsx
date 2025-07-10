@@ -3,6 +3,8 @@ import './userManagement.css';
 import UserForm from './UserForm';
 import ConfirmDelete from './ConfirmDelete';
 import { fetchUsers, addUser, editUser, deleteUser } from '../../services/userService';
+import { exportUsers } from "../../services/exportService";
+import { FiDownload } from "react-icons/fi";
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -114,7 +116,16 @@ const UserManagement = ({ isSidebarOpen, currentUserId }) => {
         <div className={isSidebarOpen ? 'user-content' : 'user-content collapse'}>
             <div className="user-header">
                 <h2>User Management</h2>
-                <button className="add-user-btn" onClick={() => setModalType('add')}>Add User</button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button className="add-user-btn" onClick={() => setModalType('add')}>Add User</button>
+                    <button
+                        className="user-export-btn"
+                        onClick={() => exportUsers(users)}
+                    >
+                        <FiDownload style={{ marginRight: 4 }} />
+                        Export
+                    </button>
+                </div>
             </div>
 
             {error && (

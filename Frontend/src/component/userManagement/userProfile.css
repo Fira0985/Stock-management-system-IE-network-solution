@@ -13,10 +13,9 @@
 }
 
 /* Modal Close Button */
-.modal-close {
-    margin-top: 20vh;
-    padding-left: 70vw;
-    font-size: 2rem;
+.modal-closes {
+    padding-left: 64vw;
+    font-size: 1.5rem;
     color: #6b7280;
     background: transparent;
     border: none;

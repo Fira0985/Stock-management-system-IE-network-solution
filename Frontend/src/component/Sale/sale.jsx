@@ -6,6 +6,8 @@ import { fetchNonUser } from '../../services/nonUserService';
 import NewSaleForm from './newSaleForm';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FiDownload } from 'react-icons/fi';
+import { exportSales } from "../../services/exportService";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -126,7 +128,16 @@ const Sales = ({ isSidebarOpen }) => {
         <div className={isSidebarOpen ? "sales-container" : "sales-container collapse"}>
             <div className="header-section">
                 <h2 className="page-title">All Sales</h2>
-                <button className="sale-btn" onClick={() => setShowForm(true)}>New Sale</button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button className="sale-btn" onClick={() => setShowForm(true)}>New Sale</button>
+                    <button
+                        className="sale-export-btn"
+                        onClick={() => exportSales(allSales)}
+                    >
+                        <FiDownload style={{ marginRight: 4 }} />
+                        Export
+                    </button>
+                </div>
             </div>
 
             <div className="tabs">
@@ -181,20 +192,18 @@ const Sales = ({ isSidebarOpen }) => {
 
                     <div className="pagination">
                         <span
-                            className={`nav-arrow ${currentPage === 1 ? 'disabled' : ''}`}
+                            className={currentPage === 1 ? 'disabled' : ''}
                             onClick={() => goToPage(currentPage - 1)}
                         >← Previous</span>
-
-                        {[...Array(totalPages)].map((_, i) => (
+                        {Array.from({ length: totalPages }, (_, i) => (
                             <span
-                                key={i}
+                                key={i + 1}
                                 className={currentPage === i + 1 ? 'active' : ''}
                                 onClick={() => goToPage(i + 1)}
                             >{i + 1}</span>
                         ))}
-
                         <span
-                            className={`nav-arrow ${currentPage === totalPages ? 'disabled' : ''}`}
+                            className={currentPage === totalPages ? 'disabled' : ''}
                             onClick={() => goToPage(currentPage + 1)}
                         >Next →</span>
                     </div>
@@ -219,7 +228,7 @@ const Sales = ({ isSidebarOpen }) => {
                     <div className="popup-box-sale" onClick={e => e.stopPropagation()}>
                         <div className="popup-header">
                             <h3>Sale #{selectedSale.id} Details</h3>
-                            <button onClick={() => setSelectedSale(null)}>×</button>
+                            <button className="close-sale-detail" onClick={() => setSelectedSale(null)}>×</button>
                         </div>
                         <div className="popup-body">
                             <p><strong>Customer:</strong> {selectedSale.customer?.name || 'N/A'}</p>
@@ -228,7 +237,7 @@ const Sales = ({ isSidebarOpen }) => {
                             <ul>
                                 {selectedSale.items?.map((item, index) => (
                                     <li key={index}>
-                                        {item.product?.name || 'Unknown'} – {item.quantity} × ${item.sale_price}
+                                        {item.product?.name || 'Unknown'} – {item.quantity} × ${item.unit_price}
                                     </li>
                                 ))}
                             </ul>

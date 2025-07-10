@@ -9,6 +9,9 @@ import {
   fetchUserActivitySummary,
   fetchBusinessHealthSummary
 } from '../../services/reportService';
+import { FiDownload } from "react-icons/fi";
+import { saveAs } from "file-saver";
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, HeadingLevel, WidthType } from "docx";
 
 const Report = ({ isSidebarOpen }) => {
   const [activeSection, setActiveSection] = useState('sales');
@@ -608,10 +611,124 @@ const Report = ({ isSidebarOpen }) => {
     }
   };
 
+  // Helper: Convert array of objects to docx Table
+  function arrayToTable(arr, title) {
+    if (!arr || arr.length === 0) return [];
+    const keys = Object.keys(arr[0]);
+    return [
+      new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }),
+      new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        rows: [
+          new TableRow({
+            children: keys.map(k => new TableCell({ children: [new Paragraph({ text: k, bold: true })] }))
+          }),
+          ...arr.map(row =>
+            new TableRow({
+              children: keys.map(k =>
+                new TableCell({ children: [new Paragraph(String(row[k] ?? ""))] })
+              )
+            })
+          )
+        ]
+      }),
+      new Paragraph({ text: "" })
+    ];
+  }
+
+  // Export as Word handler
+  const handleExportWord = async () => {
+    const data = reportData[activeSection];
+    if (!data) return;
+
+    let docChildren = [new Paragraph({ text: `${activeSection.charAt(0).toUpperCase() + activeSection.slice(1)} Report`, heading: HeadingLevel.HEADING_1 })];
+
+    if (activeSection === "sales") {
+      docChildren.push(
+        new Paragraph({ text: "Sales Summary", heading: HeadingLevel.HEADING_2 }),
+        new Paragraph(`Total Sales Amount: $${data.totalSalesAmount}`),
+        new Paragraph(`Number of Sales: ${data.numberOfSales}`),
+        new Paragraph(`Avg Sale Per Transaction: $${data.avgSalePerTransaction}`)
+      );
+      docChildren.push(...arrayToTable(data.topSellingProductsByQuantity, "Top Products by Quantity"));
+      docChildren.push(...arrayToTable(data.topSellingProductsByRevenue, "Top Products by Revenue"));
+      docChildren.push(...arrayToTable(data.salesByCategory, "Sales by Category"));
+      docChildren.push(...arrayToTable(data.customersWithPendingDues, "Credit Sales Outstanding"));
+      docChildren.push(...arrayToTable(data.salesPerformanceByUser, "Sales Performance by User"));
+    } else if (activeSection === "inventory") {
+      docChildren.push(...arrayToTable(data.stockMovementReport, "Stock Movement Report"));
+      docChildren.push(
+        new Paragraph({ text: "Inventory Value Report", heading: HeadingLevel.HEADING_2 }),
+        new Paragraph(`Total Cost Value: $${data.totalCostValue}`),
+        new Paragraph(`Total Sale Value: $${data.totalSaleValue}`),
+        new Paragraph(`Estimated Profit: $${data.totalSaleValue - data.totalCostValue}`)
+      );
+      docChildren.push(...arrayToTable(data.profitMarginByProduct, "Profit Margin by Product"));
+      docChildren.push(...arrayToTable(data.deadStockReport, "Dead Stock Report"));
+    } else if (activeSection === "purchase") {
+      docChildren.push(...arrayToTable(data.totalPurchasesBySupplier, "Total Purchases by Supplier"));
+      docChildren.push(...arrayToTable(data.monthlyPurchaseTrend, "Monthly Purchase Trend"));
+    } else if (activeSection === "payment") {
+      if (data.paymentsByDay)
+        docChildren.push(...arrayToTable(
+          Object.entries(data.paymentsByDay).map(([date, amount]) => ({ date, amount })),
+          "Payments by Day"
+        ));
+      if (data.paymentsByWeek)
+        docChildren.push(...arrayToTable(
+          Object.entries(data.paymentsByWeek).map(([week, amount]) => ({ week, amount })),
+          "Payments by Week"
+        ));
+      if (data.paymentsByMonth)
+        docChildren.push(...arrayToTable(
+          Object.entries(data.paymentsByMonth).map(([month, amount]) => ({ month, amount })),
+          "Payments by Month"
+        ));
+      docChildren.push(...arrayToTable(data.customerCreditReport, "Customer Credit Report"));
+    } else if (activeSection === "user") {
+      docChildren.push(...arrayToTable(data.usersCreatedDeleted, "Users Created/Deleted"));
+      docChildren.push(...arrayToTable(data.productsAddedRemoved, "Products Added/Removed"));
+      docChildren.push(...arrayToTable(data.categoriesAddedRemoved, "Categories Added/Removed"));
+      docChildren.push(...arrayToTable(data.roleDistribution, "Role Distribution"));
+    } else if (activeSection === "business") {
+      if (data.grossProfitByDay)
+        docChildren.push(...arrayToTable(
+          Object.entries(data.grossProfitByDay).map(([date, profit]) => ({ date, profit })),
+          "Gross Profit by Day"
+        ));
+      if (data.grossProfitByWeek)
+        docChildren.push(...arrayToTable(
+          Object.entries(data.grossProfitByWeek).map(([week, profit]) => ({ week, profit })),
+          "Gross Profit by Week"
+        ));
+      if (data.grossProfitByMonth)
+        docChildren.push(...arrayToTable(
+          Object.entries(data.grossProfitByMonth).map(([month, profit]) => ({ month, profit })),
+          "Gross Profit by Month"
+        ));
+      docChildren.push(
+        new Paragraph({ text: "Revenue Forecast (Next Month)", heading: HeadingLevel.HEADING_2 }),
+        new Paragraph(`$${data.revenueForecastNextMonth}`)
+      );
+      docChildren.push(...arrayToTable(data.customerPurchaseFrequency, "Customer Purchase Frequency"));
+      docChildren.push(...arrayToTable(data.supplierDependence, "Supplier Dependence"));
+    }
+
+    const doc = new Document({ sections: [{ children: docChildren }] });
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `${activeSection}_report.docx`);
+  };
+
   return (
     <div className={isSidebarOpen ? "reports-container" : "reports-container collapse"}>
       <div className="header">
-        <h1>All Report</h1>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+          <h1>All Report</h1>
+          <button className="report-export-btn" onClick={handleExportWord}>
+            <FiDownload style={{ marginRight: 4 }} />
+            Export as Word
+          </button>
+        </div>
       </div>
 
       <div className="tab-navigation">

@@ -48,6 +48,29 @@
     color: #ffffff;
 }
 
+/* Export Button */
+.sale-export-btn {
+    background-color: #f9f9f9;
+    border: 1px solid #d1d5db;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
+    width: 10vw;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sale-export-btn:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
 /* Tabs */
 .tabs {
     display: flex;
@@ -207,7 +230,7 @@
 .popup-box-sale {
     background: #fff;
     padding: 20px;
-    width: 500px;
+     width: 50%;
     border-radius: 8px;
     max-height: 90vh;
     overflow-y: auto;
@@ -226,6 +249,10 @@
     font-size: 20px;
     cursor: pointer;
     padding-left: 30vw;
+}
+
+.close-sale-detail{
+  margin-left: -3vw;
 }
 
 /* Responsive Design */
@@ -261,6 +288,11 @@
     margin-top: 1rem;
     font-size: 12px;
   }
+  .sale-export-btn {
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 12px;
+  }
   .styled-table th,
   .styled-table td {
     padding: 10px 8px;
@@ -283,6 +315,11 @@
     font-size: 1rem;
   }
   .sale-btn {
+    font-size: 10px;
+    width: 100%;
+    padding: 8px 0;
+  }
+  .sale-export-btn {
     font-size: 10px;
     width: 100%;
     padding: 8px 0;

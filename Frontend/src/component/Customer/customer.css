@@ -53,6 +53,28 @@
     border-color: transparent;
 }
 
+/* Export Button */
+.cs-export-btn {
+     background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1f2937;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    width: 10vw;
+    margin-top: 1vh;
+}
+
+.cs-export-btn:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: transparent;
+}
+
 /* Table Wrapper */
 .cs-customer-table {
     width: 100%;

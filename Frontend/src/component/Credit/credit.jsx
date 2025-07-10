@@ -10,8 +10,11 @@ import {
   getPartialCredits,
   makePayment
 } from '../../services/creditService';
+import { exportSales } from "../../services/exportService";
 import PaymentModal from './PaymentModal';
 import './credit.css';
+
+const ITEMS_PER_PAGE = 5;
 
 const Credit = ({ isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState('All');
@@ -25,6 +28,7 @@ const Credit = ({ isSidebarOpen }) => {
   const [loading, setLoading] = useState(true);
   const [selectedSale, setSelectedSale] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchAll = async () => {
     setLoading(true);
@@ -81,6 +85,17 @@ const Credit = ({ isSidebarOpen }) => {
     item.saleId.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset page when tab or search changes
+  }, [activeTab, searchTerm]);
+
   const getStatusIcon = (status) => {
     switch (status) {
       case 'PAID': return <CheckCircle className="status-icon status-paid" />;
@@ -111,7 +126,10 @@ const Credit = ({ isSidebarOpen }) => {
     <div className={isSidebarOpen ? "credit-container" : "credit-container collapse"}>
       <div className="credit-header">
         <h1 className="credit-title">Credit Sales</h1>
-        <button className="dashboard-btn secondary credit">
+        <button
+          className="dashboard-btn secondary credit"
+          onClick={() => exportSales(data.All)}
+        >
           <FiDownload className="btn-icon" />
           Export
         </button>
@@ -164,7 +182,7 @@ const Credit = ({ isSidebarOpen }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredData.map((item, index) => (
+                  {paginatedData.map((item, index) => (
                     <tr key={index} className="table-row">
                       <td>{item.saleId}</td>
                       <td>{item.customer}</td>
@@ -188,6 +206,27 @@ const Credit = ({ isSidebarOpen }) => {
                   ))}
                 </tbody>
               </table>
+
+              {/* Consistent Pagination */}
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <span
+                    className={currentPage === 1 ? 'disabled' : ''}
+                    onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+                  >← Previous</span>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <span
+                      key={i + 1}
+                      className={currentPage === i + 1 ? 'active' : ''}
+                      onClick={() => setCurrentPage(i + 1)}
+                    >{i + 1}</span>
+                  ))}
+                  <span
+                    className={currentPage === totalPages ? 'disabled' : ''}
+                    onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
+                  >Next →</span>
+                </div>
+              )}
 
               {filteredData.length === 0 && (
                 <div className="empty-state">

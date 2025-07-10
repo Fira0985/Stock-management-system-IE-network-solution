@@ -318,6 +318,39 @@ body.dark .sidebar .logout-btn-collopse:hover {
 }
 
 
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+.form-actions .cancel-btn {
+  background-color: #f3f3f3;
+  color: #333;
+}
+
+/* Dark mode for modal */
+body.dark .modal-content,
+.modal-content.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96);}
+  to { opacity: 1; transform: scale(1);}
+}
 
 @media (max-width: 768px) {
     .sidebar {

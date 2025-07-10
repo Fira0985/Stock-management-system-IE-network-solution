@@ -27,21 +27,46 @@
 
 /* Add Supplier Button */
 .sp-add-supplier {
-    background-color: #f9f9f9;
+     background-color: #f9fafb;
     border: 1px solid #d1d5db;
-    padding: 10px 20px;
     border-radius: 8px;
-    cursor: pointer;
+    padding: 10px 20px;
     font-size: 15px;
     font-weight: 500;
+    cursor: pointer;
     color: #111827;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all 0.25s ease-in-out;
     width: 10vw;
-    margin-top: -2vh;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .sp-add-supplier:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+/* Export Button */
+.sp-export-btn {
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
+    width: 10vw;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sp-export-btn:hover {
     background-color: #2563eb;
     color: #ffffff;
 }

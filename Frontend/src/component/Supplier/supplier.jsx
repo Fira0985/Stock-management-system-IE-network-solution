@@ -5,10 +5,12 @@ import {
     editNonUser,
     deleteNonUser,
 } from "../../services/nonUserService";
+import { exportSuppliers } from "../../services/exportService";
 import AddSupplierForm from "./AddSupplierForm";
 import EditSupplierForm from "./EditSupplierForm";
 import DeleteSupplierForm from "./DeleteSupplierForm";
 import "./supplier.css";
+import { FiDownload } from "react-icons/fi";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -103,9 +105,18 @@ const Supplier = ({ isSidebarOpen }) => {
         >
             <div className="sp-supplier-header">
                 <h2>All suppliers</h2>
-                <button className="sp-add-supplier" onClick={() => setShowAddModal(true)}>
-                    New Supplier
-                </button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button className="sp-add-supplier" onClick={() => setShowAddModal(true)}>
+                        New Supplier
+                    </button>
+                    <button
+                        className="sp-export-btn"
+                        onClick={() => exportSuppliers(suppliers)}
+                    >
+                        <FiDownload style={{ marginRight: 4 }} />
+                        Export
+                    </button>
+                </div>
             </div>
 
             <div className="sp-supplier-table">
@@ -152,9 +163,9 @@ const Supplier = ({ isSidebarOpen }) => {
                 ))}
             </div>
 
-            <div className="sp-pagination">
+            <div className="pagination">
                 <span
-                    className={currentPage === 1 ? "sp-disabled" : ""}
+                    className={currentPage === 1 ? "disabled" : ""}
                     onClick={() => goToPage(currentPage - 1)}
                 >
                     ← Previous
@@ -163,7 +174,7 @@ const Supplier = ({ isSidebarOpen }) => {
                 {Array.from({ length: totalPages }, (_, i) => (
                     <span
                         key={i + 1}
-                        className={currentPage === i + 1 ? "sp-active" : ""}
+                        className={currentPage === i + 1 ? "active" : ""}
                         onClick={() => goToPage(i + 1)}
                     >
                         {i + 1}
@@ -171,7 +182,7 @@ const Supplier = ({ isSidebarOpen }) => {
                 ))}
 
                 <span
-                    className={currentPage === totalPages ? "sp-disabled" : ""}
+                    className={currentPage === totalPages ? "disabled" : ""}
                     onClick={() => goToPage(currentPage + 1)}
                 >
                     Next →

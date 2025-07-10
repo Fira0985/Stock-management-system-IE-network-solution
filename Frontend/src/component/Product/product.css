@@ -15,6 +15,22 @@
   background-color: #ffffff;
 }
 
+.pd-export-btn {
+  background-color: #f9f9f9;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #111827;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease-in-out;
+  margin-left: 2%;
+  height: 5vh;
+  margin-top: 3vh;
+}
+
 /* Tabs */
 .pd-tab-navigation {
   display: flex;
@@ -72,7 +88,7 @@
   color: #111827;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.25s ease-in-out;
-  margin-left: 48%;
+  margin-left: 44%;
   height: 5vh;
   margin-top: 3vh;
 }
@@ -94,7 +110,8 @@
 }
 
 .pd-add:hover,
-.pd-bulk:hover {
+.pd-bulk:hover,
+.pd-export-btn:hover {
   background-color: #3b82f6;
   color: white;
 }
@@ -399,12 +416,14 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
+
   .pd-Product-content,
   .pd-Product-content.pd-collapse {
     margin-left: 0;
     width: 100vw;
     padding: 8px 2vw;
   }
+
   .pd-top {
     flex-direction: column;
     gap: 1rem;
@@ -412,20 +431,24 @@
 }
 
 @media (max-width: 900px) {
+
   .pd-Product-content,
   .pd-Product-content.pd-collapse {
     margin-left: 0;
     width: 100vw;
     padding: 4px 1vw;
   }
+
   .pd-top {
     flex-direction: column;
     gap: 0.5rem;
   }
+
   .pd-page-title {
     font-size: 1.1rem;
     padding-top: 2vh;
   }
+
   .pd-add,
   .pd-bulk {
     width: 100%;
@@ -436,16 +459,19 @@
 }
 
 @media (max-width: 600px) {
+
   .pd-Product-content,
   .pd-Product-content.pd-collapse {
     margin-left: 0;
     width: 100vw;
     padding: 2px 0.5vw;
   }
+
   .pd-page-title {
     font-size: 1rem;
     padding-top: 1vh;
   }
+
   .pd-add,
   .pd-bulk {
     font-size: 10px;
@@ -453,11 +479,13 @@
     margin-left: 0;
     margin-top: 1vh;
   }
+
   .pd-tab-navigation {
     gap: 0.2rem;
     font-size: 12px;
     padding-left: 0.2rem;
   }
+
   .pd-tab-button {
     font-size: 12px;
     width: 100%;
@@ -466,15 +494,18 @@
 }
 
 @media (min-width: 1600px) {
+
   .pd-Product-content,
   .pd-Product-content.pd-collapse {
     font-size: 1.3rem;
     padding: 3vw 6vw;
     width: 90vw;
   }
+
   .pd-page-title {
     font-size: 2rem;
   }
+
   .pd-tab-button {
     font-size: 1.2rem;
     padding: 1.2rem 2.2rem;
@@ -520,4 +551,3 @@ body.dark .pd-bulk:hover {
   background: #2563eb;
   color: #fff;
 }
-

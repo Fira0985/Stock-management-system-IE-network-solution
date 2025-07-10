@@ -13,10 +13,13 @@ import {
   Settings,
 } from "lucide-react";
 import { FiChevronLeft, FiChevronRight, FiPhoneCall, FiLogOut } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = (props) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     const newState = !isOpen;
@@ -24,6 +27,12 @@ const Sidebar = (props) => {
     if (props.onToggle) {
       props.onToggle(newState);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate("/login");
   };
 
   const allMenuItems = [
@@ -87,7 +96,7 @@ const Sidebar = (props) => {
                 </li>
               </ul>
             </div>
-            <button className="logout-btn">Logout</button>
+            <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>Logout</button>
           </>
         ) : (
           <>
@@ -102,12 +111,25 @@ const Sidebar = (props) => {
                 </li>
               </ul>
             </div>
-            <button className="logout-btn-collopse" title="Logout">
+            <button className="logout-btn-collopse" title="Logout" onClick={() => setShowLogoutModal(true)}>
               <FiLogOut size={18} />
             </button>
           </>
         )}
       </div>
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <div className="form-actions">
+              <button onClick={handleLogout}>Yes, Logout</button>
+              <button className="cancel-btn" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 };

@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import './purchase.css';
 import { fetchAllPurchases } from '../../services/purchaseService';
+import { exportPurchases } from "../../services/exportService";
 import PurchasePopup from './purchasePopup';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FiDownload } from 'react-icons/fi';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -106,7 +108,16 @@ const PurchaseTable = ({ isSidebarOpen }) => {
         <div className={isSidebarOpen ? "purchase-container" : "purchase-container collapse"}>
             <div className="header-section">
                 <h2 className="page-title">All Purchases</h2>
-                <button className="purchase-btn" onClick={() => setShowPopup(true)}>Purchase</button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button className="purchase-btn" onClick={() => setShowPopup(true)}>Purchase</button>
+                    <button
+                        className="purchase-export-btn"
+                        onClick={() => exportPurchases(purchases)}
+                    >
+                        <FiDownload style={{ marginRight: 4 }} />
+                        Export
+                    </button>
+                </div>
             </div>
 
             <div className="tabs">

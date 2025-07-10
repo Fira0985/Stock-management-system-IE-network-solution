@@ -17,8 +17,8 @@
   font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
-.main-content-collapsed .dashboard-btn.primary {
-  margin-left: 56vw;
+.main-content-collapsed .dashboard-btn.secondary {
+  margin-left: 65vw;
 }
 
 .dashboard-actions {
@@ -51,6 +51,7 @@
   padding: 6px 4px;
   scroll-behavior: smooth;
   scrollbar-width: thin;
+  z-index: 0;
 }
 
 .overview-horizontal-scroll::-webkit-scrollbar {
@@ -116,11 +117,11 @@
 .cards .amount {
   margin-top: 8px;
   font-size: 20px;
-  font-weight: bold;
-  color: rgb(82, 201, 78);
-}
+  font-weight: 100;
+  color: blueviolet;
+} 
 
-.dashboard-tab-container{
+.dashboard-tab-container {
   margin-left: 2vw;
 }
 
@@ -275,31 +276,37 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
+
   .main-content,
   .main-content-collapsed {
     margin-left: 0;
     width: 100vw;
     padding: 8px 2vw;
   }
+
   .dashboard-titles {
     font-size: 1.2rem;
   }
 }
 
 @media (max-width: 900px) {
+
   .main-content,
   .main-content-collapsed {
     margin-left: 0;
     width: 100vw;
     padding: 4px 1vw;
   }
+
   .dashboard-titles {
     font-size: 1rem;
   }
+
   .dashboard-btn {
     width: 100%;
     font-size: 12px;
   }
+
   .tab-buttons button {
     width: 100%;
     font-size: 12px;
@@ -308,20 +315,24 @@
 }
 
 @media (max-width: 600px) {
+
   .main-content,
   .main-content-collapsed {
     margin-left: 0;
     width: 100vw;
     padding: 2px 0.5vw;
   }
+
   .dashboard-titles {
     font-size: 0.9rem;
   }
+
   .dashboard-btn {
     font-size: 10px;
     width: 100%;
     padding: 8px 0;
   }
+
   .tab-buttons button {
     font-size: 10px;
     width: 100%;
@@ -330,19 +341,23 @@
 }
 
 @media (min-width: 1600px) {
+
   .main-content,
   .main-content-collapsed {
     font-size: 1.3rem;
     padding: 3vw 6vw;
     width: 90vw;
   }
+
   .dashboard-titles {
     font-size: 2rem;
   }
+
   .dashboard-btn {
     font-size: 1.2rem;
     width: 20vw;
   }
+
   .tab-buttons button {
     font-size: 1.2rem;
     width: 20vw;
@@ -351,19 +366,23 @@
 }
 
 @media (min-width: 2000px) {
+
   .main-content,
   .main-content-collapsed {
     font-size: 2rem;
     padding: 4vw 8vw;
     width: 80vw;
   }
+
   .dashboard-titles {
     font-size: 2.5rem;
   }
+
   .dashboard-btn {
     font-size: 1.7rem;
     width: 30vw;
   }
+
   .tab-buttons button {
     font-size: 1.7rem;
     width: 30vw;

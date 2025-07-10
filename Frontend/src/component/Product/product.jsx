@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './product.css';
-import { FiFolder, FiBox, FiMoreVertical } from 'react-icons/fi';
+import { FiFolder, FiBox, FiMoreVertical, FiDownload } from 'react-icons/fi';
 import {
     fetchCategory,
     fetchCategoryById,
@@ -9,6 +9,7 @@ import {
     deleteCategory
 } from '../../services/categoryService';
 import { addProduct, fetchProductById } from '../../services/productService';
+import { exportProducts } from "../../services/exportService";
 import ProductForm from './Forms/CategoryForm/ProductForm';
 import AddForm from './Forms/ProductForms/AddForm';
 import DeleteProductForm from './Forms/CategoryForm/deleteProductForm';
@@ -44,6 +45,8 @@ const Product = ({ isSidebarOpen }) => {
 
     const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+
+    const [role, setRole] = useState(() => localStorage.getItem('role') || '');
 
     useEffect(() => {
         loadCategories();
@@ -220,13 +223,48 @@ const Product = ({ isSidebarOpen }) => {
         setSelectedProduct(null);
     };
 
+    // Optionally, update role if it changes in localStorage (e.g., after login)
+    useEffect(() => {
+        const handleStorage = () => setRole(localStorage.getItem('role') || '');
+        window.addEventListener('storage', handleStorage);
+        return () => window.removeEventListener('storage', handleStorage);
+    }, []);
+
     return (
         <div className={isSidebarOpen ? "pd-Product-content" : "pd-Product-content pd-collapse"}>
             <div className="pd-top">
                 <h1 className="pd-page-title">Inventory</h1>
-                <button className="pd-add" onClick={handleAddCategory}>Add Category</button>
-                <button className="pd-bulk" onClick={handleAddProduct}>Add Product</button>
-                <button className="pd-bulk" onClick={() => setModalOpen(true)}>Bulk Registration</button>
+                <button
+                    className="pd-add"
+                    onClick={handleAddCategory}
+                    disabled={role === 'CLERK'}
+                    style={role === 'CLERK' ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                >
+                    Add Category
+                </button>
+                <button
+                    className="pd-bulk"
+                    onClick={handleAddProduct}
+                    disabled={role === 'CLERK'}
+                    style={role === 'CLERK' ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                >
+                    Add Product
+                </button>
+                <button
+                    className="pd-bulk"
+                    onClick={() => setModalOpen(true)}
+                    disabled={role === 'CLERK'}
+                    style={role === 'CLERK' ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                >
+                    Bulk Registration
+                </button>
+                <button
+                    className="pd-export-btn"
+                    onClick={() => exportProducts(allProducts)}
+                >
+                    <FiDownload style={{ marginRight: 4 }} />
+                    Export
+                </button>
             </div>
 
             <div className="pd-tab-navigation">
@@ -277,19 +315,27 @@ const Product = ({ isSidebarOpen }) => {
                     </ul>
 
                     {totalFlatProductPages > 1 && (
-                        <div className="pd-pagination">
+                        <div className="pagination">
                             <span
                                 className={flatProductPage === 1 ? "disabled" : ""}
                                 onClick={() => flatProductPage > 1 && setFlatProductPage(flatProductPage - 1)}
                             >
-                                ←
+                                ← Previous
                             </span>
-                            <span className="active">{flatProductPage}</span>
+                            {Array.from({ length: totalFlatProductPages }, (_, i) => (
+                                <span
+                                    key={i + 1}
+                                    className={flatProductPage === i + 1 ? "active" : ""}
+                                    onClick={() => setFlatProductPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </span>
+                            ))}
                             <span
                                 className={flatProductPage === totalFlatProductPages ? "disabled" : ""}
                                 onClick={() => flatProductPage < totalFlatProductPages && setFlatProductPage(flatProductPage + 1)}
                             >
-                                →
+                                Next →
                             </span>
                         </div>
                     )}
@@ -355,7 +401,7 @@ const Product = ({ isSidebarOpen }) => {
                                                 })}
                                             </ul>
                                             {totalProductPages > 1 && (
-                                                <div className="pd-pagination">
+                                                <div className="pagination">
                                                     <span
                                                         className={currentProductPage === 1 ? "disabled" : ""}
                                                         onClick={() =>
@@ -363,9 +409,19 @@ const Product = ({ isSidebarOpen }) => {
                                                             handleProductPageChange(globalIndex, currentProductPage - 1)
                                                         }
                                                     >
-                                                        ←
+                                                        ← Previous
                                                     </span>
-                                                    <span className="active">{currentProductPage}</span>
+                                                    {Array.from({ length: totalProductPages }, (_, i) => (
+                                                        <span
+                                                            key={i + 1}
+                                                            className={currentProductPage === i + 1 ? "active" : ""}
+                                                            onClick={() =>
+                                                                handleProductPageChange(globalIndex, i + 1)
+                                                            }
+                                                        >
+                                                            {i + 1}
+                                                        </span>
+                                                    ))}
                                                     <span
                                                         className={currentProductPage === totalProductPages ? "disabled" : ""}
                                                         onClick={() =>
@@ -373,7 +429,7 @@ const Product = ({ isSidebarOpen }) => {
                                                             handleProductPageChange(globalIndex, currentProductPage + 1)
                                                         }
                                                     >
-                                                        →
+                                                        Next →
                                                     </span>
                                                 </div>
                                             )}
@@ -384,19 +440,27 @@ const Product = ({ isSidebarOpen }) => {
                         })}
                     </ul>
                     {totalCategoryPages > 1 && (
-                        <div className="pd-pagination">
+                        <div className="pagination">
                             <span
                                 className={categoryPage === 1 ? "disabled" : ""}
                                 onClick={() => categoryPage > 1 && setCategoryPage(categoryPage - 1)}
                             >
-                                ←
+                                ← Previous
                             </span>
-                            <span className="active">{categoryPage}</span>
+                            {Array.from({ length: totalCategoryPages }, (_, i) => (
+                                <span
+                                    key={i + 1}
+                                    className={categoryPage === i + 1 ? "active" : ""}
+                                    onClick={() => setCategoryPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </span>
+                            ))}
                             <span
                                 className={categoryPage === totalCategoryPages ? "disabled" : ""}
                                 onClick={() => categoryPage < totalCategoryPages && setCategoryPage(categoryPage + 1)}
                             >
-                                →
+                                Next →
                             </span>
                         </div>
                     )}

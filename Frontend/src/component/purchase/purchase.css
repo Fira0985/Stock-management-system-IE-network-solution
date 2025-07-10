@@ -49,6 +49,29 @@
     color: #ffffff;
 }
 
+/* Export Button */
+.purchase-export-btn {
+    background-color: #f9f9f9;
+    border: 1px solid #d1d5db;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
+    width: 10vw;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.purchase-export-btn:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
 /* Tabs */
 .tabs {
     display: flex;

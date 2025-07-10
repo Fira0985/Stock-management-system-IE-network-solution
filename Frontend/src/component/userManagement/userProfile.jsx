@@ -58,7 +58,7 @@ const UserProfile = (props) => {
 
     return (
         <section className="profile-card">
-            <button className="modal-close" onClick={closeProfilePopup}>
+            <button className="modal-closes" onClick={closeProfilePopup}>
                 &times;
             </button>
             <div className="profile-image-section">
