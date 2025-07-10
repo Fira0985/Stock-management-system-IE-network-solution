@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Contact.css";
 
 const Contact = ({ isSidebarOpen }) => {
@@ -9,22 +9,41 @@ const Contact = ({ isSidebarOpen }) => {
     message: "",
   });
 
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setForm((prev) => ({ ...prev, email: storedEmail }));
+    }
+  }, []);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Message sent successfully!");
-    // Optionally send to backend here
-    setForm({ name: "", email: "", subject: "", message: "" });
+
+    const recipientEmail = "firafisberhan4@gmail.com";
+    const subject = encodeURIComponent(form.subject || "Feedback/Inquiry");
+    const body = encodeURIComponent(
+      `From: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
+    );
+
+    window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+
+    // Optionally clear form after opening mail client
+    setForm({
+      name: "",
+      email: localStorage.getItem("email") || "",
+      subject: "",
+      message: "",
+    });
   };
 
   return (
     <div
-      className={`contact-page ${
-        isSidebarOpen ? "with-sidebar" : "full-width"
-      }`}
+      className={`contact-page ${isSidebarOpen ? "with-sidebar" : "full-width"
+        }`}
     >
       <h2>📬 Contact Us</h2>
       <p>If you have any questions or feedback, feel free to reach out.</p>
@@ -47,8 +66,7 @@ const Contact = ({ isSidebarOpen }) => {
             type="email"
             name="email"
             value={form.email}
-            onChange={handleChange}
-            required
+            disabled
           />
         </label>
 

@@ -1,63 +1,76 @@
 .contact-page {
-  padding: 2rem 3rem;
-  background-color: #fff;
-  color: #222;
-  font-family: "Segoe UI", sans-serif;
-  min-height: 80vh;
-  transition: margin-left 0.3s ease;
-}
-
-.contact-page.with-sidebar {
-  margin-left: 220px;
+  padding: 40px;
+  background-color: #f9f9f9;
+  margin-left: 16.6vw;
+  width: 77vw;
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.3s ease-in-out;
 }
 
 .contact-page.full-width {
-  margin-left: 80px;
+  margin-left: 6vw;
+  width: 87vw;
+}
+
+.contact-page h2 {
+  font-size: 32px;
+  color: #4b2aad;
+  margin-bottom: 10px;
+}
+
+.contact-page p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
 }
 
 .contact-form {
-  max-width: 500px;
-  margin-top: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 20px;
 }
 
 .contact-form label {
-  font-weight: 600;
+  font-weight: 500;
   color: #333;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  font-size: 15px;
 }
 
 .contact-form input,
 .contact-form textarea {
-  padding: 10px 12px;
-  border: 1.5px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
   transition: border-color 0.3s ease;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: #6f42c1;
+  border-color: #4b2aad;
   outline: none;
 }
 
 .purple-btn {
-  background-color: #6f42c1;
-  color: white;
-  padding: 0.7rem 1.5rem;
+  background-color: #4b2aad;
+  color: #fff;
+  padding: 12px 24px;
   border: none;
-  border-radius: 7px;
-  font-weight: bold;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  align-self: flex-start;
   transition: background-color 0.3s ease;
+  width: fit-content;
 }
 
 .purple-btn:hover {
-  background-color: #572ea6;
+  background-color: #37218a;
 }

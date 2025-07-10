@@ -96,4 +96,6 @@ router.get('/summaryPayments', authenticateToken, reportController.getPaymentSum
 router.get('/summaryUsers', authenticateToken, reportController.getUserActivitySummary);  
 router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHealthSummary); 
 
+
+
 module.exports = router;
