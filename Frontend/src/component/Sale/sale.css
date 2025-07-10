@@ -227,3 +227,147 @@
     cursor: pointer;
     padding-left: 30vw;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .sales-container,
+  .sales-container.collapse {
+    margin-left: 0;
+    width: 100vw;
+    padding: 8px 2vw;
+  }
+  .header-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .sales-container,
+  .sales-container.collapse {
+    margin-left: 0;
+    width: 100vw;
+    padding: 4px 1vw;
+  }
+  .header-section {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .page-title {
+    font-size: 1.1rem;
+  }
+  .sale-btn {
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 12px;
+  }
+  .styled-table th,
+  .styled-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sales-container,
+  .sales-container.collapse {
+    margin-left: 0;
+    width: 100vw;
+    padding: 2px 0.5vw;
+  }
+  .header-section {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .page-title {
+    font-size: 1rem;
+  }
+  .sale-btn {
+    font-size: 10px;
+    width: 100%;
+    padding: 8px 0;
+  }
+  .tabs {
+    gap: 0.5rem;
+    font-size: 12px;
+    padding-bottom: 4px;
+  }
+  .styled-table th,
+  .styled-table td {
+    padding: 6px 4px;
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .sales-container,
+  .sales-container.collapse {
+    font-size: 1.3rem;
+    padding: 3vw 6vw;
+    width: 90vw;
+  }
+  .page-title {
+    font-size: 2rem;
+  }
+  .styled-table th,
+  .styled-table td {
+    font-size: 1.2rem;
+    padding: 24px 32px;
+  }
+}
+
+@media (min-width: 2000px) {
+  .sales-container,
+  .sales-container.collapse {
+    font-size: 2rem;
+    padding: 4vw 8vw;
+    width: 80vw;
+  }
+  .page-title {
+    font-size: 2.5rem;
+  }
+  .styled-table th,
+  .styled-table td {
+    font-size: 1.7rem;
+    padding: 36px 48px;
+  }
+}
+
+/* Dark mode for sale page */
+body.dark .sales-container,
+.sales-container.dark,
+body.dark .sales-container.collapse,
+.sales-container.collapse.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .styled-table,
+.styled-table.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .styled-table th,
+.styled-table.dark th {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .styled-table td,
+.styled-table.dark td {
+  color: #e0e0e0;
+}
+
+body.dark .sale-btn,
+.sale-btn.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .sale-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}

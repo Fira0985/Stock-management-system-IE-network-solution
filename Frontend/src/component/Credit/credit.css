@@ -350,60 +350,142 @@
   color: #6b7280;
 }
 
+/* Dark mode for credit page */
+body.dark .credit-container,
+.credit-container.dark,
+body.dark .credit-container.collapse,
+.credit-container.collapse.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .credit-content,
+.credit-content.dark {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .credit-table,
+.credit-table.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .credit-table th,
+.credit-table.dark th {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .credit-table td,
+.credit-table.dark td {
+  color: #e0e0e0;
+}
+
 /* Responsive Design */
-@media (max-width: 768px) {
-  .credit-container {
-    padding: 1rem;
+@media (max-width: 1200px) {
+  .credit-container,
+  .credit-container.collapse {
+    padding: 12px 4px;
+    width: 100vw;
+    margin-left: 0;
   }
-
-  .credit-title {
-    font-size: 2rem;
+  .credit-content {
+    width: 100vw;
   }
-
-  .header-content {
+  .credit-header {
     flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .credit-stats {
-    flex-direction: row;
     gap: 1rem;
-  }
-
-  .stat-item {
-    padding: 0.75rem;
-    min-width: 100px;
-  }
-
-  .credit-controls {
-    padding: 1.5rem;
-  }
-
-  .tab-container {
-    flex-direction: column;
-  }
-
-  .tab-button {
-    justify-content: center;
-    padding: 1rem;
-  }
-
-  .table-container {
-    max-height: 60vh;
-  }
-
-  .credit-table {
-    min-width: 800px;
   }
 }
 
-@media (max-width: 480px) {
-  .credit-stats {
-    flex-direction: column;
-    width: 100%;
+@media (max-width: 900px) {
+  .credit-container,
+  .credit-container.collapse {
+    padding: 8px 2px;
+    width: 100vw;
+    margin-left: 0;
   }
+  .credit-content {
+    width: 100vw;
+  }
+  .credit-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .credit-title {
+    font-size: 1.2rem;
+  }
+  .credit-table th,
+  .credit-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
 
-  .stat-item {
-    width: 100%;
+@media (max-width: 600px) {
+  .credit-container,
+  .credit-container.collapse {
+    padding: 2px 0.5vw;
+    width: 100vw;
+    margin-left: 0;
+  }
+  .credit-content {
+    width: 100vw;
+  }
+  .credit-header {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .credit-title {
+    font-size: 1rem;
+  }
+  .credit-table th,
+  .credit-table td {
+    padding: 6px 4px;
+    font-size: 10px;
+  }
+  .tab-container {
+    gap: 0.5rem;
+    font-size: 12px;
+    padding-bottom: 4px;
+  }
+  .tab-label {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .credit-container,
+  .credit-container.collapse {
+    font-size: 1.3rem;
+    padding: 3vw 6vw;
+    width: 90vw;
+  }
+  .credit-title {
+    font-size: 2rem;
+  }
+  .credit-table th,
+  .credit-table td {
+    font-size: 1.2rem;
+    padding: 24px 32px;
+  }
+}
+
+@media (min-width: 2000px) {
+  .credit-container,
+  .credit-container.collapse {
+    font-size: 2rem;
+    padding: 4vw 8vw;
+    width: 80vw;
+  }
+  .credit-title {
+    font-size: 2.5rem;
+  }
+  .credit-table th,
+  .credit-table td {
+    font-size: 1.7rem;
+    padding: 36px 48px;
   }
 }

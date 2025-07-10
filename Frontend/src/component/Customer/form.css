@@ -68,6 +68,21 @@
     color: #333;
 }
 
+/* Dark mode for customer modal */
+body.dark .modal,
+.modal.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333;
+}
+
+body.dark .modal input,
+.modal.dark input {
+  background: #181a20;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
 /* Optional animation */
 @keyframes slideFadeIn {
     from {

@@ -175,3 +175,30 @@
     color: #9ca3af;
     cursor: not-allowed;
 }
+
+/* Dark mode for customer page */
+body.dark .cs-customer-content,
+.cs-customer-content.dark,
+body.dark .cs-customer-content.cs-collapse,
+.cs-customer-content.cs-collapse.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .cs-customer-table,
+.cs-customer-table.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .cs-customer-table th,
+.cs-customer-table.dark th {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .cs-customer-table td,
+.cs-customer-table.dark td {
+  color: #e0e0e0;
+}

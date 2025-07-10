@@ -189,8 +189,13 @@ const addSales = async (req, res) => {
                 });
             }
 
-            // Deduct stock
+            // Deduct stock for each product
             for (const item of parsedItems) {
+                // Double-check stock in transaction to avoid race conditions
+                const prod = await tx.product.findUnique({ where: { id: item.product_id } });
+                if (prod.unit < item.quantity) {
+                    throw new Error(`Insufficient stock for '${prod.name}'.`);
+                }
                 await tx.product.update({
                     where: { id: item.product_id },
                     data: {

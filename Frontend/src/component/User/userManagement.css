@@ -157,3 +157,30 @@
     color: #9ca3af;
     cursor: not-allowed;
 }
+
+/* Dark mode for user management */
+body.dark .user-content,
+.user-content.dark,
+body.dark .user-content.collapse,
+.user-content.collapse.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .user-table,
+.user-table.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .user-row,
+.user-row.dark {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .user-header-row {
+  background: #23262f;
+  color: #e0e0e0;
+}

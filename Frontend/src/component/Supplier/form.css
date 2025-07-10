@@ -79,3 +79,18 @@
         transform: translateY(0);
     }
 }
+
+/* Dark mode for supplier modal */
+body.dark .supplier-modal,
+.supplier-modal.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333;
+}
+
+body.dark .supplier-modal input,
+.supplier-modal.dark input {
+  background: #181a20;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}

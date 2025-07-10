@@ -223,5 +223,24 @@
   background: linear-gradient(90deg, #2563eb 70%, #2563eb 100%);
 }
 
-/* Other styles (labels, inputs, buttons) same as before */
-/* ... Keep previous styles for inputs, buttons, labels, dark mode, etc. ... */
+/* Dark mode support */
+body.dark .settings-container,
+.settings-container.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .tab-section,
+.tab-section.dark {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .tab-section input,
+body.dark .tab-section select,
+.tab-section.dark input,
+.tab-section.dark select {
+  background: #181a20;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}

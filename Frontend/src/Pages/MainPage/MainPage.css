@@ -57,3 +57,111 @@
 .modal-close:hover {
   color: #000;
 }
+
+/* Hamburger Button for mobile */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 2001;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .dashboard-container,
+  .dashboard-container-collapsed {
+    width: 100vw;
+    min-width: 0;
+    padding: 0;
+  }
+  .main-sidebar-desktop {
+    display: none;
+  }
+  .main-content-wrapper {
+    width: 100vw;
+    min-width: 0;
+  }
+  .hamburger-btn {
+    display: block;
+  }
+}
+
+/* Sidebar Drawer for mobile */
+.mobile-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 41, 55, 0.45);
+  z-index: 2000;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.mobile-sidebar-drawer {
+  width: 240px;
+  max-width: 80vw;
+  background: #fff;
+  height: 100vh;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.12);
+  animation: slideInSidebar 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+@keyframes slideInSidebar {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Hide desktop sidebar on mobile */
+@media (max-width: 900px) {
+  .main-sidebar-desktop {
+    display: none !important;
+  }
+}
+
+/* Main content wrapper for mobile */
+.main-content-wrapper {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  margin-left: 0;
+}
+
+/* Dark mode root styles */
+body.dark,
+.dashboard-container.dark,
+.dashboard-container-collapsed.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .modal-overlay,
+.dashboard-container.dark .modal-overlay {
+  background-color: rgba(20, 20, 30, 0.8);
+}
+
+body.dark .main-content-wrapper,
+.dashboard-container.dark .main-content-wrapper {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Ensure main-content and main-content-collapsed support dark mode */
+body.dark .main-content,
+body.dark .main-content-collapsed,
+.main-content.dark,
+.main-content-collapsed.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}

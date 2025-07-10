@@ -2,6 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { addSale } from '../../services/saleService';
 import './saleForm.css';
 
+// Simple Toast component
+const Toast = ({ message, onClose }) => (
+    <div
+        style={{
+            position: 'fixed',
+            top: 30,
+            right: 30,
+            background: '#e53e3e',
+            color: '#fff',
+            padding: '14px 24px',
+            borderRadius: 8,
+            zIndex: 9999,
+            fontWeight: 500,
+            boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+            minWidth: 180,
+        }}
+        onClick={onClose}
+    >
+        {message}
+    </div>
+);
+
 const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
     const [form, setForm] = useState({
         type: 'CASH',
@@ -13,6 +35,7 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
         balance_due: 0,
         due_date: '',
     });
+    const [toast, setToast] = useState(null);
 
     // Recalculate total and balance_due
     const recalc = (items, discount_amount, paid_amount) => {
@@ -101,7 +124,11 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
 
         // Basic validation: at least one item with valid product_id and quantity > 0
         if (form.items.some(i => !i.product_id || i.quantity <= 0)) {
-            alert('Please select valid products and quantities.');
+            setToast('Please select valid products and quantities.');
+            return;
+        }
+        if (form.type === 'CREDIT' && !form.customer_id) {
+            setToast('Customer is required for credit sales.');
             return;
         }
 
@@ -113,12 +140,21 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
             });
             onSuccess();
         } catch (err) {
-            alert('Failed to add sale');
+            setToast('Failed to add sale');
         }
     };
 
+    // Auto-hide toast after 3s
+    useEffect(() => {
+        if (toast) {
+            const t = setTimeout(() => setToast(null), 3000);
+            return () => clearTimeout(t);
+        }
+    }, [toast]);
+
     return (
         <div className="modal-backdrop">
+            {toast && <Toast message={toast} onClose={() => setToast(null)} />}
             <form className="sale-form" onSubmit={submit} style={{ position: 'relative', width: '500px' }}>
                 {/* Close Button */}
                 <button
@@ -158,8 +194,12 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
                     id="customer"
                     value={form.customer_id}
                     onChange={e => updateFormChange({ customer_id: e.target.value })}
+                    required={form.type === 'CREDIT'}
+                    disabled={form.type !== 'CREDIT' && customers.length === 0}
                 >
-                    <option value="">-- None --</option>
+                    <option value="" disabled={form.type === 'CREDIT'}>
+                        -- None --
+                    </option>
                     {customers.map(c => (
                         <option key={c.id} value={c.id}>
                             {c.name}

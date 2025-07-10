@@ -137,3 +137,30 @@
     color: #aaa;
     cursor: not-allowed;
 }
+
+/* Dark mode for supplier page */
+body.dark .sp-supplier-content,
+.sp-supplier-content.dark,
+body.dark .sp-supplier-content.sp-collapse,
+.sp-supplier-content.sp-collapse.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .sp-supplier-table,
+.sp-supplier-table.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .sp-supplier-row,
+.sp-supplier-row.dark {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .sp-supplier-row.sp-header {
+  background: #23262f;
+  color: #e0e0e0;
+}

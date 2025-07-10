@@ -43,39 +43,45 @@ const addPurchase = async (req, res) => {
     }
 
     try {
-        const purchase = await prisma.purchase.create({
-            data: {
-                supplier: { connect: { id: supplier_id } },
-                created_by: { connect: { id: userId } },
-                items: {
-                    create: items.map(item => ({
-                        product: { connect: { id: item.product_id } },
-                        quantity: item.quantity,
-                        cost_price: item.cost_price
-                    }))
-                }
-            },
-            include: {
-                supplier: true,
-                items: {
-                    include: {
-                        product: true
-                    }
-                }
-            }
-        });
-
-        for (const item of items) {
-            await prisma.product.update({
-                where: { id: item.product_id },
+        // 1. Create purchase and update product units atomically
+        const purchase = await prisma.$transaction(async (tx) => {
+            // Create the purchase
+            const newPurchase = await tx.purchase.create({
                 data: {
-                    unit: {
-                        increment: item.quantity
+                    supplier: { connect: { id: supplier_id } },
+                    created_by: { connect: { id: userId } },
+                    items: {
+                        create: items.map(item => ({
+                            product: { connect: { id: item.product_id } },
+                            quantity: item.quantity,
+                            cost_price: item.cost_price
+                        }))
+                    }
+                },
+                include: {
+                    supplier: true,
+                    items: {
+                        include: {
+                            product: true
+                        }
                     }
                 }
             });
-        }
 
+            // For each item, increment the product unit
+            for (const item of items) {
+                await tx.product.update({
+                    where: { id: item.product_id },
+                    data: {
+                        unit: {
+                            increment: item.quantity
+                        }
+                    }
+                });
+            }
+
+            return newPurchase;
+        });
 
         return res.status(201).json({ success: true, data: purchase });
     } catch (error) {

@@ -91,18 +91,25 @@ exports.getPurchaseOverview = async (req, res, next) => {
 exports.getWeeklySalesChart = async (req, res, next) => {
     try {
         const { startOfWeek, endOfToday } = getDateBounds();
-        const groups = await prisma.sale.groupBy({
-            by: ['created_at'],
+        // Group sales by day, summing total for each day
+        const sales = await prisma.sale.findMany({
             where: { created_at: { gte: startOfWeek, lte: endOfToday } },
-            _sum: { total: true },
+            select: { created_at: true, total: true }
         });
 
+        // Aggregate by day
         const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const dataMap = {};
-        groups.forEach(g => {
-            const d = new Date(g.created_at);
+        const dayTotals = {};
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(startOfWeek);
+            d.setDate(d.getDate() + i);
             const day = dayNames[d.getDay()];
-            dataMap[day] = g._sum.total;
+            dayTotals[day] = 0;
+        }
+        sales.forEach(sale => {
+            const d = new Date(sale.created_at);
+            const day = dayNames[d.getDay()];
+            dayTotals[day] = (dayTotals[day] || 0) + Number(sale.total);
         });
 
         const result = [];
@@ -110,7 +117,7 @@ exports.getWeeklySalesChart = async (req, res, next) => {
             const d = new Date(startOfWeek);
             d.setDate(d.getDate() + i);
             const day = dayNames[d.getDay()];
-            result.push({ day, sales: dataMap[day] || 0 });
+            result.push({ day, sales: dayTotals[day] || 0 });
         }
 
         res.json(result);
@@ -123,31 +130,28 @@ exports.getMonthlyCategoryChart = async (req, res, next) => {
     try {
         const { startOfMonth, endOfToday } = getDateBounds();
 
-        // Sum quantity * unit_price per product
-        const raw = await prisma.saleItem.groupBy({
-            by: ['product_id'],
-            where: { sale: { created_at: { gte: startOfMonth, lte: endOfToday } } },
-            _sum: { quantity: true, unit_price: true }
+        // Get all sales in the month, with items and product/category
+        const sales = await prisma.sale.findMany({
+            where: { created_at: { gte: startOfMonth, lte: endOfToday } },
+            include: {
+                items: {
+                    include: { product: { include: { category: true } } }
+                }
+            }
         });
 
-        // Fetch categories
-        const productIds = raw.map(r => r.product_id);
-        const prods = await prisma.product.findMany({
-            where: { id: { in: productIds } },
-            include: { category: true }
+        // Aggregate by category
+        const categoryTotals = {};
+        sales.forEach(sale => {
+            sale.items.forEach(item => {
+                const cat = item.product.category;
+                if (!cat) return;
+                if (!categoryTotals[cat.name]) categoryTotals[cat.name] = 0;
+                categoryTotals[cat.name] += Number(item.unit_price) * Number(item.quantity);
+            });
         });
 
-        const categoryMap = {};
-        raw.forEach(r => {
-            const prod = prods.find(p => p.id === r.product_id);
-            const name = prod.category.name;
-            const value = r._sum.unit_price * r._sum.quantity;
-            categoryMap[name] = (categoryMap[name] || 0) + value;
-        });
-
-        const result = Object.entries(categoryMap)
-            .map(([category, value]) => ({ category, value }));
-
+        const result = Object.entries(categoryTotals).map(([category, value]) => ({ category, value }));
         res.json(result);
     } catch (err) {
         next(err);
@@ -158,20 +162,24 @@ exports.getAnnualSalesChart = async (req, res, next) => {
     try {
         const { startOfYear, endOfToday } = getDateBounds();
 
-        const groups = await prisma.sale.groupBy({
-            by: ['created_at'],
+        // Get all sales in the year
+        const sales = await prisma.sale.findMany({
             where: { created_at: { gte: startOfYear, lte: endOfToday } },
-            _sum: { total: true },
+            select: { created_at: true, total: true }
         });
 
+        // Aggregate by month
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const dataMap = {};
-        groups.forEach(g => {
-            const m = monthNames[new Date(g.created_at).getMonth()];
-            dataMap[m] = (dataMap[m] || 0) + g._sum.total;
+        const monthTotals = {};
+        for (let i = 0; i < 12; i++) {
+            monthTotals[monthNames[i]] = 0;
+        }
+        sales.forEach(sale => {
+            const m = monthNames[new Date(sale.created_at).getMonth()];
+            monthTotals[m] = (monthTotals[m] || 0) + Number(sale.total);
         });
 
-        const result = monthNames.map(m => ({ month: m, value: dataMap[m] || 0 }));
+        const result = monthNames.map(m => ({ month: m, value: monthTotals[m] || 0 }));
         res.json(result);
     } catch (err) {
         next(err);

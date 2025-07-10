@@ -233,3 +233,59 @@
         opacity: 1;
     }
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .pr-popup-box {
+    width: 80vw;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .pr-popup-box {
+    width: 98vw;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .pr-popup-box {
+    width: 100vw;
+    padding: 0.2rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .pr-popup-box {
+    font-size: 1.3rem;
+    padding: 3vw 6vw;
+    width: 60vw;
+  }
+}
+
+@media (min-width: 2000px) {
+  .pr-popup-box {
+    font-size: 2rem;
+    padding: 4vw 8vw;
+    width: 50vw;
+  }
+}
+
+/* Dark mode for purchase popup */
+body.dark .pr-popup-box,
+.pr-popup-box.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .pr-suggestions,
+.pr-suggestions.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .pr-suggestion-item:hover {
+  background-color: #181a20;
+}

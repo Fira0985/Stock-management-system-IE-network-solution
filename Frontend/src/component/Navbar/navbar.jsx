@@ -1,42 +1,41 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FiBell, FiSun, FiUser } from "react-icons/fi";
+import { FiBell, FiSun, FiMoon, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { uploadProfileImage, getImage } from "../../services/userService";
 import { fetchRecentActivity } from "../../services/statisticsApi";
 
 const Navbar = ({ isSidebarOpen, onProfileClick }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(localStorage.getItem("userName") || "");
   const [avatar, setAvatar] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [hasUnread, setHasUnread] = useState(
+    sessionStorage.getItem("hasUnread") === "true"
+  );
+  const [darkMode, setDarkMode] = useState(
+    () =>
+      localStorage.getItem("theme") === "dark" ||
+      document.body.classList.contains("dark")
+  );
+
   const fileInputRef = useRef();
-  const [hasUnread, setHasUnread] = useState(() => {
-    return sessionStorage.getItem("hasUnread") === "true";
-  });
-
-
-
   const email = localStorage.getItem("email");
   const userName = localStorage.getItem("userName");
-  const data = { email };
 
-  // Store session start time
-  if (!sessionStorage.getItem("sessionStartTime")) {
-    sessionStorage.setItem("sessionStartTime", new Date().toISOString());
-  }
-
-  async function fetchImage(data) {
-    const response = await getImage(data);
-    setAvatar(response.data.imageUrl);
-  }
+  const fetchAvatar = async () => {
+    try {
+      const response = await getImage({ email });
+      setAvatar(response.data.imageUrl);
+    } catch (error) {
+      console.error("Failed to load avatar:", error.message);
+    }
+  };
 
   const loadNotifications = async () => {
     try {
       const activity = await fetchRecentActivity();
       const sessionStart = new Date(sessionStorage.getItem("sessionStartTime"));
-      const lastRead = new Date(sessionStorage.getItem("lastReadTime") || 0);
-
       const filtered = activity.filter((item) => {
         const createdAt = new Date(item.time);
         return createdAt > sessionStart && item.by !== userName;
@@ -44,24 +43,47 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
 
       setNotifications(filtered);
 
-      // Show badge only if any notification is newer than last read
-      const hasNew = filtered.some(item => new Date(item.time) > lastRead);
-      setHasUnread(hasNew);
+      if (filtered.length > 0) {
+        setHasUnread(true);
+        sessionStorage.setItem("hasUnread", "true");
+      }
     } catch (err) {
       console.error("Failed to load notifications:", err.message);
     }
   };
 
-
   useEffect(() => {
-    const storedName = localStorage.getItem("userName");
-    if (storedName) setName(storedName);
-    fetchImage(data);
+    // Initialize session start time once per session
+    if (!sessionStorage.getItem("sessionStartTime")) {
+      sessionStorage.setItem("sessionStartTime", new Date().toISOString());
+    }
+
+    fetchAvatar();
     loadNotifications();
 
-    const interval = setInterval(loadNotifications, 30000); // refresh every 30s
+    const interval = setInterval(loadNotifications, 30000); // Refresh every 30s
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    // Set initial theme on mount
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, []);
+
+  useEffect(() => {
+    // Update theme when darkMode changes
+    if (darkMode) {
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   const handleAvatarClick = () => {
     fileInputRef.current.click();
@@ -71,8 +93,8 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
       try {
-        const result = await uploadProfileImage(file);
-        fetchImage(data);
+        await uploadProfileImage(file);
+        fetchAvatar();
       } catch (err) {
         console.error("Image upload failed:", err.message);
       }
@@ -80,28 +102,27 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
   };
 
   const toggleDropdown = () => {
-    setShowDropdown((prev) => !prev);
-    if (!showDropdown) {
-      const now = new Date().toISOString();
-      sessionStorage.setItem("lastReadTime", now);
+    const newState = !showDropdown;
+    setShowDropdown(newState);
+
+    if (newState === true) {
+      // When dropdown is shown, clear unread badge
       setHasUnread(false);
+      sessionStorage.setItem("hasUnread", "false");
+      sessionStorage.setItem("lastReadTime", new Date().toISOString());
     }
   };
-
-
-
 
   return (
     <header className={isSidebarOpen ? "topbar" : "topbar-collapsed"}>
       <div className="title">Dashboard</div>
       <div className="topbar-right">
+        {/* Notifications */}
         <div className="icon notification-wrapper" onClick={toggleDropdown}>
           <FiBell />
           {hasUnread && (
             <span className="notification-badge">{notifications.length}</span>
           )}
-
-
           {showDropdown && (
             <div className="notification-dropdown">
               <h4>Notifications</h4>
@@ -122,10 +143,16 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
           )}
         </div>
 
-        <span className="icon">
-          <FiSun />
+        {/* Theme toggle icon */}
+        <span
+          className="icon"
+          onClick={() => setDarkMode((prev) => !prev)}
+          style={{ cursor: "pointer" }}
+        >
+          {darkMode ? <FiSun /> : <FiMoon />}
         </span>
 
+        {/* Avatar */}
         <div className="avatar small" onClick={handleAvatarClick}>
           {avatar ? (
             <img
@@ -140,12 +167,14 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
           )}
         </div>
 
+        {/* Username */}
         {name && (
           <span className="username" onClick={onProfileClick}>
             {name}
           </span>
         )}
 
+        {/* Hidden file input for image upload */}
         <input
           type="file"
           accept="image/*"

@@ -262,3 +262,147 @@
     padding-left: 18px;
     margin-top: 10px;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .purchase-container,
+  .purchase-container.collapse {
+    padding: 12px 4px;
+    width: 100vw;
+    margin-left: 0;
+  }
+  .header-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .purchase-container,
+  .purchase-container.collapse {
+    padding: 8px 2px;
+    width: 100vw;
+    margin-left: 0;
+  }
+  .header-section {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .styled-table th,
+  .styled-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  .purchase-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .purchase-container,
+  .purchase-container.collapse {
+    padding: 2px 0.5vw;
+    width: 100vw;
+    margin-left: 0;
+  }
+  .header-section {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .page-title {
+    font-size: 1rem;
+  }
+  .purchase-btn {
+    font-size: 12px;
+    width: 100%;
+    padding: 8px 0;
+  }
+  .tabs {
+    gap: 0.5rem;
+    font-size: 12px;
+    padding-bottom: 4px;
+  }
+  .tab {
+    font-size: 12px;
+    padding: 4px 0;
+  }
+  .styled-table th,
+  .styled-table td {
+    padding: 6px 4px;
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .purchase-container,
+  .purchase-container.collapse {
+    font-size: 1.3rem;
+    padding: 3vw 6vw;
+    width: 90vw;
+  }
+  .header-section {
+    font-size: 1.2rem;
+  }
+  .styled-table th,
+  .styled-table td {
+    font-size: 1.2rem;
+    padding: 24px 32px;
+  }
+}
+
+@media (min-width: 2000px) {
+  .purchase-container,
+  .purchase-container.collapse {
+    font-size: 2rem;
+    padding: 4vw 8vw;
+    width: 80vw;
+  }
+  .header-section {
+    font-size: 1.7rem;
+  }
+  .styled-table th,
+  .styled-table td {
+    font-size: 1.7rem;
+    padding: 36px 48px;
+  }
+}
+
+/* Dark mode for purchase page */
+body.dark .purchase-container,
+.purchase-container.dark,
+body.dark .purchase-container.collapse,
+.purchase-container.collapse.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .styled-table,
+.styled-table.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .styled-table th,
+.styled-table.dark th {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .styled-table td,
+.styled-table.dark td {
+  color: #e0e0e0;
+}
+
+body.dark .purchase-btn,
+.purchase-btn.dark {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .purchase-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}

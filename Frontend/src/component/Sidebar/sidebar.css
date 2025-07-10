@@ -282,6 +282,41 @@
     background-color: #c7d2fe;
 }
 
+/* Dark mode sidebar */
+body.dark .sidebar,
+.sidebar.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  box-shadow: 2px 0 8px #181a20;
+}
+
+body.dark .sidebar .brand,
+.sidebar.dark .brand {
+  color: #90cdf4;
+}
+
+body.dark .sidebar .menu li,
+.sidebar.dark .menu li {
+  color: #e0e0e0;
+}
+
+body.dark .sidebar .menu li:hover {
+  background-color: #23262f;
+  color: #2563eb;
+}
+
+body.dark .sidebar .logout-btn,
+body.dark .sidebar .logout-btn-collopse {
+  background: #181a20;
+  color: #e0e0e0;
+}
+
+body.dark .sidebar .logout-btn:hover,
+body.dark .sidebar .logout-btn-collopse:hover {
+  background: #e53e3e;
+  color: #fff;
+}
+
 
 
 @media (max-width: 768px) {

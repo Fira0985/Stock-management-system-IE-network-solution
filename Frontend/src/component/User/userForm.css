@@ -83,3 +83,22 @@
     color: red;
     margin-bottom: 10px;
 }
+
+/* Dark mode for user modal */
+body.dark .modal-content,
+.modal-content.dark,
+body.dark .modal-content-edit,
+.modal-content-edit.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333;
+}
+
+body.dark .modal-content input,
+body.dark .modal-content-edit input,
+.modal-content.dark input,
+.modal-content-edit.dark input {
+  background: #181a20;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}

@@ -134,3 +134,28 @@
 .save-button:hover {
     background-color: #1e40af;
 }
+
+/* Dark mode for user profile */
+body.dark .profile-card,
+.profile-card.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 0 10px #23262f;
+}
+
+body.dark .profile-avatar,
+body.dark .profile-placeholder {
+  background: #181a20;
+  color: #e0e0e0;
+}
+
+body.dark .input-group input {
+  background: #181a20;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .save-button {
+  background: #2563eb;
+  color: #fff;
+}

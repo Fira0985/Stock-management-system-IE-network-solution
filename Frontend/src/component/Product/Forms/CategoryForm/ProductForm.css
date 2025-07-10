@@ -66,3 +66,33 @@ input {
     background-color: #4CAF50;
     color: white;
 }
+
+/* Dark mode for category/product modal */
+body.dark .modal-content,
+body.dark .modal-content-edits,
+.modal-content.dark,
+.modal-content-edits.dark {
+  background: #23262f !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333;
+}
+
+body.dark .form-group input,
+body.dark .modal-content input,
+body.dark .modal-content-edits input,
+.modal-content.dark input,
+.modal-content-edits.dark input {
+  background: #181a20;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .cancel-btn {
+  background-color: #e53e3e;
+  color: #fff;
+}
+
+body.dark .submit-btn {
+  background-color: #2563eb;
+  color: #fff;
+}

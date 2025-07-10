@@ -272,3 +272,140 @@
   font-size: 16px;
   vertical-align: middle;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .main-content,
+  .main-content-collapsed {
+    margin-left: 0;
+    width: 100vw;
+    padding: 8px 2vw;
+  }
+  .dashboard-titles {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-content,
+  .main-content-collapsed {
+    margin-left: 0;
+    width: 100vw;
+    padding: 4px 1vw;
+  }
+  .dashboard-titles {
+    font-size: 1rem;
+  }
+  .dashboard-btn {
+    width: 100%;
+    font-size: 12px;
+  }
+  .tab-buttons button {
+    width: 100%;
+    font-size: 12px;
+    height: 5vh;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-content,
+  .main-content-collapsed {
+    margin-left: 0;
+    width: 100vw;
+    padding: 2px 0.5vw;
+  }
+  .dashboard-titles {
+    font-size: 0.9rem;
+  }
+  .dashboard-btn {
+    font-size: 10px;
+    width: 100%;
+    padding: 8px 0;
+  }
+  .tab-buttons button {
+    font-size: 10px;
+    width: 100%;
+    height: 4vh;
+  }
+}
+
+@media (min-width: 1600px) {
+  .main-content,
+  .main-content-collapsed {
+    font-size: 1.3rem;
+    padding: 3vw 6vw;
+    width: 90vw;
+  }
+  .dashboard-titles {
+    font-size: 2rem;
+  }
+  .dashboard-btn {
+    font-size: 1.2rem;
+    width: 20vw;
+  }
+  .tab-buttons button {
+    font-size: 1.2rem;
+    width: 20vw;
+    height: 8vh;
+  }
+}
+
+@media (min-width: 2000px) {
+  .main-content,
+  .main-content-collapsed {
+    font-size: 2rem;
+    padding: 4vw 8vw;
+    width: 80vw;
+  }
+  .dashboard-titles {
+    font-size: 2.5rem;
+  }
+  .dashboard-btn {
+    font-size: 1.7rem;
+    width: 30vw;
+  }
+  .tab-buttons button {
+    font-size: 1.7rem;
+    width: 30vw;
+    height: 10vh;
+  }
+}
+
+/* Dark mode styles */
+body.dark,
+.main-content.dark,
+.main-content-collapsed.dark {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark .cards,
+.main-content.dark .cards {
+  background: #23262f;
+  color: #e0e0e0;
+  box-shadow: 0 4px 16px #23262f;
+}
+
+body.dark .dashboard-charts .chart,
+.main-content.dark .dashboard-charts .chart {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .activity-section,
+.main-content.dark .activity-section {
+  background: #23262f;
+  color: #e0e0e0;
+}
+
+body.dark .dashboard-btn,
+.main-content.dark .dashboard-btn {
+  background: #23262f;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark .dashboard-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}
