@@ -55,7 +55,6 @@ const uploadExcelFile = async (req, res) => {
                 data: {
                     name: row.product_name,
                     barcode: row.barcode ? String(row.barcode) : null,
-                    unit: row.unit || null,
                     image_url: row.image_url || null,
                     sale_price: parseFloat(row.sale_price),
                     cost_price: parseFloat(row.cost_price),

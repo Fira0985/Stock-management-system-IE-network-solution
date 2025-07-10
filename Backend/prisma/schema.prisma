@@ -74,7 +74,7 @@ model Product {
   id             Int      @id @default(autoincrement())
   name           String   
   barcode        String?   @unique
-  unit           Int?   
+  unit           Int  @default(0)  
   image_url      String?
   sale_price     Float
   cost_price     Float

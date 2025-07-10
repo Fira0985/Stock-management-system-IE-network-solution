@@ -70,11 +70,14 @@ const addPurchase = async (req, res) => {
 
             // For each item, increment the product unit
             for (const item of items) {
+                // Ensure quantity is a number
+                const qty = Number(item.quantity) || 0;
+                console.log(qty)
                 await tx.product.update({
                     where: { id: item.product_id },
                     data: {
                         unit: {
-                            increment: item.quantity
+                            increment: qty
                         }
                     }
                 });

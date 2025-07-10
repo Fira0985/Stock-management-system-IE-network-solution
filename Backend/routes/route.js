@@ -80,10 +80,7 @@ router.get('/sales/chart/annual', authenticateToken, getAnnualSalesChart);
 router.get('/recent-activity', authenticateToken, getRecentActivity);
 
 // Excel upload (if needed)
-router.post('/upload-excel', upload.single('excelFile'), (req, res) => {
-    // You can handle file upload here or import from controller
-    res.json({ message: 'Excel uploaded successfully' });
-});
+router.post('/upload-excel', upload.single('excelFile'), uploadExcelFile);
 
 
 router.get("/credits", authenticateToken, creditController.getAllCredits);

@@ -83,7 +83,6 @@ const addProduct = async (req, res) => {
     const product = await prisma.product.create({
       data: {
         name,
-        unit: unit || null,
         image_url,
         sale_price: parseFloat(sale_price),
         cost_price: parseFloat(cost_price),
