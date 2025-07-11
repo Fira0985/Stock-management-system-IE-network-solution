@@ -14,7 +14,7 @@
 
 .contact-page h2 {
   font-size: 32px;
-  color: #4b2aad;
+  color: #2563eb;
   margin-bottom: 10px;
 }
 
@@ -54,12 +54,12 @@
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: #4b2aad;
+  border-color: #2563eb;
   outline: none;
 }
 
 .purple-btn {
-  background-color: #4b2aad;
+  background-color: #2563eb;
   color: #fff;
   padding: 12px 24px;
   border: none;

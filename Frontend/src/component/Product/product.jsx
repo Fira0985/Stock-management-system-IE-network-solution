@@ -256,7 +256,7 @@ const Product = ({ isSidebarOpen }) => {
                     disabled={role === 'CLERK'}
                     style={role === 'CLERK' ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
                 >
-                    Bulk Registration
+                    Import
                 </button>
                 <button
                     className="pd-export-btn"

@@ -265,7 +265,7 @@
 .pd-product-category-badge {
   font-size: 0.7rem;
   background-color: #e0e7ff;
-  color: #0000FF;
+  color: #2563eb;
   padding: 0.2rem 0.6rem;
   border-radius: 9999px;
 }
@@ -300,7 +300,7 @@
 
 .pd-product-count-badge {
   background-color: #e0f2fe;
-  color: #0000FF;
+  color: #2563eb;
   font-size: 0.75rem;
   padding: 0.3rem 0.6rem;
   border-radius: 12px;
@@ -362,7 +362,7 @@
 
 .pd-product-category-tag {
   background-color: #eef2ff;
-  color: #0000FF;
+  color: #2563eb;
   font-size: 0.75rem;
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
