@@ -45,7 +45,7 @@
 }
 
 .add-user-btn:hover {
-    background-color: #2563eb;
+    background-color: #0000FF;
     color: #ffffff;
     border-color: transparent;
 }
@@ -68,7 +68,7 @@
 }
 
 .user-export-btn:hover {
-    background-color: #2563eb;
+    background-color: #0000FF;
     color: #ffffff;
     border-color: transparent;
 }

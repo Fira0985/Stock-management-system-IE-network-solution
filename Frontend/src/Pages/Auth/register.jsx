@@ -16,8 +16,8 @@ function Register(props) {
     setSuccessMsg('');
 
     const data = {
-      email: email, 
-      password: password, 
+      email: email,
+      password: password,
       newPassword: newPassword
     }
 
@@ -44,7 +44,11 @@ function Register(props) {
   return (
     <div className="auth-container">
       <div className="auth-box">
+        <p className="auth-subtitle">
+          Welcome to <span className="blue-text">Track</span><span className="black-text">እቃ</span>
+        </p>
         <h2 className="auth-title">Register</h2>
+
         <p className="auth-subtitle">Enter your email and create new password.</p>
 
         {errorMsg && <p className="auth-error">{errorMsg}</p>}

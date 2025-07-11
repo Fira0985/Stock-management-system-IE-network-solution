@@ -14,7 +14,7 @@ import { exportSales } from "../../services/exportService";
 import PaymentModal from './PaymentModal';
 import './credit.css';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 4;
 
 const Credit = ({ isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState('All');

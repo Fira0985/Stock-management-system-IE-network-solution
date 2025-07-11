@@ -2,8 +2,8 @@
 
 /* CSS Variables for consistent theming */
 :root {
-  --st-primary-color: #8b5cf6;
-  --st-primary-hover: #7c3aed;
+  --st-primary-color: #0000FF;
+  --st-primary-hover: #0000FF;
   --st-secondary-color: #3b82f6;
   --st-secondary-hover: #2563eb;
   --st-success-color: #10b981;
@@ -67,7 +67,7 @@
   overflow-x: hidden;
   padding: 30px 40px;
   background-color: #fff;
-  margin-left: 16.5vw;
+  margin-left: 19vw;
   margin-top: 3vh;
   font-family: "Segoe UI", sans-serif;
   width: 77vw;
@@ -86,7 +86,7 @@
   transition: var(--st-transition-base);
   position: relative;
   margin-top: -10vh;
-  padding-left: -10vw;
+  padding-left: -15vw;
 }
 
 .st-settings-page.st-with-sidebar {

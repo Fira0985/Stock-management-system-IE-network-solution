@@ -1,268 +1,270 @@
 .sales-container {
-    padding: 30px 40px;
-    background-color: #fff;
-    margin-left: 15.5vw;
-    margin-top: 3vh;
-    font-family: "Segoe UI", sans-serif;
-    width: 77vw;
+  padding: 30px 40px;
+  background-color: #fff;
+  margin-left: 15.5vw;
+  margin-top: 3vh;
+  font-family: "Segoe UI", sans-serif;
+  width: 77vw;
 }
 
 .sales-container.collapse {
-    margin-left: 5vw;
-    transition: margin-left 0.3s ease;
-    width: 87vw;
+  margin-left: 5vw;
+  transition: margin-left 0.3s ease;
+  width: 87vw;
 }
 
 /* Header Section */
 .header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: -5vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: -5vh;
 }
 
 .page-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1f2937;
-    margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
 }
 
 .sale-btn {
-    background-color: #f9f9f9;
-    border: 1px solid #d1d5db;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    color: #111827;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.25s ease-in-out;
-    width: 10vw;
+  background-color: #f9f9f9;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease-in-out;
+  width: 10vw;
 }
 
 .sale-btn:hover {
-    background-color: #2563eb;
-    color: #ffffff;
+  background-color: #0000FF;
+  color: #ffffff;
 }
 
 /* Export Button */
 .sale-export-btn {
-    background-color: #f9f9f9;
-    border: 1px solid #d1d5db;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    color: #111827;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.25s ease-in-out;
-    width: 10vw;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  background-color: #f9f9f9;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease-in-out;
+  width: 10vw;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .sale-export-btn:hover {
-    background-color: #2563eb;
-    color: #ffffff;
+  background-color: #0000FF;
+  color: #ffffff;
 }
 
 /* Tabs */
 .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
 }
 
 
 .tabs:hover {
-    color: #1f2937;
+  color: #1f2937;
 }
 
 .tab.active {
-    color: #111827;
-    border-color: #2563eb;
+  color: #111827;
+  border-color: #0000FF;
 }
 
 /* Table */
 .styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .styled-table th,
 .styled-table td {
-    padding: 16px 20px;
-    text-align: left;
-    border-bottom: 1px solid #f3f4f6;
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
 }
 
 .styled-table thead th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    font-size: 14px;
-    color: #4b5563;
-    text-transform: uppercase;
+  background-color: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+  color: #4b5563;
+  text-transform: uppercase;
 }
 
 .styled-table tbody td {
-    font-size: 14px;
-    color: #374151;
-    cursor: default;
+  font-size: 14px;
+  color: #374151;
+  cursor: default;
 }
 
 /* Type Badge */
 .type-label {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    text-transform: capitalize;
-    letter-spacing: 0.2px;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
 }
 
 .type-label.normal {
-    background-color: #dbeafe;
-    color: #1e40af;
+  background-color: #dbeafe;
+  color: #0000FF;
 }
 
 .type-label.credit {
-    background-color: #fef9c3;
-    color: #92400e;
+  background-color: #fef9c3;
+  color: #92400e;
 }
 
 /* Pagination */
 .custom-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    margin-left: 25vw;
-    gap: 10px;
-    font-size: 14px;
-    color: #4b5563;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-left: 25vw;
+  gap: 10px;
+  font-size: 14px;
+  color: #4b5563;
 }
 
 .custom-pagination .nav-arrow {
-    cursor: pointer;
-    padding: 6px 14px;
-    transition: color 0.2s ease;
+  cursor: pointer;
+  padding: 6px 14px;
+  transition: color 0.2s ease;
 }
 
 .custom-pagination .nav-arrow:hover:not(.disabled) {
-    color: #2563eb;
+  color: #0000FF;
 }
 
 .custom-pagination .nav-arrow.disabled {
-    color: #d1d5db;
-    cursor: not-allowed;
+  color: #d1d5db;
+  cursor: not-allowed;
 }
 
 .page-circle {
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .page-circle:hover {
-    background-color: #f3f4f6;
+  background-color: #f3f4f6;
 }
 
 .page-circle.active {
-    background-color: #333;
-    color: white;
-    font-weight: 600;
+  background-color: #333;
+  color: white;
+  font-weight: 600;
 }
 
 .clickable-row {
-    cursor: pointer;
-    background-color: #f9f9f9;
+  cursor: pointer;
+  background-color: #f9f9f9;
 }
 
 .clickable-row:hover {
-    background-color: #e0f7fa;
+  background-color: #e0f7fa;
 }
 
 .sale-items-row {
-    background-color: #fafafa;
+  background-color: #fafafa;
 }
 
 .nested-item-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
 .nested-item-table th,
 .nested-item-table td {
-    border: 1px solid #ddd;
-    padding: 6px 10px;
-    text-align: left;
-    font-size: 14px;
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  text-align: left;
+  font-size: 14px;
 }
 
 .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup-box-sale {
-    background: #fff;
-    padding: 20px;
-     width: 50%;
-    border-radius: 8px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  padding: 20px;
+  width: 50%;
+  border-radius: 8px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .popup-header button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding-left: 30vw;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding-left: 30vw;
 }
 
-.close-sale-detail{
+.close-sale-detail {
   margin-left: -3vw;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
+
   .sales-container,
   .sales-container.collapse {
     margin-left: 0;
     width: 100vw;
     padding: 8px 2vw;
   }
+
   .header-section {
     flex-direction: column;
     gap: 1rem;
@@ -270,29 +272,35 @@
 }
 
 @media (max-width: 900px) {
+
   .sales-container,
   .sales-container.collapse {
     margin-left: 0;
     width: 100vw;
     padding: 4px 1vw;
   }
+
   .header-section {
     flex-direction: column;
     gap: 0.5rem;
   }
+
   .page-title {
     font-size: 1.1rem;
   }
+
   .sale-btn {
     width: 100%;
     margin-top: 1rem;
     font-size: 12px;
   }
+
   .sale-export-btn {
     width: 100%;
     margin-top: 1rem;
     font-size: 12px;
   }
+
   .styled-table th,
   .styled-table td {
     padding: 10px 8px;
@@ -301,34 +309,41 @@
 }
 
 @media (max-width: 600px) {
+
   .sales-container,
   .sales-container.collapse {
     margin-left: 0;
     width: 100vw;
     padding: 2px 0.5vw;
   }
+
   .header-section {
     flex-direction: column;
     gap: 0.2rem;
   }
+
   .page-title {
     font-size: 1rem;
   }
+
   .sale-btn {
     font-size: 10px;
     width: 100%;
     padding: 8px 0;
   }
+
   .sale-export-btn {
     font-size: 10px;
     width: 100%;
     padding: 8px 0;
   }
+
   .tabs {
     gap: 0.5rem;
     font-size: 12px;
     padding-bottom: 4px;
   }
+
   .styled-table th,
   .styled-table td {
     padding: 6px 4px;
@@ -337,15 +352,18 @@
 }
 
 @media (min-width: 1600px) {
+
   .sales-container,
   .sales-container.collapse {
     font-size: 1.3rem;
     padding: 3vw 6vw;
     width: 90vw;
   }
+
   .page-title {
     font-size: 2rem;
   }
+
   .styled-table th,
   .styled-table td {
     font-size: 1.2rem;
@@ -354,15 +372,18 @@
 }
 
 @media (min-width: 2000px) {
+
   .sales-container,
   .sales-container.collapse {
     font-size: 2rem;
     padding: 4vw 8vw;
     width: 80vw;
   }
+
   .page-title {
     font-size: 2.5rem;
   }
+
   .styled-table th,
   .styled-table td {
     font-size: 1.7rem;
@@ -405,6 +426,6 @@ body.dark .sale-btn,
 }
 
 body.dark .sale-btn:hover {
-  background: #2563eb;
+  background: #0000FF;
   color: #fff;
 }

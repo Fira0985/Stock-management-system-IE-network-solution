@@ -59,7 +59,7 @@
 }
 
 .overview-horizontal-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: #0000FF;
   border-radius: 6px;
 }
 
@@ -118,8 +118,8 @@
   margin-top: 8px;
   font-size: 20px;
   font-weight: 100;
-  color: blueviolet;
-} 
+  color: #0000FF;
+}
 
 .dashboard-tab-container {
   margin-left: 2vw;
@@ -151,7 +151,7 @@
 }
 
 .tab-buttons button.active {
-  background-color: #3b82f6;
+  background-color: #0000FF;
   color: white;
   font-weight: 500;
 }
@@ -260,7 +260,7 @@
 }
 
 .dashboard-btn:hover {
-  background: #2563eb;
+  background: #0000FF;
   color: white;
 }
 
@@ -425,6 +425,6 @@ body.dark .dashboard-btn,
 }
 
 body.dark .dashboard-btn:hover {
-  background: #2563eb;
+  background: #0000FF;
   color: #fff;
 }

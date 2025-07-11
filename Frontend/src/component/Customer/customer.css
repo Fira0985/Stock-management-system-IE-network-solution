@@ -48,14 +48,14 @@
 }
 
 .cs-add-customer:hover {
-    background-color: #2563eb;
+    background-color: #0000FF;
     color: #ffffff;
     border-color: transparent;
 }
 
 /* Export Button */
 .cs-export-btn {
-     background-color: #f9fafb;
+    background-color: #f9fafb;
     border: 1px solid #d1d5db;
     padding: 10px 20px;
     border-radius: 10px;
@@ -70,7 +70,7 @@
 }
 
 .cs-export-btn:hover {
-    background-color: #2563eb;
+    background-color: #0000FF;
     color: #ffffff;
     border-color: transparent;
 }
@@ -203,24 +203,24 @@ body.dark .cs-customer-content,
 .cs-customer-content.dark,
 body.dark .cs-customer-content.cs-collapse,
 .cs-customer-content.cs-collapse.dark {
-  background: #181a20 !important;
-  color: #e0e0e0 !important;
+    background: #181a20 !important;
+    color: #e0e0e0 !important;
 }
 
 body.dark .cs-customer-table,
 .cs-customer-table.dark {
-  background: #23262f;
-  color: #e0e0e0;
-  border: 1px solid #333;
+    background: #23262f;
+    color: #e0e0e0;
+    border: 1px solid #333;
 }
 
 body.dark .cs-customer-table th,
 .cs-customer-table.dark th {
-  background: #23262f;
-  color: #e0e0e0;
+    background: #23262f;
+    color: #e0e0e0;
 }
 
 body.dark .cs-customer-table td,
 .cs-customer-table.dark td {
-  color: #e0e0e0;
+    color: #e0e0e0;
 }
