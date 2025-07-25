@@ -135,10 +135,10 @@ const Dashboard = ({ isSidebarOpen }) => {
     <main className={isSidebarOpen ? "main-content" : "main-content-collapsed"}>
       <div className="dashboard-actions">
         <h1 className="dashboard-titles">Overview</h1>
-        <button className="dashboard-btn secondary">
+        {/* <button className="dashboard-btn secondary">
           <FiDownload className="btn-icon" />
           Export
-        </button>
+        </button> */}
       </div>
       <section className="overview-scroll-wrapper">
         <button

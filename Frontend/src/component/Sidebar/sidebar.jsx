@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 const Sidebar = (props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [activeItem, setActiveItem] = useState("Dashboard"); // <-- active item tracked
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
 
@@ -33,6 +34,11 @@ const Sidebar = (props) => {
     localStorage.clear();
     sessionStorage.clear();
     navigate("/login");
+  };
+
+  const handleMenuClick = (label) => {
+    setActiveItem(label); // set active
+    props.onMenuSelect(label);
   };
 
   const allMenuItems = [
@@ -76,7 +82,11 @@ const Sidebar = (props) => {
 
       <ul className="menu">
         {filteredMenuItems.map((item) => (
-          <li key={item.label} onClick={() => props.onMenuSelect(item.label)}>
+          <li
+            key={item.label}
+            onClick={() => handleMenuClick(item.label)}
+            className={activeItem === item.label ? "active" : ""}
+          >
             {item.icon} {isOpen && item.label}
           </li>
         ))}
@@ -89,14 +99,16 @@ const Sidebar = (props) => {
               <ul className="sidebar-contact-list">
                 <li
                   className="contact-item"
-                  onClick={() => props.onMenuSelect("Contact")}
+                  onClick={() => handleMenuClick("Contact")}
                 >
                   <FiPhoneCall size={16} className="contact-icon" />
                   <span className="contact-label">Contact</span>
                 </li>
               </ul>
             </div>
-            <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>Logout</button>
+            <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
+              Logout
+            </button>
           </>
         ) : (
           <>
@@ -104,20 +116,20 @@ const Sidebar = (props) => {
               <ul className="sidebar-contact-list">
                 <li
                   className="contact-item"
-                  onClick={() => props.onMenuSelect("Contact")}
+                  onClick={() => handleMenuClick("Contact")}
                   title="Contact"
                 >
                   <FiPhoneCall size={20} className="contact-icon" />
                 </li>
               </ul>
             </div>
-            <button className="logout-btn-collopse" title="Logout" onClick={() => setShowLogoutModal(true)}>
+            <button className="logout-btn-collopse" title="Logout" onClick={handleLogout}>
               <FiLogOut size={18} />
             </button>
           </>
         )}
       </div>
-      {/* Logout Confirmation Modal */}
+
       {showLogoutModal && (
         <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>

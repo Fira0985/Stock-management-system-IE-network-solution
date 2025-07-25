@@ -1,11 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { FiBell, FiSun, FiMoon, FiUser } from "react-icons/fi";
-import { Link } from "react-router-dom";
 import "./Navbar.css";
-import { uploadProfileImage, getImage } from "../../services/userService";
+import {
+  uploadProfileImage,
+  getImage,
+} from "../../services/userService";
 import { fetchRecentActivity } from "../../services/statisticsApi";
 
 const Navbar = ({ isSidebarOpen, onProfileClick }) => {
+  /* ───────────── Local state ───────────── */
   const [name, setName] = useState(localStorage.getItem("userName") || "");
   const [avatar, setAvatar] = useState("");
   const [notifications, setNotifications] = useState([]);
@@ -23,24 +26,26 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
   const email = localStorage.getItem("email");
   const userName = localStorage.getItem("userName");
 
-  const fetchAvatar = async () => {
+  /* ───────────── Helpers ───────────── */
+  const fetchAvatar = useCallback(async () => {
     try {
-      const response = await getImage({ email });
-      setAvatar(response.data.imageUrl);
-    } catch (error) {
-      console.error("Failed to load avatar:", error.message);
+      const { data } = await getImage({ email });
+      setAvatar(data.imageUrl);
+    } catch (err) {
+      console.error("Failed to load avatar:", err.message);
     }
-  };
+  }, [email]);
 
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
     try {
       const activity = await fetchRecentActivity();
-      const sessionStart = new Date(sessionStorage.getItem("sessionStartTime"));
+      const sessionStart = new Date(
+        sessionStorage.getItem("sessionStartTime")
+      );
       const filtered = activity.filter((item) => {
         const createdAt = new Date(item.time);
         return createdAt > sessionStart && item.by !== userName;
       });
-
       setNotifications(filtered);
 
       if (filtered.length > 0) {
@@ -50,78 +55,73 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
     } catch (err) {
       console.error("Failed to load notifications:", err.message);
     }
-  };
+  }, [userName]);
 
+  /* ───────────── Initial mount ───────────── */
   useEffect(() => {
-    // Initialize session start time once per session
     if (!sessionStorage.getItem("sessionStartTime")) {
       sessionStorage.setItem("sessionStartTime", new Date().toISOString());
     }
-
     fetchAvatar();
     loadNotifications();
 
-    const interval = setInterval(loadNotifications, 30000); // Refresh every 30s
+    const interval = setInterval(loadNotifications, 30_000); // every 30 s
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchAvatar, loadNotifications]);
 
+  /* ───────────── Theme sync ───────────── */
   useEffect(() => {
-    // Set initial theme on mount
-    if (darkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, []);
-
-  useEffect(() => {
-    // Update theme when darkMode changes
-    if (darkMode) {
-      document.body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+    document.body.classList.toggle("dark", darkMode);
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  const handleAvatarClick = () => {
-    fileInputRef.current.click();
-  };
+  /* ───────────── Listen for profile updates ───────────── */
+  useEffect(() => {
+    const handleProfileClosed = () => {
+      setName(localStorage.getItem("userName") || "");
+      fetchAvatar();
+    };
+    window.addEventListener("profileClosed", handleProfileClosed);
+    return () =>
+      window.removeEventListener("profileClosed", handleProfileClosed);
+  }, [fetchAvatar]);
+
+  /* ───────────── Handlers ───────────── */
+  const handleAvatarClick = () => fileInputRef.current.click();
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      try {
-        await uploadProfileImage(file);
-        fetchAvatar();
-      } catch (err) {
-        console.error("Image upload failed:", err.message);
-      }
+    if (!file?.type.startsWith("image/")) return;
+    try {
+      await uploadProfileImage(file);
+      fetchAvatar();
+    } catch (err) {
+      console.error("Image upload failed:", err.message);
     }
   };
 
   const toggleDropdown = () => {
     const newState = !showDropdown;
     setShowDropdown(newState);
-
-    if (newState === true) {
-      // When dropdown is shown, clear unread badge
+    if (newState) {
       setHasUnread(false);
       sessionStorage.setItem("hasUnread", "false");
-      sessionStorage.setItem("lastReadTime", new Date().toISOString());
     }
   };
 
+  /* ───────────── Render ───────────── */
   return (
     <header className={isSidebarOpen ? "topbar" : "topbar-collapsed"}>
       <div className="title">Dashboard</div>
+
       <div className="topbar-right">
         {/* Notifications */}
         <div className="icon notification-wrapper" onClick={toggleDropdown}>
           <FiBell />
           {hasUnread && (
-            <span className="notification-badge">{notifications.length}</span>
+            <span className="notification-badge">
+              {notifications.length}
+            </span>
           )}
           {showDropdown && (
             <div className="notification-dropdown">
@@ -130,11 +130,13 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
                 {notifications.length === 0 ? (
                   <li>No new notifications</li>
                 ) : (
-                  notifications.map((item, index) => (
-                    <li key={index}>
+                  notifications.map((item, idx) => (
+                    <li key={idx}>
                       <strong>{item.type}</strong>: {item.description}
                       <br />
-                      <small>{new Date(item.time).toLocaleTimeString()}</small>
+                      <small>
+                        {new Date(item.time).toLocaleTimeString()}
+                      </small>
                     </li>
                   ))
                 )}
@@ -143,21 +145,21 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
           )}
         </div>
 
-        {/* Theme toggle icon */}
-        <span
+        {/* Theme toggle */}
+        {/* <span
           className="icon"
           onClick={() => setDarkMode((prev) => !prev)}
           style={{ cursor: "pointer" }}
         >
           {darkMode ? <FiSun /> : <FiMoon />}
-        </span>
+        </span> */}
 
         {/* Avatar */}
         <div className="avatar small" onClick={handleAvatarClick}>
           {avatar ? (
             <img
               src={`http://localhost:3000/${avatar}`}
-              alt="User Avatar"
+              alt="Avatar"
               className="avatar-img"
             />
           ) : (
@@ -174,7 +176,7 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
           </span>
         )}
 
-        {/* Hidden file input for image upload */}
+        {/* Hidden file input */}
         <input
           type="file"
           accept="image/*"
@@ -188,3 +190,4 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
 };
 
 export default Navbar;
+

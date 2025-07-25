@@ -13,6 +13,7 @@ const { uploadExcelFile } = require('../controllers/uploadExcelFile');
 const { getAllSales, addSales } = require('../controllers/sale');
 const creditController = require("../controllers/credit");
 const reportController = require('../controllers/reportController');
+const { sendSelfMessage } = require('../controllers/emailController');
 
 const {
     getSalesOverview,
@@ -95,6 +96,8 @@ router.get('/summaryPurchases', authenticateToken, reportController.getPurchaseS
 router.get('/summaryPayments', authenticateToken, reportController.getPaymentSummary);    
 router.get('/summaryUsers', authenticateToken, reportController.getUserActivitySummary);  
 router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHealthSummary); 
+
+router.post('/message', sendSelfMessage);
 
 
 

@@ -65,7 +65,6 @@ const Settings = ({ isSidebarOpen }) => {
       await editUser({
         email: user.email,
         username: user.name,
-        // password: user.password, // Only send if you want to update password
       });
       setProfileMsg("Profile updated successfully.");
       localStorage.setItem("userName", user.name);
@@ -103,149 +102,149 @@ const Settings = ({ isSidebarOpen }) => {
   };
 
   return (
-    <div className={isSidebarOpen ? "st-settings-container" : "st-settings-container collapse"}>
-      <div
-        className={`st-settings-page ${isSidebarOpen ? "with-sidebar" : "full-width"
-          } ${darkMode ? "dark" : ""}`}
-      >
+    <div className={`settings-page-container ${darkMode ? "dark" : ""}`}>
+      <div className={`settings-sidebar ${isSidebarOpen ? "" : "collapsed"}`}>
         <h2>Settings</h2>
-
-        <nav className="st-settings-tabs">
+        <nav className="settings-nav">
           <button
             className={activeTab === "profile" ? "active" : ""}
             onClick={() => setActiveTab("profile")}
           >
-            Profile
+            <i className="icon-user"></i>
+            <span>Profile</span>
           </button>
           <button
             className={activeTab === "preferences" ? "active" : ""}
             onClick={() => setActiveTab("preferences")}
           >
-            Preferences
+            <i className="icon-settings"></i>
+            <span>Preferences</span>
           </button>
           <button
             className={activeTab === "security" ? "active" : ""}
             onClick={() => setActiveTab("security")}
           >
-            Security
+            <i className="icon-lock"></i>
+            <span>Security</span>
           </button>
           <button
             className={activeTab === "backup" ? "active" : ""}
             onClick={() => setActiveTab("backup")}
           >
-            Backup & Restore
+            <i className="icon-database"></i>
+            <span>Backup</span>
           </button>
           <button
             className={activeTab === "roles" ? "active" : ""}
             onClick={() => setActiveTab("roles")}
           >
-            Privacy & Logout
+            <i className="icon-logout"></i>
+            <span>Privacy & Logout</span>
           </button>
         </nav>
       </div>
 
-      <div>
-        <section className="st-settings-content">
-          {activeTab === "profile" && (
-            <div className="st-tab-section">
-              <h3>User Profile</h3>
-              {loading && <div>Loading...</div>}
-              {profileMsg && <div style={{ color: profileMsg.includes("success") ? "green" : "red" }}>{profileMsg}</div>}
-              <label>
-                Name:
-                <input
-                  type="text"
-                  value={user.name}
-                  onChange={(e) => setUser({ ...user, name: e.target.value })}
-                />
-              </label>
-              <label>
-                Email:
-                <input
-                  type="email"
-                  value={user.email}
-                  disabled
-                  style={{ background: "#eee" }}
-                />
-              </label>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  placeholder="Change password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                />
-              </label>
+      <div className="settings-content">
+        {activeTab === "profile" && (
+          <div className="tab-section">
+            <h3>User Profile</h3>
+            {loading && <div className="loading">Loading...</div>}
+            {profileMsg && <div className={`message ${profileMsg.includes("success") ? "success" : "error"}`}>{profileMsg}</div>}
+            <div className="form-group">
+              <label>Name:</label>
+              <input
+                type="text"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>Email:</label>
+              <input
+                type="email"
+                value={user.email}
+                disabled
+              />
+            </div>
+            <div className="form-group">
+              <label>Password:</label>
+              <input
+                type="password"
+                placeholder="Change password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="button-group">
               <button
-                className="st-purple-btn"
+                className="btn btn-secondary"
                 onClick={handlePasswordChange}
                 disabled={loading}
-                style={{ marginBottom: 8 }}
               >
                 Change Password
               </button>
-              {passwordMsg && <div style={{ color: passwordMsg.includes("success") ? "green" : "red" }}>{passwordMsg}</div>}
-              <button className="st-purple-btn" onClick={handleProfileSave} disabled={loading}>
+              <button className="btn btn-primary" onClick={handleProfileSave} disabled={loading}>
                 Save Profile
               </button>
             </div>
-          )}
+            {passwordMsg && <div className={`message ${passwordMsg.includes("success") ? "success" : "error"}`}>{passwordMsg}</div>}
+          </div>
+        )}
 
-          {activeTab === "preferences" && (
-            <div className="st-tab-section">
-              <h3>Preferences</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={darkMode}
-                  onChange={toggleDarkMode}
-                />
-                Enable Dark Mode
-              </label>
-              <label>
-                Default Currency:
-                <select>
-                  <option>USD ($)</option>
-                  <option>EUR (€)</option>
-                  <option>ETB (Br)</option>
-                </select>
-              </label>
-              <label>
-                Date Format:
-                <select>
-                  <option>MM/DD/YYYY</option>
-                  <option>DD/MM/YYYY</option>
-                </select>
-              </label>
+        {activeTab === "preferences" && (
+          <div className="tab-section">
+            <h3>Preferences</h3>
+            <div className="form-group checkbox">
+              <input
+                type="checkbox"
+                id="darkMode"
+                checked={darkMode}
+                onChange={toggleDarkMode}
+              />
+              <label htmlFor="darkMode">Enable Dark Mode</label>
             </div>
-          )}
+            <div className="form-group">
+              <label>Default Currency:</label>
+              <select>
+                <option>USD ($)</option>
+                <option>EUR (€)</option>
+                <option>ETB (Br)</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Date Format:</label>
+              <select>
+                <option>MM/DD/YYYY</option>
+                <option>DD/MM/YYYY</option>
+              </select>
+            </div>
+          </div>
+        )}
 
-          {activeTab === "security" && (
-            <div className="st-tab-section">
-              <h3>Account Security</h3>
-              <label>
-                <input type="checkbox" />
-                Enable Two-Factor Authentication (2FA) [Placeholder]
-              </label>
-              <button className="st-purple-btn">Update Security Settings</button>
+        {activeTab === "security" && (
+          <div className="tab-section">
+            <h3>Account Security</h3>
+            <div className="form-group checkbox">
+              <input type="checkbox" id="2fa" />
+              <label htmlFor="2fa">Enable Two-Factor Authentication (2FA)</label>
             </div>
-          )}
+            <button className="btn btn-primary">Update Security Settings</button>
+          </div>
+        )}
 
-          {activeTab === "backup" && (
-            <div className="st-tab-section">
-              <h3>Backup & Restore</h3>
-              <button className="st-blue-btn">Export Data</button>
-            </div>
-          )}
+        {activeTab === "backup" && (
+          <div className="tab-section">
+            <h3>Backup & Restore</h3>
+            <button className="btn btn-primary">Export Data</button>
+          </div>
+        )}
 
-          {activeTab === "roles" && (
-            <div className="st-tab-section">
-              <h3>Privacy & Logout</h3>
-              <button className="st-purple-btn" onClick={() => setShowLogoutModal(true)}>Logout</button>
-            </div>
-          )}
-        </section>
+        {activeTab === "roles" && (
+          <div className="tab-section">
+            <h3>Privacy & Logout</h3>
+            <button className="btn btn-danger" onClick={() => setShowLogoutModal(true)}>Logout</button>
+          </div>
+        )}
       </div>
 
       {/* Logout Confirmation Modal */}
@@ -255,8 +254,8 @@ const Settings = ({ isSidebarOpen }) => {
             <h3>Confirm Logout</h3>
             <p>Are you sure you want to logout?</p>
             <div className="form-actions">
-              <button onClick={handleLogout}>Yes, Logout</button>
-              <button className="cancel-btn" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+              <button className="btn btn-danger" onClick={handleLogout}>Yes, Logout</button>
+              <button className="btn btn-secondary" onClick={() => setShowLogoutModal(false)}>Cancel</button>
             </div>
           </div>
         </div>

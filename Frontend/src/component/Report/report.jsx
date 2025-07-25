@@ -14,7 +14,7 @@ import { saveAs } from "file-saver";
 import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, HeadingLevel, WidthType } from "docx";
 
 const Report = ({ isSidebarOpen }) => {
-  const [activeSection, setActiveSection] = useState('sales');
+  const [activeSection, setActiveSection] = useState('inventory');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,12 +30,12 @@ const Report = ({ isSidebarOpen }) => {
   });
 
   const navItems = [
-    { id: 'sales', label: 'Sales Reports', icon: '📊' },
-    { id: 'inventory', label: 'Inventory Reports', icon: '📦' },
-    { id: 'purchase', label: 'Purchase Reports', icon: '🧾' },
-    { id: 'payment', label: 'Payment & Credit', icon: '💵' },
-    { id: 'user', label: 'User Activity & Audit', icon: '👤' },
-    { id: 'business', label: 'Business Health', icon: '📈' }
+    { id: 'inventory', label: 'Inventory Reports' },
+    { id: 'sales', label: 'Sales Reports' },
+    { id: 'purchase', label: 'Purchase Reports'},
+    { id: 'payment', label: 'Payment & Credit'},
+    { id: 'user', label: 'User Activity & Audit'},
+    { id: 'business', label: 'Business Health'}
   ];
 
   useEffect(() => {
@@ -280,22 +280,6 @@ const Report = ({ isSidebarOpen }) => {
               </div>
 
               <div className="card">
-                <h3>Profit Margin by Product</h3>
-                <div className="scrollable-card-content">
-                  <div className="list-items">
-                    {data.profitMarginByProduct?.map((product, index) => (
-                      <div key={index} className="list-item">
-                        <div className="item-info">
-                          <span className="item-name">{product.productName}</span>
-                        </div>
-                        <div className="item-value">{product.profitMargin}%</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="card">
                 <h3>Dead Stock Report</h3>
                 <div className="scrollable-card-content">
                   <div className="list-items">
@@ -497,21 +481,6 @@ const Report = ({ isSidebarOpen }) => {
                   </div>
                 </div>
               </div>
-              <div className="card">
-                <h3>Role Distribution</h3>
-                <div className="scrollable-card-content">
-                  <div className="list-items">
-                    {data.roleDistribution?.map((role, idx) => (
-                      <div key={idx} className="list-item">
-                        <div className="item-info">
-                          <span className="item-name">{role.role}</span>
-                        </div>
-                        <div className="item-value">{role._count?.User || 0}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         );
@@ -520,58 +489,7 @@ const Report = ({ isSidebarOpen }) => {
         return (
           <div className={isSidebarOpen ? "reports-section" : "reports-section collapse"}>
             <div className="report-grid">
-              <div className="card ">
-                <h3>Gross Profit by Day</h3>
-                <div className="scrollable-card-content">
-                  <div className="list-items">
-                    {data.grossProfitByDay &&
-                      Object.entries(data.grossProfitByDay).map(([date, profit], idx) => (
-                        <div key={idx} className="list-item">
-                          <div className="item-info">
-                            <span className="item-name">{date}</span>
-                          </div>
-                          <div className="item-value">${profit?.toLocaleString() || '0'}</div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-              <div className="card ">
-                <h3>Gross Profit by Week</h3>
-                <div className="scrollable-card-content">
-                  <div className="list-items">
-                    {data.grossProfitByWeek &&
-                      Object.entries(data.grossProfitByWeek).map(([week, profit], idx) => (
-                        <div key={idx} className="list-item">
-                          <div className="item-info">
-                            <span className="item-name">{week}</span>
-                          </div>
-                          <div className="item-value">${profit?.toLocaleString() || '0'}</div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <h3>Gross Profit by Month</h3>
-                <div className="scrollable-card-content">
-                  <div className="list-items">
-                    {data.grossProfitByMonth &&
-                      Object.entries(data.grossProfitByMonth).map(([month, profit], idx) => (
-                        <div key={idx} className="list-item">
-                          <div className="item-info">
-                            <span className="item-name">{month}</span>
-                          </div>
-                          <div className="item-value">${profit?.toLocaleString() || '0'}</div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <h3>Revenue Forecast (Next Month)</h3>
-                <div className="metric-large">${data.revenueForecastNextMonth?.toLocaleString() || '0'}</div>
-              </div>
+              
               <div className="card">
                 <h3>Customer Purchase Frequency</h3>
                 <div className="scrollable-card-content">
@@ -739,7 +657,6 @@ const Report = ({ isSidebarOpen }) => {
               className={`tab-item ${activeSection === item.id ? 'tab-active' : ''}`}
               onClick={() => switchToSection(item.id)}
             >
-              <span className="tab-icon">{item.icon}</span>
               <span className="tab-label">{item.label}</span>
             </a>
           ))}

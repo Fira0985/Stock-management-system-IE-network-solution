@@ -162,3 +162,38 @@
     padding: 6px 0;
     border-bottom: 1px solid #f0f0f0;
 }
+
+/* === DARK MODE STYLES === */
+body.dark .topbar,
+body.dark .topbar-collapsed {
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #333;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+}
+
+body.dark .title {
+    color: #f0f0f0;
+}
+
+body.dark .icon {
+    color: #f0f0f0;
+}
+
+body.dark .default-avatar {
+    color: #ccc;
+}
+
+body.dark .username {
+    color: #f0f0f0;
+}
+
+body.dark .notification-dropdown {
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    box-shadow: 0px 2px 8px rgba(255, 255, 255, 0.15);
+    border: 1px solid #444;
+}
+
+body.dark .notification-dropdown li {
+    border-bottom: 1px solid #444;
+}

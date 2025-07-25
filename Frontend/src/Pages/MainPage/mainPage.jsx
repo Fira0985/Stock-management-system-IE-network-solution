@@ -33,9 +33,12 @@ const MainPage = () => {
     setShowUserProfile(true);
   };
 
-  const closeProfilePopup = (e) => {
-    setShowUserProfile(false);
-    e.stopPropagation()
+  const handleDataFromChild = (shouldClose) => {
+    setShowUserProfile(shouldClose);
+    if (!shouldClose) {
+      // Notify Navbar to refresh name/avatar after profile is closed
+      window.dispatchEvent(new CustomEvent("profileClosed"));
+    }
   };
 
   const renderPage = () => {
@@ -44,7 +47,6 @@ const MainPage = () => {
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
       case "Products":
         return <Product isSidebarOpen={isSidebarOpen} />;
-
       case "Sales":
         return <Sales isSidebarOpen={isSidebarOpen} />;
       case "Purchase":
@@ -65,15 +67,10 @@ const MainPage = () => {
         return <Contact isSidebarOpen={isSidebarOpen} />;
       case "Credits":
         return <Credits isSidebarOpen={isSidebarOpen} />;
-
       default:
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
     }
   };
-
-  function handleDataFromChild(data) {
-    setShowUserProfile(data);
-  }
 
   return (
     <div
@@ -81,10 +78,7 @@ const MainPage = () => {
         isSidebarOpen ? "dashboard-container" : "dashboard-container-collapsed"
       }
     >
-      <Navbar
-        isSidebarOpen={isSidebarOpen}
-        onProfileClick={handleProfileClick}
-      />
+      <Navbar isSidebarOpen={isSidebarOpen} onProfileClick={handleProfileClick} />
       <Sidebar onToggle={handleSidebarToggle} onMenuSelect={handleMenuSelect} />
       {renderPage()}
 

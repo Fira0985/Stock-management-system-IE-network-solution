@@ -1,3 +1,5 @@
+
+
 .sidebar {
     width: 15vw;
     background: #FFFAFA;
@@ -70,6 +72,23 @@
     color: #333;
     white-space: nowrap;
 }
+
+.menu li.active {
+  background-color: var(--st-secondary-color);
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.menu li.active svg {
+  color: white;
+}
+
+.menu li:hover {
+  background-color: var(--st-secondary-hover);
+  color: white;
+}
+
 
 .menu li:hover:not(.report-parent) {
     background-color: #e6e6ff;
@@ -346,6 +365,19 @@ body.dark .modal-content,
   color: #e0e0e0 !important;
   border: 1px solid #333;
 }
+
+
+.menu li.active {
+  background-color: #0000FF;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.menu li.active svg {
+  color: white;
+}
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.96);}

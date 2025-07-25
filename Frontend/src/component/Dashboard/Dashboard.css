@@ -428,3 +428,46 @@ body.dark .dashboard-btn:hover {
   background: #0000FF;
   color: #fff;
 }
+
+body.dark .tab-buttons button {
+  background-color: #2e2e38;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+body.dark .tab-buttons button.active {
+  background-color: #0000FF;
+  color: white;
+}
+
+/* Scrollable card wrapper scrollbar */
+body.dark .overview-horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+}
+
+/* Scroll arrows */
+body.dark .scroll-arrow {
+  background: #2e2e38;
+  color: #ccc;
+  border: 1px solid #444;
+}
+
+body.dark .scroll-arrow:hover {
+  background: #3c3c4a;
+}
+
+/* Dashboard section headers */
+body.dark .dashboard-titles {
+  color: #f1f1f1;
+}
+
+/* Chart titles (e.g., inside .chart > p) */
+body.dark .chart p {
+  color: #f1f1f1;
+}
+
+/* Activity section header */
+body.dark .activity-section p {
+  color: #f1f1f1;
+  font-weight: 600;
+}
