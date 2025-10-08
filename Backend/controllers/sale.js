@@ -88,8 +88,9 @@ const addSales = async (req, res) => {
         }
 
         // Validate customer (optional)
+        let customer = null;
         if (customer_id !== null) {
-            const customer = await prisma.nonUser.findUnique({
+            customer = await prisma.nonUser.findUnique({
                 where: { id: parseInt(customer_id) },
             });
 
@@ -174,6 +175,8 @@ const addSales = async (req, res) => {
                 include: {
                     items: true,
                     payments: true,
+                    created_by: true,
+                    customer: true,
                 },
             });
 
@@ -191,7 +194,6 @@ const addSales = async (req, res) => {
 
             // Deduct stock for each product
             for (const item of parsedItems) {
-                // Double-check stock in transaction to avoid race conditions
                 const prod = await tx.product.findUnique({ where: { id: item.product_id } });
                 if (prod.unit < item.quantity) {
                     throw new Error(`Insufficient stock for '${prod.name}'.`);
@@ -209,12 +211,27 @@ const addSales = async (req, res) => {
             return newSale;
         });
 
+        // ────────── SOCKET.IO EMIT ──────────
+        const io = req.app.get("io"); // get Socket.IO instance
+        if (io) {
+            const activity = {
+                type: "SALE",
+                id: sale.id,
+                by: sale.created_by?.username || "Unknown",
+                at: sale.created_at,
+                customer: sale.customer?.name || null,
+                total: sale.total,
+            };
+            io.emit("recentActivity", [activity]); // notify all online users
+        }
+
         res.status(201).json({ message: 'Sale successfully created', sale });
     } catch (error) {
         console.error('Error adding sale:', error);
         res.status(500).json({ error: 'Failed to add sale', details: error.message });
     }
 };
+
 
 module.exports = { addSales };
 

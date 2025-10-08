@@ -39,7 +39,9 @@ const addPurchase = async (req, res) => {
     const userId = req.user.id;
 
     if (!supplier_id || !Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ success: false, message: 'Invalid request payload' });
+        return res
+            .status(400)
+            .json({ success: false, message: "Invalid request payload" });
     }
 
     try {
@@ -51,47 +53,62 @@ const addPurchase = async (req, res) => {
                     supplier: { connect: { id: supplier_id } },
                     created_by: { connect: { id: userId } },
                     items: {
-                        create: items.map(item => ({
+                        create: items.map((item) => ({
                             product: { connect: { id: item.product_id } },
                             quantity: item.quantity,
-                            cost_price: item.cost_price
-                        }))
-                    }
+                            cost_price: item.cost_price,
+                        })),
+                    },
                 },
                 include: {
                     supplier: true,
                     items: {
                         include: {
-                            product: true
-                        }
-                    }
-                }
+                            product: true,
+                        },
+                    },
+                    created_by: true,
+                },
             });
 
-            // For each item, increment the product unit
+            // Increment the product units
             for (const item of items) {
-                // Ensure quantity is a number
                 const qty = Number(item.quantity) || 0;
-                console.log(qty)
                 await tx.product.update({
                     where: { id: item.product_id },
                     data: {
                         unit: {
-                            increment: qty
-                        }
-                    }
+                            increment: qty,
+                        },
+                    },
                 });
             }
 
             return newPurchase;
         });
 
+        // ────────── SOCKET.IO EMIT ──────────
+        const io = req.app.get("io");
+        if (io) {
+            const activity = {
+                type: "PURCHASE",
+                id: purchase.id,
+                by: purchase.created_by?.username || "Unknown",
+                at: purchase.created_at,
+                supplier: purchase.supplier?.name || null,
+            };
+            io.emit("recentActivity", [activity]); // notify all online users
+        }
+
         return res.status(201).json({ success: true, data: purchase });
     } catch (error) {
         console.error("Error creating purchase:", error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
     }
 };
+
 
 module.exports = {
     getAllPurchase,

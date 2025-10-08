@@ -186,46 +186,82 @@ exports.getAnnualSalesChart = async (req, res, next) => {
     }
 };
 
+// controllers/statistics.js
+
 exports.getRecentActivity = async (req, res) => {
     try {
         const [recentSales, recentPurchases] = await Promise.all([
             prisma.sale.findMany({
                 where: { deleted_at: null },
-                orderBy: { created_at: 'desc' },
+                orderBy: { created_at: "desc" },
                 take: 5,
                 include: {
                     customer: true,
-                }
+                    created_by: { select: { username: true } },
+                    items: {
+                        include: {
+                            product: true
+                        }
+                    }
+                },
             }),
             prisma.purchase.findMany({
                 where: { deleted_at: null },
-                orderBy: { created_at: 'desc' },
+                orderBy: { created_at: "desc" },
                 take: 5,
                 include: {
                     supplier: true,
-                }
-            })
+                    created_by: { select: { username: true } },
+                    items: {
+                        include: {
+                            product: true
+                        }
+                    }
+                },
+            }),
         ]);
 
         const activities = [
-            ...recentSales.map(sale => ({
-                type: 'Sale',
-                description: `New sale for $${sale.total.toFixed(2)}`,
-                time: sale.created_at
-            })),
-            ...recentPurchases.map(purchase => ({
-                type: 'Purchase',
-                description: `New purchase from ${purchase.supplier?.name || 'Unknown'}`,
-                time: purchase.created_at
-            }))
+            ...recentSales.map((sale) => {
+                const total = sale.items.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
+                return {
+                    description: `Sale #${sale.id} to ${sale.customer?.name || 'Customer'} - $${total.toFixed(2)}`,
+                    time: sale.created_at,
+                    type: "SALE",
+                    id: sale.id,
+                    by: sale.created_by?.username || "Unknown",
+                    customer: sale.customer?.name || null,
+                    total: total,
+                };
+            }),
+            ...recentPurchases.map((purchase) => {
+                const total = purchase.items.reduce((sum, item) => sum + (item.quantity * item.cost_price), 0);
+                const itemCount = purchase.items.length;
+                return {
+                    description: `Purchase #${purchase.id} from ${purchase.supplier?.name || 'Supplier'} - $${total.toFixed(2)}`,
+                    time: purchase.created_at,
+                    type: "PURCHASE",
+                    id: purchase.id,
+                    by: purchase.created_by?.username || "Unknown",
+                    supplier: purchase.supplier?.name || null,
+                    total: total,
+                };
+            }),
         ];
 
-        // Sort by most recent
+        // Sort by most recent first
         activities.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-        res.json(activities.slice(0, 8));
-    } catch (error) {
-        console.error('Error in getRecentActivity:', error);
-        res.status(500).json({ message: 'Failed to fetch activity' });
+        // Take only the top 10 most recent activities
+        const recentActivities = activities.slice(0, 10);
+
+        // ✅ Emit activities in real-time
+        const io = req.app.get("io");
+        io.emit("recentActivity", recentActivities);
+
+        res.json(recentActivities);
+    } catch (err) {
+        console.error("Error in getRecentActivity:", err);
+        res.status(500).json({ error: "Failed to fetch recent activity" });
     }
 };

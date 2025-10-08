@@ -29,6 +29,7 @@ const getProductById = async (req, res) => {
         created_by: true,
         purchaseItems: true,
         saleItems: true,
+        
       },
     });
 

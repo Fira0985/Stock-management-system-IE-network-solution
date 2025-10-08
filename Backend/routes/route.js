@@ -14,6 +14,7 @@ const { getAllSales, addSales } = require('../controllers/sale');
 const creditController = require("../controllers/credit");
 const reportController = require('../controllers/reportController');
 const { sendSelfMessage } = require('../controllers/emailController');
+const notificationController = require('../controllers/notificationController');
 
 const {
     getSalesOverview,
@@ -98,6 +99,9 @@ router.get('/summaryUsers', authenticateToken, reportController.getUserActivityS
 router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHealthSummary); 
 
 router.post('/message', sendSelfMessage);
+
+// Add this route for notifications
+router.get('/api/notifications/user', notificationController.getNotifications);
 
 
 
