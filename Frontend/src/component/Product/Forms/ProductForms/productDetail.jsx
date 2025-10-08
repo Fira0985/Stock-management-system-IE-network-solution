@@ -43,7 +43,7 @@ const ProductDetailPopup = ({ product, onClose }) => {
               ) : (
                 <h2 className="product-title">
                   {productName}
-                  <FiEdit2 className="edit-icon" onClick={handleEditClick} />
+                  {/* <FiEdit2 className="edit-icon" onClick={handleEditClick} /> */}
                 </h2>
               )}
             </form>

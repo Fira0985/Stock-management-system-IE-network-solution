@@ -261,7 +261,7 @@ const Report = ({ isSidebarOpen }) => {
                 </div>
               </div>
 
-              <div className="card">
+              {/* <div className="card">
                 <h3>Inventory Value Report</h3>
                 <div className="metric-large">${data.totalSaleValue?.toLocaleString() || '0'}</div>
                 <div className="metric-details"><span>Total Sale Value</span></div>
@@ -277,7 +277,7 @@ const Report = ({ isSidebarOpen }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="card">
                 <h3>Dead Stock Report</h3>
@@ -343,7 +343,7 @@ const Report = ({ isSidebarOpen }) => {
         return (
           <div className={isSidebarOpen ? "reports-section" : "reports-section collapse"}>
             <div className="report-grid">
-              <div className="card">
+              {/* <div className="card">
                 <h3>Payment Collection by Day</h3>
                 <div className="scrollable-card-content">
                   <div className="list-items">
@@ -358,7 +358,7 @@ const Report = ({ isSidebarOpen }) => {
                       ))}
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="card">
                 <h3>Payment Collection by Week</h3>
@@ -464,7 +464,7 @@ const Report = ({ isSidebarOpen }) => {
                 </div>
               </div>
               <div className="card">
-                <h3>Categories Added</h3>
+                <h3>Categories Add</h3>
                 <div className="scrollable-card-content">
                   <div className="list-items">
                     {data.categoriesAddedRemoved?.map((cat, idx) => (
