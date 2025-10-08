@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import './ProductForm.css';
+import { validateLetters } from '../../../../utils/validators'; // import reusable validator
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
     const [form, setForm] = useState({
         name: initialData.name || '',
     });
-
-    const [errors, setErrors] = useState({});
-
-    const validate = () => {
-        const newErrors = {};
-        if (!form.name.trim()) {
-            newErrors.name = 'Name is required';
-        }
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,9 +16,21 @@ const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) =>
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validate()) {
-            onSubmit(form);
+
+        // Check if name is empty
+        if (!form.name.trim()) {
+            toast.error('Category name is required');
+            return;
         }
+
+        // Check if name contains only letters
+        if (!validateLetters(form.name)) {
+            toast.error('Category name must contain letters only');
+            return;
+        }
+
+        // All validations passed
+        onSubmit(form);
     };
 
     return (
@@ -39,7 +43,9 @@ const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) =>
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="name">Category Name<span className="required">*</span></label>
+                        <label htmlFor="name">
+                            Category Name<span className="required">*</span>
+                        </label>
                         <input
                             id="name"
                             type="text"
@@ -49,7 +55,6 @@ const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) =>
                             placeholder="Enter category name"
                             required
                         />
-                        {errors.name && <div className="error-text">{errors.name}</div>}
                     </div>
 
                     <div className="form-actions">
@@ -60,6 +65,18 @@ const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) =>
                     </div>
                 </form>
             </div>
+
+            {/* Toast container for notifications */}
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                pauseOnHover
+                draggable
+                theme="colored"
+            />
         </div>
     );
 };

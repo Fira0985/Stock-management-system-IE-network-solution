@@ -428,7 +428,7 @@ const Report = ({ isSidebarOpen }) => {
           <div className={isSidebarOpen ? "reports-section" : "reports-section collapse"}>
             <div className="report-grid">
               <div className="card">
-                <h3>Users Created/Deleted</h3>
+                <h3>Users Created</h3>
                 <div className="scrollable-card-content">
                   <div className="list-items">
                     {data.usersCreatedDeleted?.map((user, idx) => (
@@ -446,7 +446,7 @@ const Report = ({ isSidebarOpen }) => {
                 </div>
               </div>
               <div className="card">
-                <h3>Products Added/Removed</h3>
+                <h3>Products Added</h3>
                 <div className="scrollable-card-content">
                   <div className="list-items">
                     {data.productsAddedRemoved?.map((product, idx) => (
@@ -464,7 +464,7 @@ const Report = ({ isSidebarOpen }) => {
                 </div>
               </div>
               <div className="card">
-                <h3>Categories Added/Removed</h3>
+                <h3>Categories Added</h3>
                 <div className="scrollable-card-content">
                   <div className="list-items">
                     {data.categoriesAddedRemoved?.map((cat, idx) => (
@@ -640,7 +640,7 @@ const Report = ({ isSidebarOpen }) => {
   return (
     <div className={isSidebarOpen ? "reports-container" : "reports-container collapse"}>
       <div className="header">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+        <div className="reportB" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
           <h1>All Report</h1>
           <button className="report-export-btn" onClick={handleExportWord}>
             <FiDownload style={{ marginRight: 4 }} />

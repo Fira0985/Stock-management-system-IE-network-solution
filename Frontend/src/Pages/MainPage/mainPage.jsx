@@ -20,6 +20,8 @@ const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedPage, setSelectedPage] = useState("Dashboard");
   const [showUserProfile, setShowUserProfile] = useState(false);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+
 
   const handleSidebarToggle = (openState) => {
     setIsSidebarOpen(openState);
@@ -78,8 +80,19 @@ const MainPage = () => {
         isSidebarOpen ? "dashboard-container" : "dashboard-container-collapsed"
       }
     >
-      <Navbar isSidebarOpen={isSidebarOpen} onProfileClick={handleProfileClick} />
-      <Sidebar onToggle={handleSidebarToggle} onMenuSelect={handleMenuSelect} />
+      <Navbar
+        isSidebarOpen={isSidebarOpen}
+        onProfileClick={handleProfileClick}
+        onHamburgerClick={() => setShowMobileSidebar(true)}
+      />
+
+      <Sidebar
+        onToggle={handleSidebarToggle}
+        onMenuSelect={handleMenuSelect}
+        isMobileVisible={showMobileSidebar}
+        onCloseMobileSidebar={() => setShowMobileSidebar(false)}
+      />
+
       {renderPage()}
 
       {showUserProfile && (

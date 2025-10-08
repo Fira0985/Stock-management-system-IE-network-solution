@@ -19,9 +19,9 @@ import ExcelUpload from './Forms/ExcelForm/ExcelUpload';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const categoriesPerPage = 4;
+const categoriesPerPage = 3;
 const productsPerCategoryPage = 3;
-const flatProductsPerPage = 9;
+const flatProductsPerPage = 3;
 
 const Product = ({ isSidebarOpen }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -325,32 +325,55 @@ const Product = ({ isSidebarOpen }) => {
             {activeTab === 'products' && (
                 <div className="pd-section">
                     <h2 className="pd-section-title">All Products</h2>
-
                     {filteredFlatProducts.length === 0 ? (
                         <p className="pd-no-results">No products found matching your search</p>
                     ) : (
                         <>
-                            <ul className="pd-product-list-flat">
-                                {paginatedFlatProducts.map((prod, index) => {
-                                    const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
-
-                                    return (
-                                        <li
-                                            key={`${prod.category}-${index}`}
-                                            className="pd-product-card"
-                                            onClick={() => openProductDetail(fullProduct)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="pd-product-main-info">
-                                                <span className="pd-product-name">{prod.name}</span>
-                                                <span className="pd-product-category-tag">{prod.category}</span>
-                                            </div>
-                                            <FiBox className="pd-product-card-icon" />
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-
+                            <div style={{ overflowX: "auto" }}>
+                                <table className="pd-product-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Barcode</th>
+                                            <th>Unit</th>
+                                            <th>Sale Price</th>
+                                            <th>Cost Price</th>
+                                            <th>Category</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                            <th>Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {paginatedFlatProducts.map((prod, index) => {
+                                            const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
+                                            return (
+                                                <tr
+                                                    key={`${prod.category}-${index}`}
+                                                    className="pd-product-row"
+                                                    onClick={() => openProductDetail(fullProduct)}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    <td>{fullProduct.name}</td>
+                                                    <td>{fullProduct.barcode || 'N/A'}</td>
+                                                    <td>{fullProduct.unit || 0}</td>
+                                                    <td>${fullProduct.sale_price}</td>
+                                                    <td>${fullProduct.cost_price}</td>
+                                                    <td>{fullProduct.category?.name || fullProduct.category || 'N/A'}</td>
+                                                    <td>{fullProduct.created_by?.username || 'N/A'}</td>
+                                                    <td>{fullProduct.created_at ? new Date(fullProduct.created_at).toLocaleString() : ''}</td>
+                                                    <td>
+                                                        {fullProduct.image_url
+                                                            ? <img src={fullProduct.image_url} alt={fullProduct.name} style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 4 }} />
+                                                            : <span style={{ color: "#aaa" }}>No Image</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
                             {totalFlatProductPages > 1 && (
                                 <div className="pagination">
                                     <span
@@ -384,7 +407,6 @@ const Product = ({ isSidebarOpen }) => {
             {activeTab === 'categories' && (
                 <div className="pd-section">
                     <h2 className="pd-section-title">Categories</h2>
-
                     {filteredCategories.length === 0 ? (
                         <p className="pd-no-results">No categories found matching your search</p>
                     ) : (
@@ -430,26 +452,51 @@ const Product = ({ isSidebarOpen }) => {
 
                                             {expandedCategory === globalIndex && (
                                                 <>
-                                                    <ul className="pd-category-products">
-                                                        {paginatedProducts.map((prod, index) => {
-                                                            const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
-
-                                                            return (
-                                                                <li
-                                                                    key={`${prod.category}-${index}`}
-                                                                    className="pd-product-card"
-                                                                    onClick={() => openProductDetail(fullProduct)}
-                                                                    style={{ cursor: 'pointer' }}
-                                                                >
-                                                                    <div className="pd-product-main-info">
-                                                                        <span className="pd-product-name">{prod.name}</span>
-                                                                        <span className="pd-product-category-tag">{prod.category}</span>
-                                                                    </div>
-                                                                    <FiBox className="pd-product-card-icon" />
-                                                                </li>
-                                                            );
-                                                        })}
-                                                    </ul>
+                                                    <div style={{ overflowX: "auto" }}>
+                                                        <table className="pd-product-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Barcode</th>
+                                                                    <th>Unit</th>
+                                                                    <th>Sale Price</th>
+                                                                    <th>Cost Price</th>
+                                                                    <th>Category</th>
+                                                                    <th>Created By</th>
+                                                                    <th>Created At</th>
+                                                                    <th>Image</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {paginatedProducts.map((prod, idx) => {
+                                                                    const fullProduct = allProducts.find(p => p.name === prod.name) || prod;
+                                                                    return (
+                                                                        <tr
+                                                                            key={`${prod.category}-${idx}`}
+                                                                            className="pd-product-row"
+                                                                            onClick={() => openProductDetail(fullProduct)}
+                                                                            style={{ cursor: 'pointer' }}
+                                                                        >
+                                                                            <td>{fullProduct.name}</td>
+                                                                            <td>{fullProduct.barcode || 'N/A'}</td>
+                                                                            <td>{fullProduct.unit || 0}</td>
+                                                                            <td>${fullProduct.sale_price}</td>
+                                                                            <td>${fullProduct.cost_price}</td>
+                                                                            <td>{fullProduct.category?.name || fullProduct.category || 'N/A'}</td>
+                                                                            <td>{fullProduct.created_by?.username || 'N/A'}</td>
+                                                                            <td>{fullProduct.created_at ? new Date(fullProduct.created_at).toLocaleString() : ''}</td>
+                                                                            <td>
+                                                                                {fullProduct.image_url
+                                                                                    ? <img src={fullProduct.image_url} alt={fullProduct.name} style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 4 }} />
+                                                                                    : <span style={{ color: "#aaa" }}>No Image</span>
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                    );
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                     {totalProductPages > 1 && (
                                                         <div className="pagination">
                                                             <span

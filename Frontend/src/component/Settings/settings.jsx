@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const Settings = ({ isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState("profile");
-  const [darkMode, setDarkMode] = useState(
-    () =>
-      localStorage.getItem("theme") === "dark" ||
-      document.body.classList.contains("dark")
-  );
+  // Remove darkMode state and logic
+  // const [darkMode, setDarkMode] = useState(
+  //   () =>
+  //     localStorage.getItem("theme") === "dark" ||
+  //     document.body.classList.contains("dark")
+  // );
 
   // User state from DB
   const [user, setUser] = useState({
@@ -47,16 +48,16 @@ const Settings = ({ isSidebarOpen }) => {
     if (activeTab === "profile") fetchProfile();
   }, [activeTab]);
 
-  // Sync dark mode with body and localStorage
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
+  // Remove useEffect for darkMode sync
+  // useEffect(() => {
+  //   if (darkMode) {
+  //     document.body.classList.add("dark");
+  //     localStorage.setItem("theme", "dark");
+  //   } else {
+  //     document.body.classList.remove("dark");
+  //     localStorage.setItem("theme", "light");
+  //   }
+  // }, [darkMode]);
 
   const handleProfileSave = async () => {
     setProfileMsg("");
@@ -68,6 +69,8 @@ const Settings = ({ isSidebarOpen }) => {
       });
       setProfileMsg("Profile updated successfully.");
       localStorage.setItem("userName", user.name);
+      // Dispatch event to update Navbar immediately
+      window.dispatchEvent(new CustomEvent("profileClosed"));
     } catch (err) {
       setProfileMsg("Failed to update profile.");
     } finally {
@@ -93,7 +96,7 @@ const Settings = ({ isSidebarOpen }) => {
     }
   };
 
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  // Remove toggleDarkMode function
 
   const handleLogout = () => {
     localStorage.clear();
@@ -102,7 +105,7 @@ const Settings = ({ isSidebarOpen }) => {
   };
 
   return (
-    <div className={`settings-page-container ${darkMode ? "dark" : ""}`}>
+    <div className="settings-page-container">
       <div className={`settings-sidebar ${isSidebarOpen ? "" : "collapsed"}`}>
         <h2>Settings</h2>
         <nav className="settings-nav">
@@ -113,20 +116,7 @@ const Settings = ({ isSidebarOpen }) => {
             <i className="icon-user"></i>
             <span>Profile</span>
           </button>
-          <button
-            className={activeTab === "preferences" ? "active" : ""}
-            onClick={() => setActiveTab("preferences")}
-          >
-            <i className="icon-settings"></i>
-            <span>Preferences</span>
-          </button>
-          <button
-            className={activeTab === "security" ? "active" : ""}
-            onClick={() => setActiveTab("security")}
-          >
-            <i className="icon-lock"></i>
-            <span>Security</span>
-          </button>
+    
           <button
             className={activeTab === "backup" ? "active" : ""}
             onClick={() => setActiveTab("backup")}
@@ -193,16 +183,7 @@ const Settings = ({ isSidebarOpen }) => {
 
         {activeTab === "preferences" && (
           <div className="tab-section">
-            <h3>Preferences</h3>
-            <div className="form-group checkbox">
-              <input
-                type="checkbox"
-                id="darkMode"
-                checked={darkMode}
-                onChange={toggleDarkMode}
-              />
-              <label htmlFor="darkMode">Enable Dark Mode</label>
-            </div>
+            <h3>Preferences</h3>          
             <div className="form-group">
               <label>Default Currency:</label>
               <select>

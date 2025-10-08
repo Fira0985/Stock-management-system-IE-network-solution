@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import './userForm.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { validateLetters, validatePhoneNumber } from '../../utils/validators'; // imported validators
+
 const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
     const [form, setForm] = useState({
         username: initialData.username || '',
@@ -13,69 +17,90 @@ const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
 
     const validate = () => {
         const newErrors = {};
+
+        // Required fields
         if (!isEdit && !form.username) newErrors.username = 'Username is required';
         if (!isEdit && !form.email) newErrors.email = 'Email is required';
         if (!form.role) newErrors.role = 'Role is required';
         if (!isEdit && !form.password) newErrors.password = 'Password is required';
+
+        // Username: letters only
+        if (form.username && !validateLetters(form.username)) {
+            newErrors.username = 'Username must contain letters only';
+        }
+
+        // Phone: optional but validate if present
+        if (form.phone && !validatePhoneNumber(form.phone)) {
+            newErrors.phone = 'Invalid phone number';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        setForm(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validate()) {
-            const payload = isEdit
-                ? { email: form.email, phone: form.phone, role: form.role }
-                : form;
-            onSubmit(payload);
+
+        if (!validate()) {
+            // Show all errors as toast
+            Object.values(errors).forEach(err => toast.error(err));
+            return;
         }
+
+        const payload = isEdit
+            ? { email: form.email, phone: form.phone, role: form.role }
+            : form;
+
+        onSubmit(payload);
     };
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className={isEdit? "modal-content-edit": "modal-content"} onClick={(e) => e.stopPropagation()}>
+            <div className={isEdit ? "modal-content-edit" : "modal-content"} onClick={(e) => e.stopPropagation()}>
                 <h2>{isEdit ? 'Edit User' : 'Add User'}</h2>
 
-                {isEdit ? <form onSubmit={handleSubmit} >
-                    <div className="form-group">
-                        <label htmlFor="role">Role:</label>
-                        <select
-                            id="role"
-                            name="role"
-                            value={form.role}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="" disabled>Select a role</option>
-                            <option value="OWNER">OWNER</option>
-                            <option value="CLERK">CLERK</option>
-                            <option value="AUDITOR">AUDITOR</option>
-                        </select>
-                        {errors.role && <div className="error-text">{errors.role}</div>}
-                    </div>
+                {isEdit ? (
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="role">Role:</label>
+                            <select
+                                id="role"
+                                name="role"
+                                value={form.role}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" disabled>Select a role</option>
+                                <option value="OWNER">OWNER</option>
+                                <option value="CLERK">CLERK</option>
+                                <option value="AUDITOR">AUDITOR</option>
+                            </select>
+                            {errors.role && <div className="error-text">{errors.role}</div>}
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="phone">Phone (optional):</label>
-                        <input
-                            id="phone"
-                            type="tel"
-                            name="phone"
-                            value={form.phone}
-                            onChange={handleChange}
-                            placeholder="Optional"
-                        />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="phone">Phone (optional):</label>
+                            <input
+                                id="phone"
+                                type="tel"
+                                name="phone"
+                                value={form.phone}
+                                onChange={handleChange}
+                                placeholder="Optional"
+                            />
+                        </div>
 
-                    <div className="form-actions">
-                        <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
-                        <button type="submit">{isEdit ? 'Update' : 'Add'} User</button>
-                    </div>
-                </form> :
+                        <div className="form-actions">
+                            <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
+                            <button type="submit">{isEdit ? 'Update' : 'Add'} User</button>
+                        </div>
+                    </form>
+                ) : (
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="username">Username:</label>
@@ -128,7 +153,7 @@ const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
                                 name="phone"
                                 value={form.phone}
                                 onChange={handleChange}
-                                placeholder="Option"
+                                placeholder="Optional"
                             />
                         </div>
 
@@ -149,8 +174,11 @@ const UserForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) => {
                             <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
                             <button type="submit">{isEdit ? 'Update' : 'Add'} User</button>
                         </div>
-                    </form>}
+                    </form>
+                )}
             </div>
+
+            <ToastContainer position="top-right" autoClose={3000} theme="colored" />
         </div>
     );
 };

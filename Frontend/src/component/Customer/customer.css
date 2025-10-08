@@ -2,7 +2,7 @@
     padding: 30px 40px;
     background-color: #fff;
     margin-left: 16.6vw;
-    font-family: "Segoe UI", sans-serif;
+    font-family: inherit;
     width: 77vw;
 }
 
@@ -12,7 +12,6 @@
     transition: margin-left 0.3s ease;
     width: 87vw;
     padding: 24px;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
 /* Header Section */
@@ -237,4 +236,108 @@ body.dark .cs-customer-table th,
 body.dark .cs-customer-table td,
 .cs-customer-table.dark td {
     color: #e0e0e0;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .cs-customer-content,
+  .cs-customer-content.cs-collapse {
+    margin-left: 0;
+    width: 100vw;
+    padding: 16px 2vw;
+    box-sizing: border-box;
+  }
+  .cs-customer-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 18px;
+  }
+  .cs-add-customer,
+  .cs-export-btn {
+    width: 100%;
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+  }
+  .cs-customer-table {
+    border-radius: 8px;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  .cs-customer-row,
+  .cs-customer-row.cs-header {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 8px;
+    font-size: 13px;
+    gap: 8px;
+  }
+  .cs-customer-row > span,
+  .cs-customer-row.cs-header > span {
+    flex: 1 1 120px;
+    min-width: 80px;
+    word-break: break-word;
+    text-align: left;
+  }
+  .cs-popup-menu {
+    top: 35px;
+    right: 0;
+    min-width: 100px;
+  }
+  .cs-pagination {
+    font-size: 13px;
+    gap: 6px;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cs-customer-content,
+  .cs-customer-content.cs-collapse {
+    padding: 8px 1vw;
+    width: 100vw;
+    margin-left: 0;
+  }
+  .cs-customer-header h2 {
+    font-size: 16px;
+  }
+  .cs-add-customer,
+  .cs-export-btn {
+    font-size: 11px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .cs-customer-table {
+    font-size: 11px;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+  .cs-customer-row,
+  .cs-customer-row.cs-header {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 4px;
+    font-size: 11px;
+    gap: 6px;
+  }
+  .cs-customer-row > span,
+  .cs-customer-row.cs-header > span {
+    flex: 1 1 70px;
+    min-width: 50px;
+    word-break: break-word;
+    text-align: left;
+  }
+  .cs-popup-menu {
+    top: 30px;
+    right: 0;
+    min-width: 80px;
+  }
+  .cs-pagination {
+    font-size: 11px;
+    gap: 4px;
+    margin-top: 12px;
+  }
 }

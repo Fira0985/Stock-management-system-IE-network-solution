@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './userProfile.css';
-import { getUserByEmail, editUser, uploadProfileImage } from '../../services/userService';
+import { getUserByEmail, editUser, uploadProfileImage, changePassword } from '../../services/userService';
 import { FiUser, FiMail, FiPhone, FiLock } from 'react-icons/fi';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserProfile = (props) => {
     const [username, setUserName] = useState(localStorage.getItem('userName'));
@@ -28,10 +30,25 @@ const UserProfile = (props) => {
         try {
             await editUser(data);
             localStorage.setItem('userName', username);
-            sendToParent(false);
+            toast.success('Profile updated successfully');
         } catch (error) {
             console.error('Update Failed:', error.message);
+            toast.error('Profile update failed');
         }
+
+        // Change password if field is not empty
+        if (password.trim()) {
+            try {
+                await changePassword({ email, password });
+                setPassword('');
+                toast.success('Password changed successfully');
+            } catch (err) {
+                console.error('Password change failed:', err.message);
+                toast.error('Password change failed');
+            }
+        }
+
+        sendToParent(false);
     }
 
     useEffect(() => {
@@ -44,15 +61,17 @@ const UserProfile = (props) => {
             try {
                 const result = await uploadProfileImage(file);
                 setImageUrl(result.user.image_url);
+                toast.success('Profile image updated');
             } catch (err) {
                 console.error('Image upload failed:', err.message);
+                toast.error('Image upload failed');
             }
         }
     };
 
     const closeProfilePopup = (e) => {
         setShowUserProfile(false);
-        e.stopPropagation()
+        e.stopPropagation();
         sendToParent(false);
     };
 
@@ -125,7 +144,7 @@ const UserProfile = (props) => {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
+                        placeholder="Leave blank to keep current password"
                     />
                     <label htmlFor="password">Password</label>
                 </div>
@@ -134,6 +153,8 @@ const UserProfile = (props) => {
                     Save Changes
                 </button>
             </div>
+
+            <ToastContainer position="top-right" autoClose={3000} theme="colored" />
         </section>
     );
 };

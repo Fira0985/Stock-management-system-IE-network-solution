@@ -6,7 +6,7 @@
   background-color: white;
   min-height: 100vh;
   box-sizing: border-box;
-  font-family: 'Segoe UI', 'Inter', sans-serif;
+  font-family: inherit;
   margin-top: -5vh;
 }
 
@@ -128,6 +128,11 @@
     flex-direction: column;
     align-items: stretch;
     gap: 32px;
+  }
+
+  .contact-header{
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .contact-header h2,

@@ -4,7 +4,7 @@
   margin-left: 16.6vw;
   box-sizing: border-box;
   background-color: #ffffff;
-  font-family: "Segoe UI", sans-serif;
+  font-family: inherit;
 }
 
 .pd-Product-content.pd-collapse {
@@ -421,6 +421,47 @@
   color: #cc0000;
 }
 
+/* Table Styles */
+.pd-product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.98rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.pd-product-table th,
+.pd-product-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.pd-product-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+  color: #1f2937;
+  text-transform: capitalize;
+}
+
+.pd-product-row:hover {
+  background: #f0f7ff;
+  transition: background 0.2s;
+}
+
+.pd-product-table img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
 
@@ -497,6 +538,26 @@
     font-size: 12px;
     width: 100%;
     padding: 0.3rem 0.7rem;
+  }
+
+  /* Stack buttons vertically and full width */
+  .pd-button-group-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+  }
+  .pd-add,
+  .pd-bulk,
+  .pd-export-btn {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 12px;
+    border-radius: 8px;
   }
 }
 

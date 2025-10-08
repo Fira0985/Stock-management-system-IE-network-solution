@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import '../CategoryForm/ProductForm.css';
+import { validateLetters, validatePositiveNumber } from '../../../../utils/validators';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddForm = ({ categories, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
@@ -23,12 +26,31 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // Validate required fields
         if (!formData.name || !formData.sale_price || !formData.cost_price || !formData.category) {
-            alert('Please fill in all required fields.');
+            toast.error('Please fill in all required fields.');
             return;
         }
 
-        // Send full formData object including file to parent
+        // Validate name
+        if (!validateLetters(formData.name)) {
+            toast.error('Product name must contain letters only.');
+            return;
+        }
+
+        // Validate sale price
+        if (!validatePositiveNumber(formData.sale_price)) {
+            toast.error('Sale price must be a positive number.');
+            return;
+        }
+
+        // Validate cost price
+        if (!validatePositiveNumber(formData.cost_price)) {
+            toast.error('Cost price must be a positive number.');
+            return;
+        }
+
+        // All validations passed
         onSubmit(formData);
     };
 
@@ -106,6 +128,18 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
                     </div>
                 </form>
             </div>
+
+            {/* Toast container */}
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                pauseOnHover
+                draggable
+                theme="colored"
+            />
         </div>
     );
 };

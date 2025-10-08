@@ -1,5 +1,3 @@
-
-
 .sidebar {
     width: 15vw;
     background: #FFFAFA;
@@ -11,6 +9,7 @@
     position: fixed;
     transition: width 0.3s ease;
     overflow: hidden;
+    font-family: inherit;
 }
 
 .sidebar.collapsed {
@@ -74,19 +73,19 @@
 }
 
 .menu li.active {
-  background-color: var(--st-secondary-color);
-  color: white;
-  font-weight: 600;
-  border-radius: 6px;
+    background-color: #0000FF;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
 }
 
 .menu li.active svg {
-  color: white;
+    color: white;
 }
 
 .menu li:hover {
-  background-color: var(--st-secondary-hover);
-  color: white;
+    background-color: var(--st-secondary-hover);
+    color: white;
 }
 
 
@@ -304,107 +303,118 @@
 /* Dark mode sidebar */
 body.dark .sidebar,
 .sidebar.dark {
-  background: #23262f !important;
-  color: #e0e0e0 !important;
-  box-shadow: 2px 0 8px #181a20;
+    background: #23262f !important;
+    color: #e0e0e0 !important;
+    box-shadow: 2px 0 8px #181a20;
 }
 
 body.dark .sidebar .brand,
 .sidebar.dark .brand {
-  color: #90cdf4;
+    color: #90cdf4;
 }
 
 body.dark .sidebar .menu li,
 .sidebar.dark .menu li {
-  color: #e0e0e0;
+    color: #e0e0e0;
 }
 
 body.dark .sidebar .menu li:hover {
-  background-color: #23262f;
-  color: #2563eb;
+    background-color: #23262f;
+    color: #2563eb;
 }
 
 body.dark .sidebar .logout-btn,
 body.dark .sidebar .logout-btn-collopse {
-  background: #181a20;
-  color: #e0e0e0;
+    background: #181a20;
+    color: #e0e0e0;
 }
 
 body.dark .sidebar .logout-btn:hover,
 body.dark .sidebar .logout-btn-collopse:hover {
-  background: #e53e3e;
-  color: #fff;
+    background: #e53e3e;
+    color: #fff;
 }
 
 
 .form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .form-actions button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  background-color: #111827;
-  color: white;
-  cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #111827;
+    color: white;
+    cursor: pointer;
 }
 
 .form-actions .cancel-btn {
-  background-color: #f3f3f3;
-  color: #333;
+    background-color: #f3f3f3;
+    color: #333;
 }
 
 /* Dark mode for modal */
 body.dark .modal-content,
 .modal-content.dark {
-  background: #23262f !important;
-  color: #e0e0e0 !important;
-  border: 1px solid #333;
+    background: #23262f !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #333;
 }
 
 
 .menu li.active {
-  background-color: #0000FF;
-  color: white;
-  font-weight: 600;
-  border-radius: 6px;
+    background-color: #0000FF;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
 }
 
 .menu li.active svg {
-  color: white;
+    color: white;
 }
 
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.96);}
-  to { opacity: 1; transform: scale(1);}
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-@media (max-width: 768px) {
+/* Mobile drawer behavior */
+@media screen and (max-width: 768px) {
+   
     .sidebar {
-        width: 180px;
-        padding: 15px;
+        position: fixed;
+        left: -240px;
+        top: 0;
+        bottom: 0;
+        width: 240px;
+        background-color: white;
+        z-index: 1000;
+        transition: left 0.3s ease;
     }
 
-    .sidebar.collapsed {
-        width: 60px;
+    .sidebar.mobile-visible {
+        left: 0;
     }
 
-    .brand {
-        font-size: 20px;
-    }
-
-    .menu li {
-        font-size: 14px;
-        gap: 8px;
-    }
-
-    .logout-btn {
-        font-size: 13px;
-        padding: 5px 10px;
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
     }
 }

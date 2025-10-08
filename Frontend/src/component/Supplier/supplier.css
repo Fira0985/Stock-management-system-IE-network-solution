@@ -2,7 +2,7 @@
     padding: 30px 40px;
     background-color: #fff;
     margin-left: 16.6vw;
-    font-family: "Segoe UI", sans-serif;
+    font-family: inherit;
     width: 77vw;
 }
 
@@ -188,4 +188,108 @@ body.dark .sp-supplier-row,
 body.dark .sp-supplier-row.sp-header {
   background: #23262f;
   color: #e0e0e0;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .sp-supplier-content,
+  .sp-supplier-content.sp-collapse {
+    margin-left: 0;
+    width: 100vw;
+    padding: 12px 2vw;
+    box-sizing: border-box;
+  }
+  .sp-supplier-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 18px;
+  }
+  .sp-add-supplier,
+  .sp-export-btn {
+    width: 100%;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+  }
+  .sp-supplier-table {
+    border-radius: 8px;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  .sp-supplier-row,
+  .sp-supplier-row.sp-header {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 8px;
+    font-size: 13px;
+    gap: 8px;
+  }
+  .sp-supplier-row > span,
+  .sp-supplier-row.sp-header > span {
+    flex: 1 1 120px;
+    min-width: 80px;
+    word-break: break-word;
+    text-align: left;
+  }
+  .sp-popup-menu {
+    top: 35px;
+    right: 0;
+    min-width: 100px;
+  }
+  .sp-pagination {
+    font-size: 13px;
+    gap: 6px;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sp-supplier-content,
+  .sp-supplier-content.sp-collapse {
+    padding: 6px 1vw;
+    width: 100vw;
+    margin-left: 0;
+  }
+  .sp-supplier-header h2 {
+    font-size: 18px;
+  }
+  .sp-add-supplier,
+  .sp-export-btn {
+    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .sp-supplier-table {
+    font-size: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+  .sp-supplier-row,
+  .sp-supplier-row.sp-header {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 4px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .sp-supplier-row > span,
+  .sp-supplier-row.sp-header > span {
+    flex: 1 1 80px;
+    min-width: 60px;
+    word-break: break-word;
+    text-align: left;
+  }
+  .sp-popup-menu {
+    top: 30px;
+    right: 0;
+    min-width: 90px;
+  }
+  .sp-pagination {
+    font-size: 12px;
+    gap: 4px;
+    margin-top: 12px;
+  }
 }

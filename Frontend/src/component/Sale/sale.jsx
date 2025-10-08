@@ -95,6 +95,9 @@ const Sales = ({ isSidebarOpen }) => {
                 end.setDate(new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate());
                 end.setHours(23, 59, 59, 999);
                 break;
+            case 'all':
+                // For "All", return null to indicate no date filtering
+                return { start: null, end: null };
             default:
                 start.setHours(0, 0, 0, 0);
                 end.setHours(23, 59, 59, 999);
@@ -105,6 +108,12 @@ const Sales = ({ isSidebarOpen }) => {
 
     const filteredSales = useMemo(() => {
         const { start, end } = getDateRange(filter);
+        
+        // If filter is 'all', return all sales without date filtering
+        if (filter === 'all') {
+            return allSales;
+        }
+        
         return allSales.filter(sale => {
             const date = new Date(sale.created_at);
             return date >= start && date <= end;
@@ -128,7 +137,7 @@ const Sales = ({ isSidebarOpen }) => {
         <div className={isSidebarOpen ? "sales-container" : "sales-container collapse"}>
             <div className="header-section">
                 <h2 className="page-title">All Sales</h2>
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div className="buttonCont" style={{ display: "flex", gap: "10px" }}>
                     <button className="sale-btn" onClick={() => setShowForm(true)}>New Sale</button>
                     <button
                         className="sale-export-btn"
@@ -141,16 +150,17 @@ const Sales = ({ isSidebarOpen }) => {
             </div>
 
             <div className="tabs">
-                {['today', 'yesterday', 'last7', 'thisMonth', 'lastMonth'].map(f => (
+                {['all', 'today', 'yesterday', 'last7', 'thisMonth', 'lastMonth'].map(f => (
                     <span
                         key={f}
                         className={`tab ${filter === f ? 'active' : ''}`}
                         onClick={() => { setFilter(f); setCurrentPage(1); }}
                     >
-                        {f === 'today' ? 'Today' :
-                            f === 'yesterday' ? 'Yesterday' :
-                                f === 'last7' ? 'Last 7 days' :
-                                    f === 'thisMonth' ? 'This month' : 'Last month'}
+                        {f === 'all' ? 'All' :
+                         f === 'today' ? 'Today' :
+                         f === 'yesterday' ? 'Yesterday' :
+                         f === 'last7' ? 'Last 7 days' :
+                         f === 'thisMonth' ? 'This month' : 'Last month'}
                     </span>
                 ))}
             </div>
@@ -250,5 +260,4 @@ const Sales = ({ isSidebarOpen }) => {
         </div>
     );
 };
-
 export default Sales;

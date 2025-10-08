@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { addSale } from '../../services/saleService';
 import './saleForm.css';
 
-// Simple Toast component
-const Toast = ({ message, onClose }) => (
+// Toast component with dynamic color
+const Toast = ({ message, type = 'error', onClose }) => (
     <div
         style={{
             position: 'fixed',
             top: 30,
             right: 30,
-            background: '#e53e3e',
+            background: type === 'success' ? '#38a169' : '#e53e3e', // green for success, red for error
             color: '#fff',
             padding: '14px 24px',
             borderRadius: 8,
             zIndex: 9999,
             fontWeight: 500,
             boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
-            minWidth: 180,
+            minWidth: 200,
+            cursor: 'pointer',
         }}
         onClick={onClose}
     >
@@ -37,7 +38,6 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
     });
     const [toast, setToast] = useState(null);
 
-    // Recalculate total and balance_due
     const recalc = (items, discount_amount, paid_amount) => {
         const total = items.reduce(
             (sum, { quantity, sale_price }) => sum + quantity * sale_price,
@@ -49,44 +49,37 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
         };
     };
 
-    // Update form with recalculation and paid_amount logic based on type
     const updateFormChange = (updates) => {
         let newForm = { ...form, ...updates };
+        const recalculated = recalc(
+            newForm.items,
+            newForm.discount_amount,
+            newForm.paid_amount
+        );
 
-        // Recalculate totals first
-        const recalculated = recalc(newForm.items, newForm.discount_amount, newForm.paid_amount);
-
-        // Handle CASH logic
         if (newForm.type === 'CASH') {
             newForm.paid_amount = recalculated.total;
-            newForm.balance_due = 0; // Ensure balance_due is 0 for CASH
+            newForm.balance_due = 0;
         } else {
-            // CREDIT: Clamp paid_amount
-            if (newForm.paid_amount > recalculated.total) {
+            if (newForm.paid_amount > recalculated.total)
                 newForm.paid_amount = recalculated.total;
-            }
-            if (newForm.paid_amount < 0) {
-                newForm.paid_amount = 0;
-            }
-            newForm.balance_due = recalculated.total - newForm.discount_amount - newForm.paid_amount;
+            if (newForm.paid_amount < 0) newForm.paid_amount = 0;
+            newForm.balance_due =
+                recalculated.total - newForm.discount_amount - newForm.paid_amount;
         }
 
         setForm({ ...newForm, total: recalculated.total });
     };
 
-
-    // When items count changes, recalc totals
     useEffect(() => {
         const recalculated = recalc(form.items, form.discount_amount, form.paid_amount);
-        // For CASH, update paid_amount to total automatically here as well
-        setForm(f => ({
+        setForm((f) => ({
             ...f,
             ...recalculated,
             paid_amount: f.type === 'CASH' ? recalculated.total : f.paid_amount,
         }));
     }, [form.items.length]);
 
-    // Handle item changes
     const handleItemChange = (index, field, value) => {
         const items = [...form.items];
         if (field === 'quantity') {
@@ -99,10 +92,11 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
         updateFormChange({ items });
     };
 
-    // When product selected, set sale_price from products list automatically
     const handleProductSelect = (index, productId) => {
-        const selectedProduct = products.find(p => p.id.toString() === productId);
-        const sale_price = selectedProduct ? selectedProduct.sale_price : 0;
+        const selectedProduct = products.find(
+            (p) => p.id.toString() === productId
+        );
+        const sale_price = selectedProduct ? selectedProduct.sale_price || 0 : 0;
 
         const items = [...form.items];
         items[index] = {
@@ -113,22 +107,22 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
         updateFormChange({ items });
     };
 
-    // Add new empty item row
     const addNewItem = () => {
-        updateFormChange({ items: [...form.items, { product_id: '', quantity: 1, sale_price: 0 }] });
+        updateFormChange({
+            items: [...form.items, { product_id: '', quantity: 1, sale_price: 0 }],
+        });
     };
 
-    // Submit form
     const submit = async (e) => {
         e.preventDefault();
 
-        // Basic validation: at least one item with valid product_id and quantity > 0
-        if (form.items.some(i => !i.product_id || i.quantity <= 0)) {
-            setToast('Please select valid products and quantities.');
+        // Basic validation
+        if (form.items.some((i) => !i.product_id || i.quantity <= 0)) {
+            setToast({ message: 'Please select valid products and quantities.', type: 'error' });
             return;
         }
         if (form.type === 'CREDIT' && !form.customer_id) {
-            setToast('Customer is required for credit sales.');
+            setToast({ message: 'Customer is required for credit sales.', type: 'error' });
             return;
         }
 
@@ -138,13 +132,23 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
                 customer_id: form.customer_id || null,
                 due_date: form.due_date || null,
             });
+            setToast({
+                message:
+                    form.type === 'CASH'
+                        ? 'Cash sale recorded successfully!'
+                        : 'Credit sale recorded successfully!',
+                type: 'success',
+            });
             onSuccess();
+            setTimeout(onClose, 2000); // Auto-close after 2s
         } catch (err) {
-            setToast('Failed to add sale');
+            setToast({
+                message: err?.response?.data?.message || 'Failed to add sale. Please try again.',
+                type: 'error',
+            });
         }
     };
 
-    // Auto-hide toast after 3s
     useEffect(() => {
         if (toast) {
             const t = setTimeout(() => setToast(null), 3000);
@@ -154,9 +158,18 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
 
     return (
         <div className="modal-backdrop">
-            {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-            <form className="sale-form" onSubmit={submit} style={{ position: 'relative', width: '500px' }}>
-                {/* Close Button */}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            <form
+                className="sale-form"
+                onSubmit={submit}
+                style={{ position: 'relative', width: '500px' }}
+            >
                 <button
                     type="button"
                     onClick={onClose}
@@ -179,79 +192,79 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
 
                 <h2 style={{ marginTop: 0 }}>New Sale</h2>
 
+                {/* Type */}
                 <label htmlFor="sale-type">Sale Type:</label>
                 <select
                     id="sale-type"
                     value={form.type}
-                    onChange={e => updateFormChange({ type: e.target.value })}
+                    onChange={(e) => updateFormChange({ type: e.target.value })}
                 >
                     <option value="CASH">Cash</option>
                     <option value="CREDIT">Credit</option>
                 </select>
 
+                {/* Customer */}
                 <label htmlFor="customer">Customer:</label>
                 <select
                     id="customer"
                     value={form.customer_id}
-                    onChange={e => updateFormChange({ customer_id: e.target.value })}
+                    onChange={(e) => updateFormChange({ customer_id: e.target.value })}
                     required={form.type === 'CREDIT'}
                     disabled={form.type !== 'CREDIT' && customers.length === 0}
                 >
                     <option value="" disabled={form.type === 'CREDIT'}>
                         -- None --
                     </option>
-                    {customers.map(c => (
+                    {customers.map((c) => (
                         <option key={c.id} value={c.id}>
                             {c.name}
                         </option>
                     ))}
                 </select>
 
+                {/* Items */}
                 <label>Sale Items:</label>
                 {form.items.map((item, idx) => (
                     <div className="item-row" key={idx}>
                         <select
                             required
                             value={item.product_id}
-                            onChange={e => handleProductSelect(idx, e.target.value)}
+                            onChange={(e) => handleProductSelect(idx, e.target.value)}
                         >
                             <option value="">-- Select Product --</option>
-                            {products.map(p => (
+                            {products.map((p) => (
                                 <option key={p.id} value={p.id}>
                                     {p.name}
                                 </option>
                             ))}
                         </select>
 
-                        <label htmlFor={`quantity-${idx}`} style={{ display: 'none' }}>Quantity</label>
                         <input
-                            id={`quantity-${idx}`}
                             type="number"
                             placeholder="Qty"
                             min="1"
                             required
                             value={item.quantity}
-                            onChange={e => handleItemChange(idx, 'quantity', e.target.value)}
+                            onChange={(e) => handleItemChange(idx, 'quantity', e.target.value)}
                         />
 
-                        <label htmlFor={`unit-price-${idx}`} style={{ display: 'none' }}>Unit Price</label>
                         <input
-                            id={`unit-price-${idx}`}
                             type="number"
                             placeholder="Unit Price"
                             min="0"
                             step="0.01"
                             required
                             value={item.sale_price}
-                            onChange={e => handleItemChange(idx, 'sale_price', e.target.value)}
-                            readOnly // Unit price is taken from DB, so readonly
+                            onChange={(e) => handleItemChange(idx, 'sale_price', e.target.value)}
+                            readOnly
                         />
                     </div>
                 ))}
-                <button type="button" onClick={addNewItem} style={{ alignSelf: 'flex-start' }}>
+                <button type="button" onClick={addNewItem}>
                     + Add Item
                 </button>
 
+                {/* Paid */}
                 <label htmlFor="paid-amount">Paid Amount:</label>
                 <input
                     id="paid-amount"
@@ -260,7 +273,7 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
                     max={form.total}
                     step="0.01"
                     value={form.paid_amount}
-                    onChange={e => {
+                    onChange={(e) => {
                         if (form.type === 'CREDIT') {
                             let val = parseFloat(e.target.value) || 0;
                             if (val > form.total) val = form.total;
@@ -279,7 +292,7 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
                             id="due-date"
                             type="date"
                             value={form.due_date}
-                            onChange={e => updateFormChange({ due_date: e.target.value })}
+                            onChange={(e) => updateFormChange({ due_date: e.target.value })}
                             required={form.type === 'CREDIT'}
                         />
                     </>

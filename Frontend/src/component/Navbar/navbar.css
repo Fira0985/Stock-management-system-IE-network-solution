@@ -12,6 +12,7 @@
     margin-left: 16.6vw;
 }
 
+
 .topbar-collapsed {
     display: flex;
     align-items: center;
@@ -29,7 +30,7 @@
 .title {
     font-size: 22px;
     font-weight: bold;
-    padding-left: 3vw;
+    padding-left: 1vw; /* reduced from 3vw */
 }
 
 .topbar-right {
@@ -163,6 +164,40 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
+/* Hamburger icon for Navbar (inside sidebar container on mobile) */
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    margin-left: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .topbar,
+    .topbar-collapsed {
+        margin-left: 0;
+    }
+    .hamburger-btn {
+        display: block;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 1100;
+    }
+
+    .title{
+        margin-left: 16vw; /* Adjust padding for mobile view */
+    }
+
+    .icon{
+        margin-left: -29vw;
+    }
+
+    .username{
+        display: none;
+    }
+}
+
 /* === DARK MODE STYLES === */
 body.dark .topbar,
 body.dark .topbar-collapsed {
@@ -197,3 +232,4 @@ body.dark .notification-dropdown {
 body.dark .notification-dropdown li {
     border-bottom: 1px solid #444;
 }
+

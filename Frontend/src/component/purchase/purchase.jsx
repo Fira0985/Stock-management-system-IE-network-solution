@@ -71,6 +71,9 @@ const PurchaseTable = ({ isSidebarOpen }) => {
                 end.setDate(new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate());
                 end.setHours(23, 59, 59, 999);
                 break;
+            case 'all':
+                // For "All", return null to indicate no date filtering
+                return { start: null, end: null };
             default:
                 start.setHours(0, 0, 0, 0);
                 end.setHours(23, 59, 59, 999);
@@ -81,6 +84,12 @@ const PurchaseTable = ({ isSidebarOpen }) => {
 
     const filteredPurchases = useMemo(() => {
         const { start, end } = getDateRange(filter);
+
+        // If filter is 'all', return all purchases without date filtering
+        if (filter === 'all') {
+            return purchases;
+        }
+
         return purchases.filter(p => {
             const d = new Date(p.created_at);
             return d >= start && d <= end;
@@ -108,7 +117,7 @@ const PurchaseTable = ({ isSidebarOpen }) => {
         <div className={isSidebarOpen ? "purchase-container" : "purchase-container collapse"}>
             <div className="header-section">
                 <h2 className="page-title">All Purchases</h2>
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div className='buttonCont' style={{ display: "flex", gap: "10px" }}>
                     <button className="purchase-btn" onClick={() => setShowPopup(true)}>Purchase</button>
                     <button
                         className="purchase-export-btn"
@@ -121,16 +130,17 @@ const PurchaseTable = ({ isSidebarOpen }) => {
             </div>
 
             <div className="tabs">
-                {['today', 'yesterday', 'last7days', 'thisMonth', 'lastMonth'].map(f => (
+                {['all', 'today', 'yesterday', 'last7days', 'thisMonth', 'lastMonth'].map(f => (
                     <span
                         key={f}
                         className={`tab ${filter === f ? 'active' : ''}`}
                         onClick={() => { setFilter(f); setCurrentPage(1); }}
                     >
-                        {f === 'today' ? 'Today' :
-                            f === 'yesterday' ? 'Yesterday' :
-                                f === 'last7days' ? 'Last 7 days' :
-                                    f === 'thisMonth' ? 'This month' : 'Last month'}
+                        {f === 'all' ? 'All' :
+                            f === 'today' ? 'Today' :
+                                f === 'yesterday' ? 'Yesterday' :
+                                    f === 'last7days' ? 'Last 7 days' :
+                                        f === 'thisMonth' ? 'This month' : 'Last month'}
                     </span>
                 ))}
             </div>

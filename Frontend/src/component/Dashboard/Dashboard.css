@@ -3,18 +3,16 @@
   padding: 30px 40px;
   background-color: #fff;
   margin-left: 16.6vw;
-  font-family: "Segoe UI", sans-serif;
+  font-family: inherit;
   width: 77vw;
   margin-top: -5vh;
 }
-
 
 .main-content-collapsed {
   margin-left: 6vw;
   transition: margin-left 0.3s ease;
   width: 87vw;
   padding: 24px;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
 .main-content-collapsed .dashboard-btn.secondary {
@@ -28,13 +26,12 @@
 
 /* ====== HEADERS ====== */
 .dashboard-titles {
-  font-size: 27px;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #1a202c;
   margin-left: 2vw;
   letter-spacing: -0.5px;
 }
-
 
 /* ====== OVERVIEW CARD SCROLL ====== */
 .overview-scroll-wrapper {
@@ -59,7 +56,7 @@
 }
 
 .overview-horizontal-scroll::-webkit-scrollbar-thumb {
-  background: #0000FF;
+  background: #0000ff;
   border-radius: 6px;
 }
 
@@ -118,7 +115,7 @@
   margin-top: 8px;
   font-size: 20px;
   font-weight: 100;
-  color: #0000FF;
+  color: #0000ff;
 }
 
 .dashboard-tab-container {
@@ -133,7 +130,6 @@
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
-
   width: 17vw;
 }
 
@@ -151,7 +147,7 @@
 }
 
 .tab-buttons button.active {
-  background-color: #0000FF;
+  background-color: #0000ff;
   color: white;
   font-weight: 500;
 }
@@ -181,7 +177,6 @@
 .chart p {
   font-weight: 600;
   font-size: 15px;
-  /* margin-bottom: 10px; */
   color: #333;
 }
 
@@ -260,7 +255,7 @@
 }
 
 .dashboard-btn:hover {
-  background: #0000FF;
+  background: #0000ff;
   color: white;
 }
 
@@ -276,7 +271,6 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-
   .main-content,
   .main-content-collapsed {
     margin-left: 0;
@@ -285,12 +279,12 @@
   }
 
   .dashboard-titles {
-    font-size: 1.2rem;
+    margin-top: 3vh;
+    margin-left: 5vw;
   }
 }
 
 @media (max-width: 900px) {
-
   .main-content,
   .main-content-collapsed {
     margin-left: 0;
@@ -315,16 +309,11 @@
 }
 
 @media (max-width: 600px) {
-
   .main-content,
   .main-content-collapsed {
     margin-left: 0;
     width: 100vw;
     padding: 2px 0.5vw;
-  }
-
-  .dashboard-titles {
-    font-size: 0.9rem;
   }
 
   .dashboard-btn {
@@ -341,7 +330,6 @@
 }
 
 @media (min-width: 1600px) {
-
   .main-content,
   .main-content-collapsed {
     font-size: 1.3rem;
@@ -350,7 +338,7 @@
   }
 
   .dashboard-titles {
-    font-size: 2rem;
+    font-size: 6rem;
   }
 
   .dashboard-btn {
@@ -366,7 +354,6 @@
 }
 
 @media (min-width: 2000px) {
-
   .main-content,
   .main-content-collapsed {
     font-size: 2rem;
@@ -375,7 +362,7 @@
   }
 
   .dashboard-titles {
-    font-size: 2.5rem;
+    font-size: 10rem;
   }
 
   .dashboard-btn {
@@ -425,7 +412,7 @@ body.dark .dashboard-btn,
 }
 
 body.dark .dashboard-btn:hover {
-  background: #0000FF;
+  background: #0000ff;
   color: #fff;
 }
 
@@ -436,7 +423,7 @@ body.dark .tab-buttons button {
 }
 
 body.dark .tab-buttons button.active {
-  background-color: #0000FF;
+  background-color: #0000ff;
   color: white;
 }
 
@@ -471,3 +458,4 @@ body.dark .activity-section p {
   color: #f1f1f1;
   font-weight: 600;
 }
+

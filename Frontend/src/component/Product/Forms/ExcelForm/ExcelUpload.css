@@ -71,3 +71,9 @@
     margin-top: 1rem;
     font-weight: bold;
 }
+
+@media (max-width: 600px){
+    .close-btn {
+        left: 90%;
+    }
+}

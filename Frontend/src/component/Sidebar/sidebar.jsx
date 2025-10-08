@@ -22,6 +22,11 @@ const Sidebar = (props) => {
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
 
+  const { isMobileVisible, onCloseMobileSidebar } = props;
+
+  const sidebarClass = `sidebar ${isOpen ? "" : "collapsed"} ${isMobileVisible ? "mobile-visible" : ""
+    }`;
+
   const handleToggle = () => {
     const newState = !isOpen;
     setIsOpen(newState);
@@ -63,86 +68,93 @@ const Sidebar = (props) => {
   });
 
   return (
-    <aside className={`sidebar ${isOpen ? "" : "collapsed"}`}>
-      <div className="sidebar-header">
-        <div className="brand">
+    <>
+      <aside className={sidebarClass}>
+        <div className="sidebar-header">
+          <div className="brand">
+            {isOpen ? (
+              <>
+                Track<span>እቃ</span>
+                <span>.</span>
+              </>
+            ) : (
+              <>T.</>
+            )}
+          </div>
+          <button className="toggle-btn" onClick={handleToggle}>
+            {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
+          </button>
+        </div>
+
+        <ul className="menu">
+          {filteredMenuItems.map((item) => (
+            <li
+              key={item.label}
+              onClick={() => handleMenuClick(item.label)}
+              className={activeItem === item.label ? "active" : ""}
+            >
+              {item.icon} {isOpen && item.label}
+            </li>
+          ))}
+        </ul>
+
+        <div className="sidebar-footer">
           {isOpen ? (
             <>
-              Track<span>እቃ</span>
-              <span>.</span>
+              <div className="user-profile">
+                <ul className="sidebar-contact-list">
+                  <li
+                    className="contact-item"
+                    onClick={() => handleMenuClick("Contact")}
+                  >
+                    <FiPhoneCall size={16} className="contact-icon" />
+                    <span className="contact-label">Contact</span>
+                  </li>
+                </ul>
+              </div>
+              {/* <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
+                Logout
+              </button> */}
             </>
           ) : (
-            <>T.</>
+            <>
+              <div className="user-profile-collapse">
+                <ul className="sidebar-contact-list">
+                  <li
+                    className="contact-item"
+                    onClick={() => handleMenuClick("Contact")}
+                    title="Contact"
+                  >
+                    <FiPhoneCall size={20} className="contact-icon" />
+                  </li>
+                </ul>
+              </div>
+              {/* <button className="logout-btn-collopse" title="Logout" onClick={handleLogout}>
+                <FiLogOut size={18} />
+              </button> */}
+            </>
           )}
         </div>
-        <button className="toggle-btn" onClick={handleToggle}>
-          {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
-        </button>
-      </div>
 
-      <ul className="menu">
-        {filteredMenuItems.map((item) => (
-          <li
-            key={item.label}
-            onClick={() => handleMenuClick(item.label)}
-            className={activeItem === item.label ? "active" : ""}
-          >
-            {item.icon} {isOpen && item.label}
-          </li>
-        ))}
-      </ul>
-
-      <div className="sidebar-footer">
-        {isOpen ? (
-          <>
-            <div className="user-profile">
-              <ul className="sidebar-contact-list">
-                <li
-                  className="contact-item"
-                  onClick={() => handleMenuClick("Contact")}
-                >
-                  <FiPhoneCall size={16} className="contact-icon" />
-                  <span className="contact-label">Contact</span>
-                </li>
-              </ul>
-            </div>
-            <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <div className="user-profile-collapse">
-              <ul className="sidebar-contact-list">
-                <li
-                  className="contact-item"
-                  onClick={() => handleMenuClick("Contact")}
-                  title="Contact"
-                >
-                  <FiPhoneCall size={20} className="contact-icon" />
-                </li>
-              </ul>
-            </div>
-            <button className="logout-btn-collopse" title="Logout" onClick={handleLogout}>
-              <FiLogOut size={18} />
-            </button>
-          </>
-        )}
-      </div>
-
-      {showLogoutModal && (
-        <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3>Confirm Logout</h3>
-            <p>Are you sure you want to logout?</p>
-            <div className="form-actions">
-              <button onClick={handleLogout}>Yes, Logout</button>
-              <button className="cancel-btn" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+        {showLogoutModal && (
+          <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+              <h3>Confirm Logout</h3>
+              <p>Are you sure you want to logout?</p>
+              <div className="form-actions">
+                <button onClick={handleLogout}>Yes, Logout</button>
+                <button className="cancel-btn" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+      </aside>
+
+      {isMobileVisible && window.innerWidth < 768 && (
+        <div className="overlay" onClick={onCloseMobileSidebar}></div>
       )}
-    </aside>
+    </>
+
   );
 };
 

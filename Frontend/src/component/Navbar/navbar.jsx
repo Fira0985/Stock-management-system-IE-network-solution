@@ -1,21 +1,20 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { FiBell, FiSun, FiMoon, FiUser } from "react-icons/fi";
+import { FiBell, FiSun, FiMoon, FiUser, FiMenu } from "react-icons/fi";
+import { io } from "socket.io-client";
 import "./Navbar.css";
-import {
-  uploadProfileImage,
-  getImage,
-} from "../../services/userService";
-import { fetchRecentActivity } from "../../services/statisticsApi";
+import { uploadProfileImage, getImage } from "../../services/userService";
+import { getUserNotifications } from "../../services/notificationService";
 
-const Navbar = ({ isSidebarOpen, onProfileClick }) => {
+const socket = io("http://localhost:3000", { withCredentials: true });
+
+const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
   /* ───────────── Local state ───────────── */
   const [name, setName] = useState(localStorage.getItem("userName") || "");
   const [avatar, setAvatar] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [hasUnread, setHasUnread] = useState(
-    sessionStorage.getItem("hasUnread") === "true"
-  );
+  const [hasUnread, setHasUnread] = useState(false);
+
   const [darkMode, setDarkMode] = useState(
     () =>
       localStorage.getItem("theme") === "dark" ||
@@ -36,38 +35,51 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
     }
   }, [email]);
 
-  const loadNotifications = useCallback(async () => {
-    try {
-      const activity = await fetchRecentActivity();
-      const sessionStart = new Date(
-        sessionStorage.getItem("sessionStartTime")
+  const getLastVisitTime = () => new Date(localStorage.getItem("lastVisitTime") || 0);
+
+  const handleIncomingActivity = useCallback(
+    (activity) => {
+      const normalizedUserName = userName?.trim().toLowerCase();
+      const filtered = activity.filter(
+        (item) => item.by?.trim().toLowerCase() !== normalizedUserName
       );
-      const filtered = activity.filter((item) => {
-        const createdAt = new Date(item.time);
-        return createdAt > sessionStart && item.by !== userName;
-      });
       setNotifications(filtered);
 
-      if (filtered.length > 0) {
-        setHasUnread(true);
-        sessionStorage.setItem("hasUnread", "true");
-      }
+      // Only set hasUnread if there are notifications after lastVisitTime
+      const lastVisit = getLastVisitTime();
+      const hasNew = filtered.some(item => new Date(item.at) > lastVisit);
+      setHasUnread(hasNew);
+      localStorage.setItem("hasUnread", hasNew ? "true" : "false");
+    },
+    [userName]
+  );
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const { data } = await getUserNotifications(email);
+      handleIncomingActivity(data);
     } catch (err) {
-      console.error("Failed to load notifications:", err.message);
+      console.error("Failed to fetch notifications:", err.message);
     }
-  }, [userName]);
+  }, [email, handleIncomingActivity]);
 
   /* ───────────── Initial mount ───────────── */
   useEffect(() => {
-    if (!sessionStorage.getItem("sessionStartTime")) {
-      sessionStorage.setItem("sessionStartTime", new Date().toISOString());
+    // Set last visit if not set
+    if (!localStorage.getItem("lastVisitTime")) {
+      localStorage.setItem("lastVisitTime", new Date().toISOString());
     }
-    fetchAvatar();
-    loadNotifications();
 
-    const interval = setInterval(loadNotifications, 30_000); // every 30 s
-    return () => clearInterval(interval);
-  }, [fetchAvatar, loadNotifications]);
+    fetchAvatar();
+    fetchNotifications();
+
+    // Listen for socket.io events
+    socket.on("recentActivity", handleIncomingActivity);
+
+    return () => {
+      socket.off("recentActivity", handleIncomingActivity);
+    };
+  }, [fetchAvatar, fetchNotifications, handleIncomingActivity]);
 
   /* ───────────── Theme sync ───────────── */
   useEffect(() => {
@@ -103,9 +115,11 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
   const toggleDropdown = () => {
     const newState = !showDropdown;
     setShowDropdown(newState);
+
     if (newState) {
       setHasUnread(false);
-      sessionStorage.setItem("hasUnread", "false");
+      localStorage.setItem("hasUnread", "false");
+      localStorage.setItem("lastVisitTime", new Date().toISOString());
     }
   };
 
@@ -113,16 +127,15 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
   return (
     <header className={isSidebarOpen ? "topbar" : "topbar-collapsed"}>
       <div className="title">Dashboard</div>
+      <span className="hamburger-btn" onClick={onHamburgerClick}>
+        <FiMenu size={22} />
+      </span>
 
       <div className="topbar-right">
         {/* Notifications */}
         <div className="icon notification-wrapper" onClick={toggleDropdown}>
           <FiBell />
-          {hasUnread && (
-            <span className="notification-badge">
-              {notifications.length}
-            </span>
-          )}
+          {hasUnread && <span className="notification-badge">{notifications.filter(item => new Date(item.at) > getLastVisitTime()).length}</span>}
           {showDropdown && (
             <div className="notification-dropdown">
               <h4>Notifications</h4>
@@ -132,11 +145,9 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
                 ) : (
                   notifications.map((item, idx) => (
                     <li key={idx}>
-                      <strong>{item.type}</strong>: {item.description}
+                      <strong>{item.type}</strong>: {item.description || item.customer || item.supplier}
                       <br />
-                      <small>
-                        {new Date(item.time).toLocaleTimeString()}
-                      </small>
+                      <small>{new Date(item.at).toLocaleTimeString()}</small>
                     </li>
                   ))
                 )}
@@ -145,23 +156,10 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
           )}
         </div>
 
-        {/* Theme toggle */}
-        {/* <span
-          className="icon"
-          onClick={() => setDarkMode((prev) => !prev)}
-          style={{ cursor: "pointer" }}
-        >
-          {darkMode ? <FiSun /> : <FiMoon />}
-        </span> */}
-
         {/* Avatar */}
         <div className="avatar small" onClick={handleAvatarClick}>
           {avatar ? (
-            <img
-              src={`http://localhost:3000/${avatar}`}
-              alt="Avatar"
-              className="avatar-img"
-            />
+            <img src={`http://localhost:3000/${avatar}`} alt="Avatar" className="avatar-img" />
           ) : (
             <span className="default-avatar">
               <FiUser />
@@ -190,4 +188,3 @@ const Navbar = ({ isSidebarOpen, onProfileClick }) => {
 };
 
 export default Navbar;
-
