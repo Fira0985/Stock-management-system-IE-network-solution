@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { FiBell, FiSun, FiMoon, FiUser, FiMenu } from "react-icons/fi";
 import { io } from "socket.io-client";
-import "./Navbar.css";
+import "./navbar.css";
 import { uploadProfileImage, getImage } from "../../services/userService";
 import { getUserNotifications } from "../../services/notificationService";
 
