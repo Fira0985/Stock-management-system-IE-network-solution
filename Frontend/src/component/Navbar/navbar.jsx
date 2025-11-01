@@ -5,7 +5,7 @@ import "./navbar.css";
 import { uploadProfileImage, getImage } from "../../services/userService";
 import { getUserNotifications } from "../../services/notificationService";
 
-const socket = io("https://stock-management-system-ie-network.vercel.app", { withCredentials: true }); // socket disabled
+const socket = io("https://stock-management-system-ie-network.onrender.com", { withCredentials: true }); 
 
 const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 	/* ───────────── Local state ───────────── */
