@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { FiBell, FiSun, FiMoon, FiUser, FiMenu } from "react-icons/fi";
-// import { io } from "socket.io-client"; // socket.io disabled
+import { io } from "socket.io-client"; // socket.io disabled
 import "./navbar.css";
 import { uploadProfileImage, getImage } from "../../services/userService";
 import { getUserNotifications } from "../../services/notificationService";
 
-// const socket = io("https://stock-management-system-ie-network.vercel.app", { withCredentials: true }); // socket disabled
+const socket = io("https://stock-management-system-ie-network.vercel.app", { withCredentials: true }); // socket disabled
 
 const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 	/* ───────────── Local state ───────────── */
@@ -74,10 +74,10 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 		fetchNotifications();
 
 		// Listen for socket.io events
-		// socket.on("recentActivity", handleIncomingActivity); // socket disabled
+		socket.on("recentActivity", handleIncomingActivity); // socket disabled
 
 		return () => {
-			// socket.off("recentActivity", handleIncomingActivity); // socket disabled
+			socket.off("recentActivity", handleIncomingActivity); // socket disabled
 		};
 	}, [fetchAvatar, fetchNotifications, handleIncomingActivity]);
 
