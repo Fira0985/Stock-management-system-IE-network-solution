@@ -13,7 +13,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // for local testing
-      "https://your-frontend.onrender.com" // optional, future Render frontend URL
+      "https://stock-management-system-6gkw.onrender.com" ,
     ],
     credentials: true,
   })
@@ -30,7 +30,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "https://your-frontend.onrender.com"
+      "https://stock-management-system-6gkw.onrender.com"
     ],
     methods: ["GET", "POST"],
     credentials: true,
