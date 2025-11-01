@@ -1,13 +1,20 @@
+// server.js
 const express = require("express");
+const http = require("http");
 const { Server } = require("socket.io");
-const app = express();
-const router = require("./routes/route");
 const cors = require("cors");
 const path = require("path");
+const router = require("./routes/route");
 
+const app = express();
+
+// ───────────── Middleware ─────────────
 app.use(
   cors({
-    origin: "https://stock-management-system-ie-network-ten.vercel.app",
+    origin: [
+      "http://localhost:5173", // for local testing
+      "https://your-frontend.onrender.com" // optional, future Render frontend URL
+    ],
     credentials: true,
   })
 );
@@ -16,48 +23,40 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api", router);
 
-/* ───────────── Socket.IO Config ───────────── */
-let io;
+// ───────────── Create HTTP + Socket.IO Server ─────────────
+const server = http.createServer(app);
 
-// Socket.IO initialization function
-const initSocketIO = (server) => {
-  if (!io) {
-    io = new Server(server, {
-      cors: {
-        origin: "https://stock-management-system-ie-network-ten.vercel.app",
-        methods: ["GET", "POST"],
-        credentials: true,
-      },
-    });
+const io = new Server(server, {
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend.onrender.com"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
-    io.on("connection", (socket) => {
-      console.log("User connected:", socket.id);
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
 
-      socket.on("registerUser", (userName) => {
-        console.log(`${userName} is online`);
-      });
+  socket.on("registerUser", (userName) => {
+    console.log(`${userName} is online`);
+  });
 
-      socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id);
-      });
-    });
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
 
-    app.set("io", io);
-  }
-  return io;
-};
+// Make io available inside routes (optional)
+app.set("io", io);
 
-// Export for Vercel serverless
-module.exports = (req, res) => {
-  // Initialize Socket.IO when needed
-  if (!res.socket.server.io) {
-    initSocketIO(res.socket.server);
-  }
-  
-  // Handle the request with Express
-  return app(req, res);
-};
-
+// ───────────── Start Server ─────────────
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});
 
 // const express = require("express");
 // const cors = require("cors");
