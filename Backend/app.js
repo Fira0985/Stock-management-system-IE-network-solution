@@ -9,20 +9,35 @@ const router = require("./routes/route");
 const app = express();
 
 // ───────────── Middleware ─────────────
+const allowedOrigins = [
+  "http://localhost:5173", // local frontend
+  "https://stock-management-system-6gkw.onrender.com" // deployed frontend
+];
+
+function isOriginAllowed(origin, callback) {
+  if (!origin) {
+    callback(null, true);
+    return;
+  }
+  if (allowedOrigins.includes(origin)) {
+    callback(null, true);
+    return;
+  }
+  // Allow Vercel preview/production domains for this project
+  if (
+    origin.startsWith("https://stock-management-system-ie-network-solution") &&
+    origin.endsWith(".vercel.app")
+  ) {
+    callback(null, true);
+    return;
+  }
+  callback(new Error("CORS not allowed"));
+}
+
 // CORS for REST API
 app.use(
   cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "http://localhost:5173", // local frontend
-        "https://stock-management-system-6gkw.onrender.com" // deployed frontend
-      ];
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
-      }
-    },
+    origin: isOriginAllowed,
     credentials: true
   })
 );
@@ -41,17 +56,7 @@ const server = http.createServer(app);
 // Socket.IO with dynamic CORS handling
 const io = new Server(server, {
   cors: {
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "http://localhost:5173",
-        "https://stock-management-system-6gkw.onrender.com"
-      ];
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
-      }
-    },
+    origin: isOriginAllowed,
     methods: ["GET", "POST"],
     credentials: true
   },
