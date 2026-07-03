@@ -12,7 +12,7 @@ const app = express();
 // CORS for REST API
 app.use(
   cors({
-    origin: function(origin, callback) {
+    origin: function (origin, callback) {
       const allowedOrigins = [
         "http://localhost:5173", // local frontend
         "https://stock-management-system-6gkw.onrender.com" // deployed frontend
@@ -29,7 +29,11 @@ app.use(
 
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.get("/", (req, res) => {
+  res.json({ message: "Stock Management System API is running successfully." });
+});
 app.use("/api", router);
+
 
 // ───────────── Create HTTP + Socket.IO Server ─────────────
 const server = http.createServer(app);
@@ -37,7 +41,7 @@ const server = http.createServer(app);
 // Socket.IO with dynamic CORS handling
 const io = new Server(server, {
   cors: {
-    origin: function(origin, callback) {
+    origin: function (origin, callback) {
       const allowedOrigins = [
         "http://localhost:5173",
         "https://stock-management-system-6gkw.onrender.com"

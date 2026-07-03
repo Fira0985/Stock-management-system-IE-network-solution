@@ -1,76 +1,137 @@
 import React, { useState } from 'react';
-import './Auth.css';
-import { Link, useNavigate } from 'react-router-dom'; // For routing
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  BarChart2,
+  Mail,
+  Lock,
+  ArrowLeft,
+  ArrowRight,
+  AlertCircle,
+  CheckCircle2,
+  Loader2
+} from 'lucide-react';
 import { RecoverUser } from '../../services/userService';
+import './Auth.css';
 
-function Recover(props) {
-  const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
+const Recover = () => {
+  const [recoverData, setRecoverData] = useState({ email: '', newPassword: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
-  async function handleSubmit() {
-    setErrorMsg('');
-    setSuccessMsg('');
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setRecoverData(prev => ({ ...prev, [name]: value }));
+    if (error) setError('');
+  };
 
-    const data = {
-      email: email, 
-      newPassword: newPassword
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
-      const response = await RecoverUser(data)
+      const response = await RecoverUser(recoverData);
+      setSuccess(response.data.message || 'Recovery code sent to your email.');
 
-      setSuccessMsg(response.data.message);
+      localStorage.setItem('email', recoverData.email);
+      localStorage.setItem('newPassword', recoverData.newPassword);
 
-      // Store the new password in localStorage/sessionStorage for next step
-      localStorage.setItem('newPassword', newPassword);
-      localStorage.setItem('email', email)
-
-      // Redirect to verification page
-      navigate('/verifycode');
-    } catch (error) {
-      if (error.response && error.response.data) {
-        setErrorMsg(error.response.data.message || error.response.data.error);
-      } else {
-        setErrorMsg('An unexpected error occurred');
-      }
+      setTimeout(() => navigate('/verifycode'), 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || err.response?.data?.error || 'Recovery failed.');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
-        <h2 className="auth-title">Reset Your Password</h2>
-        <p className="auth-subtitle">Enter your email and create new password.</p>
+    <div className="auth-page">
+      <div className="auth-card">
+        <Link to="/login" className="auth-back-link">
+          <ArrowLeft size={16} /> Back to Login
+        </Link>
 
-        {errorMsg && <p className="auth-error">{errorMsg}</p>}
-        {successMsg && <p className="auth-success">{successMsg}</p>}
+        <div className="auth-header">
+          <div className="auth-logo">
+            <BarChart2 className="logo-icon" size={28} />
+            <span>Track<span className="logo-accent">EQA</span></span>
+          </div>
+          <h1 className="auth-title">Reset Password</h1>
+          <p className="auth-subtitle">Enter your email and a new password to recover access.</p>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="auth-input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          className="auth-input"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
+        {error && (
+          <div className="auth-error">
+            <AlertCircle size={18} />
+            {error}
+          </div>
+        )}
 
-        <button className="auth-submit" onClick={handleSubmit}>Submit</button>
+        {success && (
+          <div className="auth-success">
+            <CheckCircle2 size={18} />
+            {success}
+          </div>
+        )}
 
-        <p className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <div className="input-wrapper">
+              <Mail className="input-icon" size={18} />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="auth-input"
+                placeholder="name@company.com"
+                required
+                value={recoverData.email}
+                onChange={handleInput}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="newPassword">New Password</label>
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
+              <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                className="auth-input"
+                placeholder="••••••••"
+                required
+                value={recoverData.newPassword}
+                onChange={handleInput}
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary btn-lg auth-submit"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} style={{ marginRight: '8px' }} />
+                Sending code...
+              </>
+            ) : (
+              <>
+                Recover Account <ArrowRight size={18} style={{ marginLeft: '8px' }} />
+              </>
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );
-}
+};
 
 export default Recover;

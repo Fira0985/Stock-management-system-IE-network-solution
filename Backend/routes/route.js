@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
 
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, loginUser, refreshToken } = require('../middleware/auth');
 const { addProduct, editProduct, getAllProducts, getProductById } = require('../controllers/product')
 const { addCategory, editCategory, getAllCategories, getCategoryById, deleteCategory } = require('../controllers/category')
 const { addUser, editUser, deleteUser, getAllUsers, getUserByEmail, uploadProfileImage, verifyUser, verifyCode, changePassword, getImage, RecoverUser } = require('../controllers/user')
 const { addNonUser, editNonUser, deleteNonUser, getAllNonUsers, getNonUserById } = require('../controllers/nonUser');
-const { loginUser } = require('../middleware/auth');
 const { getAllPurchase, addPurchase } = require('../controllers/purchase');
 const { uploadExcelFile } = require('../controllers/uploadExcelFile');
 const { getAllSales, addSales } = require('../controllers/sale');
@@ -15,6 +14,17 @@ const creditController = require("../controllers/credit");
 const reportController = require('../controllers/reportController');
 const { sendSelfMessage } = require('../controllers/emailController');
 const notificationController = require('../controllers/notificationController');
+
+// Role-based protection middleware
+const authorize = (roles = []) => {
+    if (typeof roles === 'string') roles = [roles];
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ error: 'Access denied: Insufficient permissions' });
+        }
+        next();
+    };
+};
 
 const {
     getSalesOverview,
@@ -25,18 +35,23 @@ const {
     getRecentActivity
 } = require('../controllers/statistics');
 
+// Auth Routes
+router.post('/login', loginUser);
+router.post('/refresh', refreshToken);
+router.post('/verify-user', verifyUser); // For initial setup/invitation
+router.post('/recover-user', RecoverUser);
+router.post('/verify-code', verifyCode);
+router.post('/change-password', changePassword);
 
-router.post('/users', authenticateToken, addUser);
-router.put('/editUser', authenticateToken, editUser);
-router.delete('/deleteUser', authenticateToken, deleteUser);
-router.get('/users', authenticateToken, getAllUsers);
-router.post('/getUserByEmail', authenticateToken, getUserByEmail);
-router.post('/login', loginUser)
+// User Management (OWNER only)
+router.post('/users', authenticateToken, authorize('OWNER'), addUser);
+router.get('/users', authenticateToken, authorize('OWNER'), getAllUsers);
+router.put('/editUser', authenticateToken, authorize('OWNER'), editUser);
+router.delete('/deleteUser', authenticateToken, authorize('OWNER'), deleteUser);
+
+// General User Profile
 router.post('/upload-profile', authenticateToken, upload.single('image'), uploadProfileImage);
-router.post('/verify-user', verifyUser)
-router.post('/recover-user', RecoverUser)
-router.post('/verify-code', verifyCode)
-router.post('/change-password', changePassword)
+router.post('/getUserByEmail', authenticateToken, getUserByEmail);
 router.post('/getImage', authenticateToken, getImage);
 
 router.get('/products', authenticateToken, getAllProducts);
@@ -93,10 +108,10 @@ router.post('/makePayment', authenticateToken, creditController.makePayment);
 
 router.get('/summarySales', authenticateToken, reportController.getSalesSummary);
 router.get('/summaryInventory', authenticateToken, reportController.getInventorySummary);
-router.get('/summaryPurchases', authenticateToken, reportController.getPurchaseSummary);  
-router.get('/summaryPayments', authenticateToken, reportController.getPaymentSummary);    
-router.get('/summaryUsers', authenticateToken, reportController.getUserActivitySummary);  
-router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHealthSummary); 
+router.get('/summaryPurchases', authenticateToken, reportController.getPurchaseSummary);
+router.get('/summaryPayments', authenticateToken, reportController.getPaymentSummary);
+router.get('/summaryUsers', authenticateToken, reportController.getUserActivitySummary);
+router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHealthSummary);
 
 router.post('/message', sendSelfMessage);
 

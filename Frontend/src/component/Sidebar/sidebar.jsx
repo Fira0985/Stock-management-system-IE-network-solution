@@ -1,161 +1,109 @@
 import React, { useState } from "react";
 import "./sidebar.css";
 import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  ShoppingBag,
-  CreditCard,
-  BarChart2,
-  Truck,
-  Users,
-  User,
-  Settings,
+    LayoutDashboard,
+    Package,
+    ShoppingCart,
+    ShoppingBag,
+    CreditCard,
+    BarChart2,
+    Truck,
+    Users,
+    User,
+    Settings,
+    ChevronLeft,
+    ChevronRight,
+    LogOut,
+    PhoneCall,
+    ChevronDown
 } from "lucide-react";
-import { FiChevronLeft, FiChevronRight, FiPhoneCall, FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = (props) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [activeItem, setActiveItem] = useState("Dashboard"); // <-- active item tracked
-  const role = localStorage.getItem("role");
-  const navigate = useNavigate();
+const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
+    const [activeItem, setActiveItem] = useState("Dashboard");
+    const [categoriesOpen, setCategoriesOpen] = useState(true);
+    const role = localStorage.getItem("role");
+    const navigate = useNavigate();
 
-  const { isMobileVisible, onCloseMobileSidebar } = props;
+    const handleLogout = () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        navigate("/login");
+    };
 
-  const sidebarClass = `sidebar ${isOpen ? "" : "collapsed"} ${isMobileVisible ? "mobile-visible" : ""
-    }`;
+    const handleMenuClick = (label) => {
+        setActiveItem(label);
+        onMenuSelect(label);
+    };
 
-  const handleToggle = () => {
-    const newState = !isOpen;
-    setIsOpen(newState);
-    if (props.onToggle) {
-      props.onToggle(newState);
-    }
-  };
+    const menuItems = [
+        { icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+        { icon: <Package size={20} />, label: "Inventory", children: ["Products", "Stock Taking", "Adjustments"] },
+        { icon: <ShoppingCart size={20} />, label: "Sales" },
+        { icon: <ShoppingBag size={20} />, label: "Purchase" },
+        { icon: <CreditCard size={20} />, label: "Credits" },
+        { icon: <BarChart2 size={20} />, label: "Reports" },
+        { icon: <Truck size={20} />, label: "Suppliers" },
+        { icon: <Users size={20} />, label: "Customers" },
+        { icon: <User size={20} />, label: "Users" },
+        { icon: <Settings size={20} />, label: "Settings" },
+    ];
 
-  const handleLogout = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    navigate("/login");
-  };
+    const filteredItems = menuItems.filter((item) => {
+        if (role === "CLERK") {
+            const restricted = ["Users", "Suppliers", "Reports", "Purchase"];
+            return !restricted.includes(item.label);
+        }
+        return true;
+    });
 
-  const handleMenuClick = (label) => {
-    setActiveItem(label); // set active
-    props.onMenuSelect(label);
-  };
-
-  const allMenuItems = [
-    { icon: <LayoutDashboard size={16} />, label: "Dashboard" },
-    { icon: <Package size={16} />, label: "Products" },
-    { icon: <ShoppingCart size={16} />, label: "Sales" },
-    { icon: <ShoppingBag size={16} />, label: "Purchase" },
-    { icon: <CreditCard size={16} />, label: "Credits" },
-    { icon: <BarChart2 size={16} />, label: "Report" },
-    { icon: <Truck size={16} />, label: "Supplier" },
-    { icon: <Users size={16} />, label: "Customer" },
-    { icon: <User size={16} />, label: "User" },
-    { icon: <Settings size={16} />, label: "Settings" },
-  ];
-
-  const filteredMenuItems = allMenuItems.filter((item) => {
-    if (role === "CLERK") {
-      const restrictedLabels = ["User", "Supplier", "Report", "Purchase"];
-      return !restrictedLabels.includes(item.label);
-    }
-    return true;
-  });
-
-  return (
-    <>
-      <aside className={sidebarClass}>
-        <div className="sidebar-header">
-          <div className="brand">
-            {isOpen ? (
-              <>
-                Track<span>እቃ</span>
-                <span>.</span>
-              </>
-            ) : (
-              <>T.</>
-            )}
-          </div>
-          <button className="toggle-btn" onClick={handleToggle}>
-            {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
-          </button>
-        </div>
-
-        <ul className="menu">
-          {filteredMenuItems.map((item) => (
-            <li
-              key={item.label}
-              onClick={() => handleMenuClick(item.label)}
-              className={activeItem === item.label ? "active" : ""}
-            >
-              {item.icon} {isOpen && item.label}
-            </li>
-          ))}
-        </ul>
-
-        <div className="sidebar-footer">
-          {isOpen ? (
-            <>
-              <div className="user-profile">
-                <ul className="sidebar-contact-list">
-                  <li
-                    className="contact-item"
-                    onClick={() => handleMenuClick("Contact")}
-                  >
-                    <FiPhoneCall size={16} className="contact-icon" />
-                    <span className="contact-label">Contact</span>
-                  </li>
-                </ul>
-              </div>
-              {/* <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
-                Logout
-              </button> */}
-            </>
-          ) : (
-            <>
-              <div className="user-profile-collapse">
-                <ul className="sidebar-contact-list">
-                  <li
-                    className="contact-item"
-                    onClick={() => handleMenuClick("Contact")}
-                    title="Contact"
-                  >
-                    <FiPhoneCall size={20} className="contact-icon" />
-                  </li>
-                </ul>
-              </div>
-              {/* <button className="logout-btn-collopse" title="Logout" onClick={handleLogout}>
-                <FiLogOut size={18} />
-              </button> */}
-            </>
-          )}
-        </div>
-
-        {showLogoutModal && (
-          <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
-            <div className="modal-content" onClick={e => e.stopPropagation()}>
-              <h3>Confirm Logout</h3>
-              <p>Are you sure you want to logout?</p>
-              <div className="form-actions">
-                <button onClick={handleLogout}>Yes, Logout</button>
-                <button className="cancel-btn" onClick={() => setShowLogoutModal(false)}>Cancel</button>
-              </div>
+    return (
+        <aside className={`sidebar ${isSidebarOpen ? "" : "collapsed"}`}>
+            <div className="sidebar-header">
+                <div className="brand">
+                    <BarChart2 className="brand-icon" size={24} />
+                    {isSidebarOpen && <span>Track<span className="logo-accent">EQA</span></span>}
+                </div>
+                <button className="toggle-btn" onClick={() => onToggle(!isSidebarOpen)}>
+                    {isSidebarOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+                </button>
             </div>
-          </div>
-        )}
-      </aside>
 
-      {isMobileVisible && window.innerWidth < 768 && (
-        <div className="overlay" onClick={onCloseMobileSidebar}></div>
-      )}
-    </>
+            <nav className="sidebar-nav">
+                <ul className="menu-list">
+                    {filteredItems.map((item) => (
+                        <li key={item.label} className="menu-item-wrapper">
+                            <div
+                                className={`menu-item ${activeItem === item.label ? "active" : ""}`}
+                                onClick={() => handleMenuClick(item.label)}
+                            >
+                                <span className="menu-icon">{item.icon}</span>
+                                {isSidebarOpen && <span className="menu-label">{item.label}</span>}
+                            </div>
+                            {/* Optional Category Tree for Inventory */}
+                            {item.label === "Inventory" && isSidebarOpen && categoriesOpen && (
+                                <ul className="sub-menu">
+                                    <li onClick={() => handleMenuClick("Products")}>All Products</li>
+                                    <li onClick={() => handleMenuClick("Categories")}>Categories</li>
+                                </ul>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </nav>
 
-  );
+            <div className="sidebar-footer">
+                <div className="footer-item" onClick={() => handleMenuClick("Contact")}>
+                    <PhoneCall size={20} />
+                    {isSidebarOpen && <span>Support</span>}
+                </div>
+                <div className="footer-item logout" onClick={handleLogout}>
+                    <LogOut size={20} />
+                    {isSidebarOpen && <span>Log Out</span>}
+                </div>
+            </div>
+        </aside>
+    );
 };
 
 export default Sidebar;

@@ -50,24 +50,20 @@ const getUserByEmail = async (req, res) => {
 
 
 
-// Add User
+// Add User (Invitation Flow)
 const addUser = async (req, res) => {
   try {
     const {
       username,
       email,
       role,
-      password,
-      phone,
-      created_by_id
+      phone
     } = req.body;
+
+    const created_by_id = req.user.id; // From authenticateToken
 
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: 'A valid email is required' });
-    }
-
-    if (!password || password.length < 6) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -75,24 +71,42 @@ const addUser = async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(409).json({ error: 'Email is already registered' });
+      if (!existingUser.archived) {
+        return res.status(409).json({ error: 'Email is already registered' });
+      }
+      // If archived, we could reactivate, but let's keep it simple for now
+      return res.status(409).json({ error: 'User already exists in archives' });
     }
 
-    // Hash the password
-    const password_hash = await bcrypt.hash(password, SALT_ROUNDS);
+    // Generate invitation code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60000); // 24 hours for invitation
 
     const newUser = await prisma.user.create({
       data: {
         username,
         email,
         role,
-        password_hash,
         phone,
-        created_by_id
+        created_by_id,
+        verfied: false,
+        verfiy_code: code,
+        verfiyCode_expireAt: expiresAt,
+        password_hash: null, // Password will be set during verification
       },
     });
 
-    res.status(201).json({ message: "Successfully registered", user: newUser });
+    try {
+      await sendEmail(email, code);
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // We still created the user, but invitation email failed
+    }
+
+    res.status(201).json({
+      message: "User successfully invited. Verification code sent.",
+      user: { id: newUser.id, email: newUser.email, role: newUser.role }
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

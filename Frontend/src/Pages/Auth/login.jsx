@@ -1,82 +1,143 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+    BarChart2,
+    Mail,
+    Lock,
+    Eye,
+    EyeOff,
+    ArrowRight,
+    ArrowLeft,
+    AlertCircle,
+    Loader2
+} from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 import './Auth.css';
-import { loginUser } from '../../services/authService';
-import { useNavigate, Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+const Login = () => {
+    const { login } = useAuth();
+    const [loginData, setLoginData] = useState({ email: '', password: '' });
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-  async function handleLogin() {
-    try {
-      const data = await loginUser({ email, password });
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setLoginData(prev => ({ ...prev, [name]: value }));
+        if (error) setError('');
+    };
 
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userName', data.user.username);
-        localStorage.setItem('email', data.user.email);
-        localStorage.setItem('role', data.user.role);
-        localStorage.setItem('phone', data.user.phone);
-        localStorage.setItem('id', data.user.id);
-        localStorage.setItem('loginTime', new Date().toISOString());
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
 
-        toast.success('Login successful!', {
-          position: 'top-center',
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        try {
+            await login(loginData);
+            toast.success('Welcome to TrackEQA');
+            navigate('/dashboard');
+        } catch (err) {
+            setError(err.message || 'Invalid email or password');
+            toast.error(err.message || 'Login failed');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1000);
-      }
-    } catch (error) {
-      toast.error(error.message || 'Login failed');
-    }
-  }
+    return (
+        <div className="auth-page">
+            <div className="auth-card">
+                <Link to="/" className="auth-back-link">
+                    <ArrowLeft size={16} /> Back to Home
+                </Link>
 
-  return (
-    <div className="auth-wrapper">
-      <ToastContainer />
+                <div className="auth-header">
+                    <div className="auth-logo">
+                        <BarChart2 className="logo-icon" size={28} />
+                        <span>Track<span className="logo-accent">EQA</span></span>
+                    </div>
+                    <h1 className="auth-title">Welcome Back</h1>
+                    <p className="auth-subtitle">Log in to manage your inventory sanctuary.</p>
+                </div>
 
-      <div className="auth-container">
-        <div className="auth-box">
-          <h2 className="auth-title">Login</h2>
-          <p className="auth-subtitle">
-            Welcome to <span className="blue-text">Track</span><span className="black-text">እቃ</span>
-          </p>
+                {error && (
+                    <div className="auth-error">
+                        <AlertCircle size={18} />
+                        {error}
+                    </div>
+                )}
 
-          <input
-            type="email"
-            placeholder="Email"
-            className="auth-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="auth-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email">Email Address</label>
+                        <div className="input-wrapper">
+                            <Mail className="input-icon" size={18} />
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                className="auth-input"
+                                placeholder="name@company.com"
+                                required
+                                value={loginData.email}
+                                onChange={handleInput}
+                            />
+                        </div>
+                    </div>
 
-          <button className="auth-submit" onClick={handleLogin}>Login</button>
+                    <div className="form-group">
+                        <div className="label-row">
+                            <label htmlFor="password">Password</label>
+                            <Link to="/recover" style={{ fontSize: '12px', fontWeight: '500' }}>Forgot password?</Link>
+                        </div>
+                        <div className="input-wrapper">
+                            <Lock className="input-icon" size={18} />
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id="password"
+                                name="password"
+                                className="auth-input"
+                                placeholder="••••••••"
+                                required
+                                value={loginData.password}
+                                onChange={handleInput}
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                    </div>
 
-          <p className="auth-footer">
-            Don't have Account? <Link to="/">Register</Link>
-          </p>
-          <p className="auth-footer">
-            Forget Password? <Link to="/recover">Recover</Link>
-          </p>
+                    <button
+                        type="submit"
+                        className="btn btn-primary btn-lg auth-submit"
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="animate-spin" size={18} style={{ marginRight: '8px' }} />
+                                Signing in...
+                            </>
+                        ) : (
+                            <>
+                                Sign In <ArrowRight size={18} style={{ marginLeft: '8px' }} />
+                            </>
+                        )}
+                    </button>
+                </form>
+
+                <div className="auth-footer">
+                    Don't have an account? <Link to="/register">Create one for free</Link>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-}
+    );
+};
 
 export default Login;

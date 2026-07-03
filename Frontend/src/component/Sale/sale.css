@@ -1,409 +1,211 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TrackEQA SALES MODULE STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .sales-container {
-  padding: 30px 40px;
-  background-color: #fff;
-  margin-left: 15.5vw;
-  margin-top: 3vh;
-  font-family: inherit;
-  width: 77vw;
+    margin-left: 260px;
+    padding: 32px;
+    margin-top: 72px;
+    background: var(--gray-50);
+    min-height: calc(100vh - 72px);
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sales-container.collapse {
-  margin-left: 5vw;
-  transition: margin-left 0.3s ease;
-  width: 87vw;
+    margin-left: 80px;
 }
 
-/* Header Section */
+/* ─────────── Header Section ─────────── */
 .header-section {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: -5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
 .page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0;
+    font-size: 24px;
+}
+
+.buttonCont {
+    display: flex;
+    gap: 12px;
 }
 
 .sale-btn {
-  background-color: #f9f9f9;
-  border: 1px solid #d1d5db;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  color: #111827;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease-in-out;
-  width: 10vw;
+    background: var(--primary-blue);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
 }
 
-.sale-btn:hover {
-  background-color: #0000FF;
-  color: #ffffff;
-}
-
-/* Export Button */
 .sale-export-btn {
-  background-color: #f9f9f9;
-  border: 1px solid #d1d5db;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  color: #111827;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease-in-out;
-  width: 10vw;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+    background: white;
+    color: var(--text-primary);
+    border: 1px solid var(--gray-300);
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
 }
 
+.sale-btn:hover,
 .sale-export-btn:hover {
-  background-color: #0000FF;
-  color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
-/* Tabs */
+/* ─────────── Tabs ─────────── */
 .tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 8px;
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 24px;
 }
 
-
-.tabs:hover {
-  color: #1f2937;
+.tab {
+    padding: 12px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+    border-bottom: 2px solid transparent;
 }
 
 .tab.active {
-  color: #111827;
-  border-color: #0000FF;
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
 }
 
-/* Table */
+/* ─────────── Styled Table ─────────── */
 .styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
 }
 
-.styled-table th,
+.styled-table th {
+    background: var(--gray-100);
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--gray-200);
+}
+
 .styled-table td {
-  padding: 16px 20px;
-  text-align: left;
-  border-bottom: 1px solid #f3f4f6;
+    padding: 14px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--text-primary);
 }
 
-.styled-table thead th {
-  background-color: #f9fafb;
-  font-weight: 600;
-  font-size: 14px;
-  color: #4b5563;
-  text-transform: uppercase;
+.styled-table tbody tr:hover {
+    background: var(--gray-50);
+    cursor: pointer;
 }
 
-.styled-table tbody td {
-  font-size: 14px;
-  color: #374151;
-  cursor: default;
-}
-
-/* Type Badge */
+/* Type Labels */
 .type-label {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  text-transform: capitalize;
-  letter-spacing: 0.2px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-.type-label.normal {
-  background-color: #dbeafe;
-  color: #0000FF;
+.type-label.cash {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--status-success);
 }
 
 .type-label.credit {
-  background-color: #fef9c3;
-  color: #92400e;
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--status-danger);
 }
 
-/* Pagination */
-.custom-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-  margin-left: 25vw;
-  gap: 10px;
-  font-size: 14px;
-  color: #4b5563;
+/* ─────────── Pagination ─────────── */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 24px;
 }
 
-.custom-pagination .nav-arrow {
-  cursor: pointer;
-  padding: 6px 14px;
-  transition: color 0.2s ease;
+.pagination span {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border: 1px solid var(--gray-300);
 }
 
-.custom-pagination .nav-arrow:hover:not(.disabled) {
-  color: #0000FF;
+.pagination span.active {
+    background: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
 }
 
-.custom-pagination .nav-arrow.disabled {
-  color: #d1d5db;
-  cursor: not-allowed;
+.pagination span.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
-.page-circle {
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.page-circle:hover {
-  background-color: #f3f4f6;
-}
-
-.page-circle.active {
-  background-color: #333;
-  color: white;
-  font-weight: 600;
-}
-
-.clickable-row {
-  cursor: pointer;
-  background-color: #f9f9f9;
-}
-
-.clickable-row:hover {
-  background-color: #e0f7fa;
-}
-
-.sale-items-row {
-  background-color: #fafafa;
-}
-
-.nested-item-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.nested-item-table th,
-.nested-item-table td {
-  border: 1px solid #ddd;
-  padding: 6px 10px;
-  text-align: left;
-  font-size: 14px;
-}
-
+/* ─────────── Popup Details ─────────── */
 .popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
 }
 
 .popup-box-sale {
-  background: #fff;
-  padding: 20px;
-  width: 50%;
-  border-radius: 8px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
 }
 
 .popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.popup-header button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  padding-left: 30vw;
+.popup-body {
+    padding: 24px;
 }
 
 .close-sale-detail {
-  margin-left: -3vw;
-}
-
-/* === Responsive Design === */
-
-/* Tablet and medium screens */
-@media (max-width: 1200px) {
-
-  .sales-container,
-  .sales-container.collapse {
-    margin-left: 0;
-    width: 100vw;
-    padding: 8px 2vw;
-  }
-
-  .header-section {
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-/* Mobile and small tablet */
-@media (max-width: 900px) {
-
-  .sales-container,
-  .sales-container.collapse {
-    width: 100vw;
-    padding: 2px 2vw;
-  }
-
-  .header-section {
-    gap: 0.5rem;
-  }
-
-  .page-title {
-    font-size: 1.2rem;
-    margin-top: 3vh;
-  }
-
-  .sale-btn,
-  .sale-export-btn {
-    width: 95%;
-    /* Slight margin on both sides */
-    font-size: 15px;
-    border-radius: 12px;
-    padding: 16px 0;
-    /* Taller for easier tapping */
-    margin: 0.8rem auto;
-    /* Centered & spaced vertically */
-    display: block;
-  }
-
-  .tabs {
-    gap: 0.5rem;
-    font-size: 12px;
-  }
-
-  .styled-table th,
-  .styled-table td {
-    padding: 16px 4px;
-    font-size: 12px;
-  }
-
-  .sale-btn-group-mobile {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    /* Increased spacing between stacked buttons */
-    width: 100%;
-    margin: 1rem 0;
-    align-items: center;
-  }
-}
-
-/* Small mobile */
-@media (max-width: 600px) {
-  .page-title {
-    font-size: 1rem;
-  }
-
-  .buttonCont {
-    width: 50%;
-    margin-left: 0px;
-  }
-
-  .sale-btn,
-  .sale-export-btn {
-    font-size: 16px;
-    padding: 18px 0;
-    /* Bigger height */
-    width: 95%;
-    /* Keeps a small side margin */
-    border-radius: 14px;
-    margin: 1rem auto;
-    /* More space between buttons */
-    display: block;
-  }
-
-
-  .styled-table {
-    height: 60vh;
-  }
-
-  .styled-table th,
-  .styled-table td {
-    font-size: 10px;
-
-  }
-}
-
-/* Large desktop */
-@media (min-width: 1600px) {
-
-  .sales-container,
-  .sales-container.collapse {
-    font-size: 0.3rem;
-    padding: 3vw 6vw;
-    width: 90vw;
-  }
-
-  .page-title {
-    font-size: 2rem;
-  }
-
-  .styled-table th,
-  .styled-table td {
-    font-size: 1.2rem;
-    padding: 24px 32px;
-  }
-
-  .sale-export-btn:hover {
-    background-color: #0000FF;
-    color: black;
-  }
-}
-
-/* Ultra-wide screens */
-@media (min-width: 2000px) {
-
-  .sales-container,
-  .sales-container.collapse {
-    font-size: 2rem;
-    padding: 4vw 8vw;
-    width: 80vw;
-  }
-
-  .page-title {
-    font-size: 2.5rem;
-  }
-
-  .styled-table th,
-  .styled-table td {
-    font-size: 1.7rem;
-    padding: 36px 48px;
-  }
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-muted);
+    cursor: pointer;
 }
