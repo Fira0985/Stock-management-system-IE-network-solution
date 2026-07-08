@@ -9,8 +9,7 @@ const app = express();
 app.use(
   cors({
     origin:
-      process.env.FRONTEND_URL ||
-      "https://stock-management-system-ie-network-ten.vercel.app",
+      "https://stock-management-system-6gkw.onrender.com/",
     credentials: true,
   })
 );
