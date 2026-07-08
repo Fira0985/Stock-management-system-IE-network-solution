@@ -9,7 +9,7 @@ const app = express();
 app.use(
   cors({
     origin:
-      "https://stock-management-system-6gkw.onrender.com/",
+      "https://stock-management-system-6gkw.onrender.com",
     credentials: true,
   })
 );
