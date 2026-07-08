@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const api = axios.create({
   // baseURL: 'http://localhost:3000/api', for local development
-  baseURL: import.meta.env.VITE_API_URL || 'https://stock-management-system-ie-network.onrender.com',
+  baseURL: import.meta.env.VITE_API_URL || 'https://stock-management-system-ie-network.onrender.com/api',
 });
 
 // Request interceptor: add auth token to minden headers
