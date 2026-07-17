@@ -39,6 +39,11 @@ const {
 router.post('/login', loginUser);
 router.post('/refresh', refreshToken);
 router.post('/verify-user', verifyUser); // For initial setup/invitation
+router.get('/recover-user', (req, res) => {
+    res.status(200).json({
+        message: 'Use POST /api/recover-user to request a password reset code.'
+    });
+});
 router.post('/recover-user', RecoverUser);
 router.post('/verify-code', verifyCode);
 router.post('/change-password', changePassword);
