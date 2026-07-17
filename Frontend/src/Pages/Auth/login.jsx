@@ -26,7 +26,6 @@ const Login = () => {
     const handleInput = (e) => {
         const { name, value } = e.target;
         setLoginData(prev => ({ ...prev, [name]: value }));
-        if (error) setError('');
     };
 
     const handleSubmit = async (e) => {
