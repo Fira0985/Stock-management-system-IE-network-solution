@@ -218,32 +218,50 @@ const verifyUser = async (req, res) => {
 };
 
 const RecoverUser = async (req, res) => {
-  const { email, password, newPassword } = req.body;
+  try {
+    const { email, newPassword } = req.body;
 
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
+    if (!email || !isValidEmail(email)) {
+      return res.status(400).json({ error: 'A valid email is required' });
+    }
 
-  if (!user) return res.status(404).json({ message: 'Email not found' });
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-  if (!newPassword || newPassword.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+    if (!user) return res.status(404).json({ message: 'Email not found' });
+
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters' });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+    const expiresAt = new Date(Date.now() + 10 * 60000); // Expires in 10 minutes
+
+    await prisma.user.update({
+      where: { email },
+      data: {
+        verfiy_code: code,
+        verfiyCode_expireAt: expiresAt,
+      },
+    });
+
+    let emailSent = true;
+    try {
+      await sendEmail(email, code);
+    } catch (emailError) {
+      emailSent = false;
+      console.error('Password recovery email failed:', emailError);
+    }
+
+    return res.status(200).json({
+      message: emailSent ? 'Reset code sent to email' : 'Recovery code generated, but email delivery failed.',
+      emailSent
+    });
+  } catch (error) {
+    console.error('RecoverUser error:', error);
+    return res.status(500).json({ error: 'Failed to process password recovery', details: error.message });
   }
-
-  const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
-  const expiresAt = new Date(Date.now() + 10 * 60000); // Expires in 10 minutes
-
-  await prisma.user.update({
-    where: { email },
-    data: {
-      verfiy_code: code,
-      verfiyCode_expireAt: expiresAt,
-    },
-  });
-
-  await sendEmail(email, code);
-
-  res.json({ message: 'Reset code sent to email' });
 };
 
 const verifyCode = async (req, res) => {

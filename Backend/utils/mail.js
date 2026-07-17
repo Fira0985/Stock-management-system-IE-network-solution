@@ -5,12 +5,16 @@ require('dotenv').config();
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'firafisberhanu4@gmail.com',
+    user: process.env.MAIL_USER || 'firafisberhanu4@gmail.com',
     pass: process.env.MAIL_PASS
   }
 });
 
 const sendCodeEmail = async (to, code) => {
+  if (!process.env.MAIL_PASS) {
+    throw new Error('Email service is not configured');
+  }
+
   await transporter.sendMail({
     from: '"StockM." <firafisberhanu4@gmail.com>',
     to,
