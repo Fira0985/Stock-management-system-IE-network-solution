@@ -8,9 +8,11 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin:
+    origin: [
       "https://stock-management-system-6gkw.onrender.com",
-    credentials: true,
+      "http://localhost:5173/"
+    ],
+    credentials: true
   })
 );
 
