@@ -13,7 +13,10 @@ const UserProfile = (props) => {
     const [imageUrl, setImageUrl] = useState('');
     const [showUserProfile, setShowUserProfile] = useState(false);
 
-    const profileImage = `http://localhost:3000/${imageUrl}`;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+        ? import.meta.env.VITE_API_BASE_URL.replace(/\/api\/?$/, '')
+        : 'http://localhost:3000';
+    const profileImage = `${apiBaseUrl}/${imageUrl}`;
 
     function sendToParent(data) {
         props.onSendToParent(data);

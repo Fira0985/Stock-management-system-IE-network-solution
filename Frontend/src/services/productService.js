@@ -1,27 +1,8 @@
-import axios from 'axios';
 import api from './api';
-
-function getAuthHeaders() {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('Authentication token not found');
-  }
-  return {
-    Authorization: `Bearer ${token}`
-  };
-}
 
 export const addProduct = async (ProductData) => {
   try {
-    const response = await axios.post(
-      'http://localhost:3000/api/products',
-      ProductData,
-
-      {
-        headers: getAuthHeaders(),
-      }
-    );
-
+    const response = await api.post('/products', ProductData);
     return response.data;
   } catch (error) {
     console.error('Upload failed:', error);

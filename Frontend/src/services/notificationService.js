@@ -1,8 +1,7 @@
-import axios from 'axios';
+import api from './api';
 
 export const getUserNotifications = async (email) => {
-  return axios.get(`http://localhost:3000/api/notifications/user`, {
+  return api.get('/notifications/user', {
     params: { email },
-    withCredentials: true,
   });
 };

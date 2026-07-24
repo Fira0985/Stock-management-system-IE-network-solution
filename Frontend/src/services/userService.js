@@ -1,6 +1,5 @@
 
 import api from './api';
-import axios from 'axios';
 
 function getAuthHeaders() {
     const token = localStorage.getItem('token');
@@ -55,23 +54,15 @@ export const deleteUser = async (email, deleted_by_id) => {
 
 export const uploadProfileImage = async (file) => {
     const formData = new FormData();
-    formData.append('image', file);  // Changed to 'image'
+    formData.append('image', file);
 
     try {
-        const response = await axios.post(
-          'http://localhost:3000/api/upload-profile',
-          formData,
-          {
-             headers: getAuthHeaders(),
-          }
-        );
-
-        // const response = await api.post('/upload-profile', formData, {
-        //     headers: {
-        //         ...getAuthHeaders(),
-        //     }
-        // });
-
+        const response = await api.post('/upload-profile', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                ...getAuthHeaders(),
+            },
+        });
 
         return response.data;
     } catch (error) {

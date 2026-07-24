@@ -1,7 +1,8 @@
+import api from './api';
+
 export const exportCustomers = async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/api/export/customers', {
-        headers: { Authorization: `Bearer ${token}` }
+    const response = await api.get('/export/customers', {
+        responseType: 'blob',
     });
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
