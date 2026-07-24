@@ -8,8 +8,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://stock-management-system-ie-network.vercel.app',
-  'https://stock-management-system-6gkw.onrender.com',
+  'https://stock-management-system-ie-network.onrender.com',
 ];
 
 app.use(
