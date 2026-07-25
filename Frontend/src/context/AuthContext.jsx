@@ -13,6 +13,9 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('userInfo');
         localStorage.removeItem('role');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('email');
         setUser(null);
         setIsAuthenticated(false);
     }, []);
@@ -25,6 +28,11 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', token);
             localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('role', userData.role);
+            localStorage.setItem('username', userData.username || userData.name || '');
+            localStorage.setItem('userName', userData.username || userData.name || '');
+            if (userData.email) {
+                localStorage.setItem('email', userData.email);
+            }
             localStorage.setItem('userInfo', JSON.stringify(userData));
 
             setUser(userData);

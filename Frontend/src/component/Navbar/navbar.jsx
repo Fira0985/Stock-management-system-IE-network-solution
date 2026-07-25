@@ -11,30 +11,51 @@ import {
 	AlertTriangle
 } from "lucide-react";
 import api from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick, lowStockCount = 0 }) => {
+	const { user } = useAuth();
 	const [notifications, setNotifications] = useState([]);
 	const [showNotifications, setShowNotifications] = useState(false);
-	const username = localStorage.getItem("username") || "User";
-	const role = localStorage.getItem("role") || "Staff";
+	const [userInfo, setUserInfo] = useState(() => {
+		const stored = localStorage.getItem('userInfo');
+		return stored ? JSON.parse(stored) : {};
+	});
+	const username = user?.username || user?.name || user?.userName || userInfo.username || userInfo.name || userInfo.userName || localStorage.getItem('userName') || localStorage.getItem('username') || 'User';
+	const role = user?.role || userInfo.role || localStorage.getItem('role') || 'Staff';
+	const imagePath = user?.image_url || user?.imageUrl || user?.avatar || userInfo.image_url || userInfo.imageUrl || userInfo.avatar || null;
 	const dropdownRef = useRef(null);
 
 	useEffect(() => {
-		// Fetch user notifications (backend expects email query param)
 		const fetchNotifications = async () => {
 			try {
 				const email = localStorage.getItem('email');
 				if (!email) return;
 				const res = await api.get('/api/notifications/user', { params: { email } });
 				const data = res.data || [];
-				// mark all as unread initially
 				setNotifications(data.map(n => ({ ...n, unread: true })));
 			} catch (err) {
 				console.error('Failed to fetch notifications', err);
 			}
 		};
+
+		const refreshUserInfo = () => {
+			const stored = localStorage.getItem('userInfo');
+			setUserInfo(stored ? JSON.parse(stored) : {});
+		};
+
 		fetchNotifications();
+		refreshUserInfo();
+		window.addEventListener('profileClosed', refreshUserInfo);
+		return () => {
+			window.removeEventListener('profileClosed', refreshUserInfo);
+		};
 	}, []);
+
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/api\/?$/, '') || api.defaults.baseURL?.replace(/\/api\/?$/, '') || '';
+	const avatarSrc = imagePath
+		? (imagePath.startsWith('http') ? imagePath : `${apiBaseUrl}/${imagePath.replace(/^\//, '')}`)
+		: null;
 
 	return (
 		<nav className={`navbar ${isSidebarOpen ? "" : "expanded"}`}>
@@ -97,7 +118,7 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick, lowStockCount
 							<span className="user-role">{role}</span>
 						</div>
 						<div className="avatar-circle">
-							{username.charAt(0)}
+							{avatarSrc ? (<img src={avatarSrc} alt={username} className="avatar-image" />) : (username.charAt(0))}
 						</div>
 						<ChevronDown size={16} className="chevron" />
 					</div>
