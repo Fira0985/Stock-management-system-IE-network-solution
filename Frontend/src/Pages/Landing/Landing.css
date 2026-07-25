@@ -108,6 +108,28 @@
     font-size: 16px;
 }
 
+.hero-actions .btn {
+    min-width: 170px;
+}
+
+.btn-tertiary {
+    background: white;
+    color: var(--primary-navy);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.12);
+}
+
+.btn-tertiary:hover {
+    background: #f8fbff;
+    transform: translateY(-1px);
+}
+
+.btn-primary.btn-lg,
+.btn-secondary.btn-lg,
+.btn-tertiary.btn-lg {
+    border-radius: 999px;
+}
+
 .hero-preview {
     position: relative;
 }
@@ -217,6 +239,22 @@
 
 .feature-icon-wrapper {
     margin-bottom: 24px;
+}
+
+/* CTA tweaks: center the request access button and simplify copy */
+.cta {
+    background: var(--bg-primary);
+}
+.cta-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 32px;
+    text-align: center;
+}
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .feature-card h3 {

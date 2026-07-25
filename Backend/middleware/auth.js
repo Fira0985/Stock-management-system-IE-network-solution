@@ -5,6 +5,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
+const DEMO_EMAIL = process.env.DEMO_EMAIL || 'firafisberhanu4@gmail.com';
+
 // Token Generation Helpers
 const generateAccessToken = (user) => {
   return jwt.sign(
@@ -57,7 +59,7 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    if (!user.verfied) {
+    if (!user.verfied && user.email !== DEMO_EMAIL) {
       return res.status(400).json({ error: 'Email not verified' });
     }
 

@@ -77,7 +77,7 @@ const Register = () => {
                 <div className="auth-header">
                     <div className="auth-logo">
                         <BarChart2 className="logo-icon" size={28} />
-                        <span>Track<span className="logo-accent">EQA</span></span>
+                        <span>Track<span className="logo-accent">እቃ</span></span>
                     </div>
                     <h1 className="auth-title">
                         {step === 1 ? 'Activate Account' : 'Set Password'}

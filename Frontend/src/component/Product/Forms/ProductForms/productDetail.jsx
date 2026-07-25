@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './productDetail.css';
 import { FiEdit2, FiX } from 'react-icons/fi';
 
-const ProductDetailPopup = ({ product, onClose }) => {
+const ProductDetailPopup = ({ product = {}, onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [productName, setProductName] = useState(product.name);
+  const [productName, setProductName] = useState(product?.name || '');
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -41,20 +41,17 @@ const ProductDetailPopup = ({ product, onClose }) => {
                   className="edit-input"
                 />
               ) : (
-                <h2 className="product-title">
-                  {productName}
-                  {/* <FiEdit2 className="edit-icon" onClick={handleEditClick} /> */}
-                </h2>
+                <h2 className="product-title">{productName}</h2>
               )}
             </form>
 
-            <p><strong>Barcode:</strong> {product.barcode || 'N/A'}</p>
-            <p><strong>Unit:</strong> {product.unit || 0}</p>
-            <p><strong>Sale Price:</strong> ${product.sale_price}</p>
-            <p><strong>Cost Price:</strong> ${product.cost_price}</p>
-            <p><strong>Category:</strong> {product.category.name || 'N/A'}</p>
-            <p><strong>Created By:</strong> {product.created_by.username || 'N/A'}</p>
-            <p><strong>Created At:</strong> {new Date(product.created_at).toLocaleString()}</p>
+            <p><strong>Barcode:</strong> {product?.barcode || 'N/A'}</p>
+            <p><strong>Unit:</strong> {product?.unit ?? 0}</p>
+            <p><strong>Sale Price:</strong> ${product?.sale_price ?? 0}</p>
+            <p><strong>Cost Price:</strong> ${product?.cost_price ?? 0}</p>
+            <p><strong>Category:</strong> {product?.category?.name || product?.category || 'N/A'}</p>
+            <p><strong>Created By:</strong> {product?.created_by?.username || product?.created_by || 'N/A'}</p>
+            <p><strong>Created At:</strong> {product?.created_at ? new Date(product.created_at).toLocaleString() : ''}</p>
           </div>
         </div>
 
@@ -64,7 +61,7 @@ const ProductDetailPopup = ({ product, onClose }) => {
             <ul>
               {product.saleItems?.length > 0 ? (
                 product.saleItems.map((item, i) => (
-                  <li key={i}>Quantity: {item.quantity}, Date: {new Date(item.created_at).toLocaleDateString()}</li>
+                  <li key={i}>Quantity: {item.quantity}, Date: {item?.created_at ? new Date(item.created_at).toLocaleDateString() : 'N/A'}</li>
                 ))
               ) : (
                 <li>No sale records</li>
@@ -77,7 +74,7 @@ const ProductDetailPopup = ({ product, onClose }) => {
             <ul>
               {product.purchaseItems?.length > 0 ? (
                 product.purchaseItems.map((item, i) => (
-                  <li key={i}>Quantity: {item.quantity}, Date: {new Date(item.created_at).toLocaleDateString()}</li>
+                  <li key={i}>Quantity: {item.quantity}, Date: {item?.created_at ? new Date(item.created_at).toLocaleDateString() : 'N/A'}</li>
                 ))
               ) : (
                 <li>No purchase records</li>

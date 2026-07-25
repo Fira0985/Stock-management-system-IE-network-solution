@@ -55,7 +55,7 @@ const Login = () => {
                 <div className="auth-header">
                     <div className="auth-logo">
                         <BarChart2 className="logo-icon" size={28} />
-                        <span>Track<span className="logo-accent">EQA</span></span>
+                        <span>Track<span className="logo-accent">እቃ</span></span>
                     </div>
                     <h1 className="auth-title">Welcome Back</h1>
                     <p className="auth-subtitle">Log in to manage your inventory sanctuary.</p>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     BarChart2,
     Package,
@@ -11,9 +11,15 @@ import {
     TrendingUp,
     Search
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 import './Landing.css';
 
 const LandingPage = () => {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const [loadingDemo, setLoadingDemo] = useState(false);
+
     const features = [
         {
             icon: <LayoutDashboard className="text-blue-500" size={32} />,
@@ -44,7 +50,7 @@ const LandingPage = () => {
                 <div className="nav-content">
                     <div className="nav-logo">
                         <BarChart2 className="logo-icon" size={24} />
-                        <span>Track<span className="logo-accent">EQA</span></span>
+                        <span>Track<span className="logo-accent">እቃ</span></span>
                     </div>
                     <div className="nav-links">
                         <Link to="/login" className="nav-link">Sign In</Link>
@@ -68,6 +74,29 @@ const LandingPage = () => {
                         <Link to="/request-access" className="btn btn-primary btn-lg">
                             Request Access <ArrowRight size={18} />
                         </Link>
+                        <button
+                            type="button"
+                            className="btn btn-tertiary btn-lg"
+                            onClick={async () => {
+                                setLoadingDemo(true);
+                                try {
+                                    await login({
+                                        email: 'firafisberhanu4@gmail.com',
+                                        password: 'yourpassword'
+                                    });
+                                    toast.success('Logged in to demo account');
+                                    navigate('/dashboard');
+                                } catch (err) {
+                                    console.error('Demo login failed:', err);
+                                    toast.error(err.message || 'Demo login failed');
+                                } finally {
+                                    setLoadingDemo(false);
+                                }
+                            }}
+                            disabled={loadingDemo}
+                        >
+                            {loadingDemo ? 'Signing in…' : 'Demo Account'}
+                        </button>
                         <Link to="/contact" className="btn btn-secondary btn-lg">Contact Us</Link>
                     </div>
                 </div>
@@ -110,10 +139,9 @@ const LandingPage = () => {
             <section className="cta">
                 <div className="cta-content">
                     <h2>Ready to streamline your operations?</h2>
-                    <p>Request access for your team or reach out with questions.</p>
-                    <div className="hero-actions">
+                    <p>Request access for your team.</p>
+                    <div className="hero-actions cta-actions">
                         <Link to="/request-access" className="btn btn-primary btn-lg">Request Access</Link>
-                        <Link to="/contact" className="btn btn-secondary btn-lg">Contact Us</Link>
                     </div>
                 </div>
             </section>
@@ -124,7 +152,7 @@ const LandingPage = () => {
                     <div className="footer-brand">
                         <div className="nav-logo">
                             <BarChart2 className="logo-icon" size={20} />
-                            <span>Track<span className="logo-accent">EQA</span></span>
+                            <span>Track<span className="logo-accent">እቃ</span></span>
                         </div>
                         <p>Precise. Practical. Professional.</p>
                     </div>

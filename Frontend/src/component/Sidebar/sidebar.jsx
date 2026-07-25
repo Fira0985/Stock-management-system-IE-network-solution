@@ -67,7 +67,7 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
             <div className="sidebar-header">
                 <div className="brand">
                     <BarChart2 className="brand-icon" size={24} />
-                    {isSidebarOpen && <span>Track<span className="logo-accent">EQA</span></span>}
+                    {isSidebarOpen && <span>Track<span className="logo-accent">እቃ</span></span>}
                 </div>
                 <button className="toggle-btn" onClick={() => onToggle(!isSidebarOpen)}>
                     {isSidebarOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
