@@ -48,7 +48,7 @@ const LandingPage = () => {
                     </div>
                     <div className="nav-links">
                         <Link to="/login" className="nav-link">Sign In</Link>
-                        <Link to="/register" className="btn btn-primary">Get Started</Link>
+                        <Link to="/contact" className="btn btn-primary">Request Access</Link>
                     </div>
                 </div>
             </nav>
@@ -65,8 +65,8 @@ const LandingPage = () => {
                         No gimmicks, just the efficiency your business deserves.
                     </p>
                     <div className="hero-actions">
-                        <Link to="/register" className="btn btn-primary btn-lg">
-                            Start Free Trial <ArrowRight size={18} />
+                        <Link to="/contact" className="btn btn-primary btn-lg">
+                            Request Access <ArrowRight size={18} />
                         </Link>
                         <a href="#features" className="btn btn-secondary btn-lg">View Features</a>
                     </div>
@@ -110,8 +110,8 @@ const LandingPage = () => {
             <section className="cta">
                 <div className="cta-content">
                     <h2>Ready to streamline your operations?</h2>
-                    <p>Join businesses that trust TrackEQA for their daily inventory needs.</p>
-                    <Link to="/register" className="btn btn-primary btn-lg">Create Account</Link>
+                    <p>Contact us to request access for your team.</p>
+                    <Link to="/contact" className="btn btn-primary btn-lg">Request Access</Link>
                 </div>
             </section>
 
