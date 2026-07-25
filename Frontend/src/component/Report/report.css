@@ -3,19 +3,25 @@
   background-color: #fff;
   min-height: 100vh;
   overflow-x: hidden;
-  padding: 30px 40px;
+  padding: 92px 40px 30px 40px;
   background-color: #fff;
-  width: 93vw;
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
 
+.reports-container.collapse {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+  padding: 92px 40px 30px 40px;
 }
 
 /* Header */
 .header {
-  text-align: center;
-  padding: 2rem 1rem;
+  text-align: left;
+  padding: 0;
   color: #333;
-  margin-top: -7vh;
-  margin-left: 15vw;
+  margin-bottom: 20px;
 }
 
 .header h1 {
@@ -27,25 +33,13 @@
 /* Tab Navigation */
 .tab-navigation {
   border-bottom: 1px solid #ddd;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0;
   position: sticky;
-  top: 0;
+  top: 72px;
   z-index: 10;
   overflow-x: auto;
-  margin-left: 16.6vw;
-  margin-top: -5vh;
-  margin-bottom: 3vh;
-  height: 4vh;
-  width: 80vw;
-}
-
-.reports-container.collapse {
-  margin-left: -13vw;
-  width: 107vw;
-}
-
-.reports-container.collapse .tab-navigation {
-  width: 92vw;
+  margin-bottom: 20px;
+  background: white;
 }
 
 .tab-container {

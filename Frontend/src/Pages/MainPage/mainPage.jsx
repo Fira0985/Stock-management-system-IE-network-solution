@@ -87,6 +87,7 @@ const MainPage = () => {
       />
 
       <Sidebar
+        isSidebarOpen={isSidebarOpen}
         onToggle={handleSidebarToggle}
         onMenuSelect={handleMenuSelect}
         isMobileVisible={showMobileSidebar}

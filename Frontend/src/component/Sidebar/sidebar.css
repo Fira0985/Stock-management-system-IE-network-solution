@@ -20,6 +20,19 @@
     width: 80px;
 }
 
+.sidebar.collapsed .menu-label {
+    display: none;
+}
+
+.sidebar.collapsed .sub-menu {
+    display: none;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 12px;
+}
+
 .sidebar-header {
     height: 72px;
     padding: 0 24px;

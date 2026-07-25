@@ -1,15 +1,17 @@
 .sp-supplier-content {
-    padding: 30px 40px;
+    padding: 92px 40px 30px 40px;
     background-color: #fff;
-    margin-left: 16.6vw;
+    margin-left: 260px;
     font-family: inherit;
-    width: 77vw;
+    width: calc(100% - 260px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    min-height: 100vh;
 }
 
 .sp-supplier-content.sp-collapse {
-    margin-left: 6vw;
-    transition: margin-left 0.3s ease;
-    width: 87vw;
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 92px 40px 30px 40px;
 }
 
 /* Header Section */
@@ -27,29 +29,6 @@
 
 /* Add Supplier Button */
 .sp-add-supplier {
-     background-color: #f9fafb;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    color: #111827;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.25s ease-in-out;
-    width: 10vw;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.sp-add-supplier:hover {
-    background-color: #0000FF;
-    color: #ffffff;
-}
-
-/* Export Button */
-.sp-export-btn {
     background-color: #f9fafb;
     border: 1px solid #d1d5db;
     border-radius: 8px;
@@ -60,10 +39,19 @@
     color: #111827;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all 0.25s ease-in-out;
-    width: 10vw;
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
+    min-width: fit-content;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    min-width: fit-content;
 }
 
 .sp-export-btn:hover {

@@ -1,17 +1,18 @@
 .cs-customer-content {
-    padding: 30px 40px;
+    padding: 92px 40px 30px 40px;
     background-color: #fff;
-    margin-left: 16.6vw;
+    margin-left: 260px;
     font-family: inherit;
-    width: 77vw;
+    width: calc(100% - 260px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    min-height: 100vh;
 }
 
 /* Customer Content (Collapsed Sidebar) */
 .cs-customer-content.cs-collapse {
-    margin-left: 6vw;
-    transition: margin-left 0.3s ease;
-    width: 87vw;
-    padding: 24px;
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 92px 40px 30px 40px;
 }
 
 /* Header Section */
@@ -42,8 +43,9 @@
     cursor: pointer;
     transition: all 0.25s ease-in-out;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    width: 10vw;
-    margin-top: 1vh;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: fit-content;
 }
 
 .cs-add-customer:hover {
@@ -64,8 +66,9 @@
     cursor: pointer;
     transition: all 0.25s ease-in-out;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    width: 10vw;
-    margin-top: 1vh;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: fit-content;
 }
 
 .cs-export-btn:hover {

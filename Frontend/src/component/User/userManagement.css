@@ -1,17 +1,18 @@
 .user-content {
-    padding: 30px 40px;
+    padding: 92px 40px 30px 40px;
     background-color: #fff;
     font-family: inherit;
-    margin-left: 16.6vw;
-    width: 77vw;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    min-height: 100vh;
 }
 
 /* Main Content (Collapsed Sidebar) */
 .user-content.collapse {
-    margin-left: 6vw;
-    transition: margin-left 0.3s ease;
-    width: 87vw;
-    padding: 24px;
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 92px 40px 30px 40px;
     font-family: inherit;
 }
 
@@ -41,7 +42,9 @@
     cursor: pointer;
     color: #1f2937;
     transition: all 0.25s ease;
-    width: 10vw;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: fit-content;
 }
 
 .add-user-btn:hover {
@@ -61,10 +64,17 @@
     cursor: pointer;
     color: #1f2937;
     transition: all 0.25s ease;
-    width: 10vw;
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+.user-export-btn:hover {
+    background-color: #0000FF;
+    color: #ffffff;
+    border-color: transparent;
 }
 
 .user-export-btn:hover {
