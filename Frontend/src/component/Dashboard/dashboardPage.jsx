@@ -61,6 +61,12 @@ const Dashboard = ({ isSidebarOpen }) => {
     .slice(0, 5);
   const recentProducts = products.slice(0, 6);
 
+  const totalQuantity = products.reduce((sum, p) => sum + (Number(p.unit) || 0), 0);
+  const totalValue = products.reduce((sum, p) => sum + ((Number(p.sale_price) || 0) * (Number(p.unit) || 0)), 0);
+  const lowStockCount = lowStockItems.length;
+  const totalPurchasesValue = Number(purchaseOverview?.totalPurchases || 0);
+  const totalSalesValue = Number(salesOverview?.totalSales || 0);
+
   return (
     <main className={`main-content ${isSidebarOpen ? "" : "expanded"}`}>
       <header className="dashboard-header">
@@ -80,36 +86,50 @@ const Dashboard = ({ isSidebarOpen }) => {
       </header>
 
       <section className="quick-stats-bar">
+        {/* Removed distinct SKU card as requested */}
+
         <div className="stat-card card">
           <div className="stat-icon-bg info"><Package size={20} /></div>
           <div className="stat-content">
-            <span className="stat-label">Total SKUs</span>
-            <div className="stat-value">{loading ? "—" : products.length}</div>
-            <div className="stat-trend neutral">Live inventory</div>
+            <span className="stat-label">Total Quantity</span>
+            <div className="stat-value">{loading ? "—" : totalQuantity.toLocaleString()}</div>
+            <div className="stat-trend neutral">Units in stock</div>
           </div>
         </div>
+
+        <div className="stat-card card">
+          <div className="stat-icon-bg success"><TrendingUp size={20} /></div>
+          <div className="stat-content">
+            <span className="stat-label">Total Value</span>
+            <div className="stat-value">{loading ? "$0" : `$${totalValue.toLocaleString()}`}</div>
+            <div className="stat-trend up"><ArrowUpRight size={14} /> Inventory value</div>
+          </div>
+        </div>
+
         <div className="stat-card card">
           <div className="stat-icon-bg danger"><AlertTriangle size={20} /></div>
           <div className="stat-content">
             <span className="stat-label">Low Stock</span>
-            <div className="stat-value">{loading ? "—" : lowStockItems.length}</div>
+            <div className="stat-value">{loading ? "—" : lowStockCount}</div>
             <div className="stat-trend down"><ArrowDownRight size={14} /> Needs attention</div>
           </div>
         </div>
-        <div className="stat-card card">
-          <div className="stat-icon-bg success"><TrendingUp size={20} /></div>
-          <div className="stat-content">
-            <span className="stat-label">Today&apos;s Sales</span>
-            <div className="stat-value">${loading ? "0" : Number(salesOverview.dailySales || 0).toLocaleString()}</div>
-            <div className="stat-trend up"><ArrowUpRight size={14} /> +12.5%</div>
-          </div>
-        </div>
+
         <div className="stat-card card">
           <div className="stat-icon-bg warning"><Truck size={20} /></div>
           <div className="stat-content">
-            <span className="stat-label">Pending Orders</span>
-            <div className="stat-value">{loading ? "—" : purchaseOverview.totalPurchases || 0}</div>
-            <div className="stat-trend neutral">Awaiting review</div>
+            <span className="stat-label">Total Purchases</span>
+            <div className="stat-value">{loading ? "$0" : `$${totalPurchasesValue.toLocaleString()}`}</div>
+            <div className="stat-trend neutral">All-time purchase value</div>
+          </div>
+        </div>
+
+        <div className="stat-card card">
+          <div className="stat-icon-bg success"><TrendingUp size={20} /></div>
+          <div className="stat-content">
+            <span className="stat-label">Total Sales</span>
+            <div className="stat-value">{loading ? "$0" : `$${totalSalesValue.toLocaleString()}`}</div>
+            <div className="stat-trend neutral">All-time sales value</div>
           </div>
         </div>
       </section>
@@ -118,7 +138,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         <aside className="layout-panel left-panel card">
           <div className="panel-header">
             <h3>Inventory by category</h3>
-            <span className="panel-chip">{products.length} SKUs</span>
+            {/* SKUs chip removed per request */}
           </div>
           <ul className="category-tree">
             {topCategories.length > 0 ? (

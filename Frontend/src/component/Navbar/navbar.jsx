@@ -32,20 +32,12 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 				<button className="mobile-menu-btn" onClick={onHamburgerClick}>
 					<Menu size={24} />
 				</button>
-				<div className="nav-search-wrapper">
-					<Search size={18} className="search-icon" />
-					<input type="text" placeholder="Search SKU, Product, Location..." className="nav-search" />
-					<div className="search-shortcut">⌘K</div>
-				</div>
+				{/* Search removed per request */}
 			</div>
 
 			<div className="navbar-right">
 				{/* Quick Stats Bar */}
 				<div className="nav-quick-stats">
-					<div className="nav-stat-item">
-						<Package size={16} className="stat-icon" />
-						<span>SKUs: <strong>1,280</strong></span>
-					</div>
 					<div className="nav-stat-item warning">
 						<AlertTriangle size={16} className="stat-icon" />
 						<span>Low: <strong className="text-warning">12</strong></span>
