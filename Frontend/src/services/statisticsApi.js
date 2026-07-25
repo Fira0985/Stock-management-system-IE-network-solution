@@ -99,3 +99,60 @@ export const fetchRecentActivity = async () => {
         throw error.response?.data || { message: 'Failed to fetch recent activity' };
     }
 };
+
+/**
+ * Fetch unpaid credits total value:
+ * GET /unpaid
+ */
+export const fetchUnpaidCreditValue = async () => {
+    try {
+        const response = await api.get('/unpaid', {
+            headers: getAuthHeaders()
+        });
+        const data = response.data && response.data.data !== undefined ? response.data.data : response.data;
+        const array = Array.isArray(data) ? data : [];
+        const totalValue = array.reduce((sum, credit) => sum + (Number(credit.total) || 0), 0);
+        return { totalValue, count: array.length };
+    } catch (error) {
+        console.error('fetchUnpaidCreditValue error:', error);
+        return { totalValue: 0, count: 0 };
+    }
+};
+
+/**
+ * Fetch supplier count:
+ * GET /NonUser (filters by type='SUPPLIER')
+ */
+export const fetchSupplierCount = async () => {
+    try {
+        const response = await api.get('/NonUser', {
+            headers: getAuthHeaders()
+        });
+        const data = response.data && response.data.data !== undefined ? response.data.data : response.data;
+        const array = Array.isArray(data) ? data : [];
+        const supplierCount = array.filter(user => user.type === 'SUPPLIER' || user.type === 'supplier').length;
+        return { count: supplierCount };
+    } catch (error) {
+        console.error('fetchSupplierCount error:', error);
+        return { count: 0 };
+    }
+};
+
+/**
+ * Fetch customer count:
+ * GET /NonUser (filters by type='CUSTOMER')
+ */
+export const fetchCustomerCount = async () => {
+    try {
+        const response = await api.get('/NonUser', {
+            headers: getAuthHeaders()
+        });
+        const data = response.data && response.data.data !== undefined ? response.data.data : response.data;
+        const array = Array.isArray(data) ? data : [];
+        const customerCount = array.filter(user => user.type === 'CUSTOMER' || user.type === 'customer').length;
+        return { count: customerCount };
+    } catch (error) {
+        console.error('fetchCustomerCount error:', error);
+        return { count: 0 };
+    }
+};

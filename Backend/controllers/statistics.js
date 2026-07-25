@@ -259,8 +259,6 @@ exports.getRecentActivity = async (req, res) => {
         const io = req.app.get && req.app.get("io");
         if (io) {
             io.emit("recentActivity", recentActivities);
-        } else {
-            console.debug('Socket.IO not initialized; skipping recentActivity emit');
         }
 
         res.json(recentActivities);

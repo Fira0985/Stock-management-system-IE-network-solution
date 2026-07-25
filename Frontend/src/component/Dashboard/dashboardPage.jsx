@@ -12,12 +12,18 @@ import {
   Filter,
   MoreVertical,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  DollarSign,
+  Users,
+  Building2
 } from "lucide-react";
 import {
   fetchSalesOverview,
   fetchPurchaseOverview,
-  fetchRecentActivity
+  fetchRecentActivity,
+  fetchUnpaidCreditValue,
+  fetchSupplierCount,
+  fetchCustomerCount
 } from "../../services/statisticsApi";
 import { fetchAllProducts } from "../../services/productService";
 
@@ -26,21 +32,30 @@ const Dashboard = ({ isSidebarOpen }) => {
   const [purchaseOverview, setPurchaseOverview] = useState({ totalPurchases: 0 });
   const [products, setProducts] = useState([]);
   const [activity, setActivity] = useState([]);
+  const [unpaidCredit, setUnpaidCredit] = useState({ totalValue: 0, count: 0 });
+  const [supplierCount, setSupplierCount] = useState({ count: 0 });
+  const [customerCount, setCustomerCount] = useState({ count: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        const [sales, purchase, prodList, recent] = await Promise.all([
+        const [sales, purchase, prodList, recent, unpaid, suppliers, customers] = await Promise.all([
           fetchSalesOverview(),
           fetchPurchaseOverview(),
           fetchAllProducts(),
-          fetchRecentActivity()
+          fetchRecentActivity(),
+          fetchUnpaidCreditValue(),
+          fetchSupplierCount(),
+          fetchCustomerCount()
         ]);
         setSalesOverview(sales);
         setPurchaseOverview(purchase);
         setProducts(prodList);
         setActivity(recent);
+        setUnpaidCredit(unpaid);
+        setSupplierCount(suppliers);
+        setCustomerCount(customers);
       } catch (err) {
         console.error("Dashboard data load failed:", err);
       } finally {
@@ -132,6 +147,33 @@ const Dashboard = ({ isSidebarOpen }) => {
             <div className="stat-trend neutral">All-time sales value</div>
           </div>
         </div>
+
+        <div className="stat-card card">
+          <div className="stat-icon-bg danger"><DollarSign size={20} /></div>
+          <div className="stat-content">
+            <span className="stat-label">Unpaid Credit</span>
+            <div className="stat-value">{loading ? "$0" : `$${unpaidCredit.totalValue.toLocaleString()}`}</div>
+            <div className="stat-trend neutral">{unpaidCredit.count} pending transactions</div>
+          </div>
+        </div>
+
+        <div className="stat-card card">
+          <div className="stat-icon-bg info"><Building2 size={20} /></div>
+          <div className="stat-content">
+            <span className="stat-label">Total Suppliers</span>
+            <div className="stat-value">{loading ? "—" : supplierCount.count}</div>
+            <div className="stat-trend neutral">Active suppliers</div>
+          </div>
+        </div>
+
+        <div className="stat-card card">
+          <div className="stat-icon-bg success"><Users size={20} /></div>
+          <div className="stat-content">
+            <span className="stat-label">Total Customers</span>
+            <div className="stat-value">{loading ? "—" : customerCount.count}</div>
+            <div className="stat-trend neutral">Active customers</div>
+          </div>
+        </div>
       </section>
 
       <div className="dashboard-layout">
@@ -212,7 +254,6 @@ const Dashboard = ({ isSidebarOpen }) => {
                   <div key={item.id} className="alert-item critical">
                     <div className="alert-info">
                       <p><strong>{item.name}</strong> is running low ({item.unit} units left).</p>
-                      <button className="btn btn-primary btn-sm">Create PO</button>
                     </div>
                   </div>
                 ))
