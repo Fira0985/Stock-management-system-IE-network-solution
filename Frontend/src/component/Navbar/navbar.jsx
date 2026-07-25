@@ -50,6 +50,7 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 				<button className="mobile-menu-btn" onClick={onHamburgerClick}>
 					<Menu size={24} />
 				</button>
+				<span className="navbar-title">Your Inventory</span>
 				{/* Search removed per request */}
 			</div>
 

@@ -29,6 +29,18 @@
     gap: 20px;
 }
 
+.navbar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-navy);
+    margin-left: 12px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-navy));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
 .mobile-menu-btn {
     display: none;
     background: none;
