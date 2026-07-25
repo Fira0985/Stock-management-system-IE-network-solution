@@ -40,11 +40,27 @@ const Dashboard = ({ isSidebarOpen }) => {
   const [loading, setLoading] = useState(true);
 
   const handleExport = () => {
-    toast("Coming soon! Export feature is under development.", { type: "info" });
+    console.log("Dashboard: handleExport clicked");
+    // immediate toast and debug logs to reproduce first-click issue
+    try {
+      toast.info("Coming soon! Export feature is under development.", { type: "info" });
+      console.log("Dashboard: toast.info called for export");
+    } catch (e) {
+      console.error("Dashboard: toast export failed", e);
+    }
+    setTimeout(() => console.log("Dashboard: export handler timeout fired"), 50);
   };
 
   const handleImport = () => {
-    toast("Coming soon! Import feature is under development.", { type: "info" });
+    console.log("Dashboard: handleImport clicked");
+    // immediate toast and debug logs to reproduce first-click issue
+    try {
+      toast.info("Coming soon! Import feature is under development.", { type: "info" });
+      console.log("Dashboard: toast.info called for import");
+    } catch (e) {
+      console.error("Dashboard: toast import failed", e);
+    }
+    setTimeout(() => console.log("Dashboard: import handler timeout fired"), 50);
   };
 
   const handleNavigateToProducts = () => {
