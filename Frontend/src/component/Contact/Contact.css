@@ -75,7 +75,8 @@
 }
 
 .contact-form input,
-.contact-form textarea {
+.contact-form textarea,
+.contact-form select {
   padding: 12px;
   margin-top: 6px;
   border-radius: 8px;
@@ -89,10 +90,48 @@
 }
 
 .contact-form input:focus,
-.contact-form textarea:focus {
+.contact-form textarea:focus,
+.contact-form select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
   outline: none;
+}
+
+.contact-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  margin-bottom: 12px;
+}
+
+.request-access-badge {
+  background: #ecfeff;
+  color: #0f766e;
+}
+
+.contact-page.request-access .contact-header h2 {
+  color: #0f766e;
+}
+
+.contact-form.request-access-form {
+  border-color: #99f6e4;
+  box-shadow: 0 10px 30px rgba(15, 118, 110, 0.08);
+}
+
+.contact-form.request-access-form .purple-btn {
+  background-color: #0f766e;
+  box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
+}
+
+.contact-form.request-access-form .purple-btn:hover {
+  background-color: #115e59;
 }
 
 .purple-btn {

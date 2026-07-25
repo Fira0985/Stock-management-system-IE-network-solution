@@ -132,7 +132,7 @@ const Login = () => {
                 </form>
 
                 <div className="auth-footer">
-                    Need access? <Link to="/contact">Contact us</Link>
+                    Need access? <Link to="/request-access">Request access</Link> or <Link to="/contact">Contact us</Link>
                 </div>
             </div>
         </div>

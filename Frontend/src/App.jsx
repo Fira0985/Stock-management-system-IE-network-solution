@@ -7,6 +7,8 @@ import RecoverUser from "./Pages/Auth/recover";
 import Contact from "./component/Contact/Contact";
 import VerifyUser from "./Pages/Auth/verifyCode";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 
 const PrivateRoute = ({ children }) => {
@@ -26,12 +28,14 @@ function App() {
     return (
         <AuthProvider>
             <Router>
+                <ToastContainer position="top-right" autoClose={3000} />
                 <Routes>
                     {/* Public Routes */}
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/register" element={<Navigate to="/contact" replace />} />
+                    <Route path="/contact" element={<Contact mode="contact" />} />
+                    <Route path="/request-access" element={<Contact mode="request-access" />} />
+                    <Route path="/register" element={<Navigate to="/request-access" replace />} />
                     <Route path="/recover" element={<RecoverUser />} />
                     <Route path="/verifycode" element={<VerifyUser />} />
 

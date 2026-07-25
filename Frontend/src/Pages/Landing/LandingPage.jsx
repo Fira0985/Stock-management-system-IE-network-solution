@@ -48,7 +48,7 @@ const LandingPage = () => {
                     </div>
                     <div className="nav-links">
                         <Link to="/login" className="nav-link">Sign In</Link>
-                        <Link to="/contact" className="btn btn-primary">Request Access</Link>
+                        <Link to="/request-access" className="btn btn-primary">Request Access</Link>
                     </div>
                 </div>
             </nav>
@@ -65,10 +65,10 @@ const LandingPage = () => {
                         No gimmicks, just the efficiency your business deserves.
                     </p>
                     <div className="hero-actions">
-                        <Link to="/contact" className="btn btn-primary btn-lg">
+                        <Link to="/request-access" className="btn btn-primary btn-lg">
                             Request Access <ArrowRight size={18} />
                         </Link>
-                        <a href="#features" className="btn btn-secondary btn-lg">View Features</a>
+                        <Link to="/contact" className="btn btn-secondary btn-lg">Contact Us</Link>
                     </div>
                 </div>
                 <div className="hero-preview">
@@ -110,8 +110,11 @@ const LandingPage = () => {
             <section className="cta">
                 <div className="cta-content">
                     <h2>Ready to streamline your operations?</h2>
-                    <p>Contact us to request access for your team.</p>
-                    <Link to="/contact" className="btn btn-primary btn-lg">Request Access</Link>
+                    <p>Request access for your team or reach out with questions.</p>
+                    <div className="hero-actions">
+                        <Link to="/request-access" className="btn btn-primary btn-lg">Request Access</Link>
+                        <Link to="/contact" className="btn btn-secondary btn-lg">Contact Us</Link>
+                    </div>
                 </div>
             </section>
 
