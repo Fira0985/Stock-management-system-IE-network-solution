@@ -18,6 +18,7 @@ import {
     ChevronDown
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
     const [activeItem, setActiveItem] = useState("Dashboard");
@@ -32,6 +33,10 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
     };
 
     const handleMenuClick = (label) => {
+        if (label === "Settings") {
+            toast("Coming soon! Settings page is under development.", { type: "info" });
+            return;
+        }
         setActiveItem(label);
         onMenuSelect(label);
     };

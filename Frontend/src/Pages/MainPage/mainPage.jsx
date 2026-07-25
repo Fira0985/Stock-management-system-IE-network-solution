@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../component/Sidebar/sidebar";
 import Dashboard from "../../component/Dashboard/dashboardPage";
 import Navbar from "../../component/Navbar/navbar";
@@ -15,12 +15,35 @@ import Settings from "../../component/Settings/settings";
 import Notificaton from "../../component/Notificaton/notification";
 import Contact from "../../component/Contact/Contact";
 import Credits from "../../component/Credit/credit";
+import { fetchAllProducts } from "../../services/productService";
 
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedPage, setSelectedPage] = useState("Dashboard");
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [lowStockCount, setLowStockCount] = useState(0);
+
+  useEffect(() => {
+    const handleSelectMenu = (event) => {
+      setSelectedPage(event.detail.menu);
+    };
+    window.addEventListener("selectMenu", handleSelectMenu);
+    return () => window.removeEventListener("selectMenu", handleSelectMenu);
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchAllProducts();
+        const lowStock = products.filter((product) => Number(product.unit || 0) < 10);
+        setLowStockCount(lowStock.length);
+      } catch (err) {
+        console.error("Failed to fetch products for low stock count:", err);
+      }
+    };
+    fetchProducts();
+  }, []);
 
 
   const handleSidebarToggle = (openState) => {
@@ -84,6 +107,7 @@ const MainPage = () => {
         isSidebarOpen={isSidebarOpen}
         onProfileClick={handleProfileClick}
         onHamburgerClick={() => setShowMobileSidebar(true)}
+        lowStockCount={lowStockCount}
       />
 
       <Sidebar

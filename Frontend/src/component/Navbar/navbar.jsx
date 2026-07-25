@@ -4,8 +4,6 @@ import {
 	Bell,
 	User,
 	Menu,
-	Sun,
-	Moon,
 	Search,
 	ChevronDown,
 	Info,
@@ -14,8 +12,7 @@ import {
 } from "lucide-react";
 import api from "../../services/api";
 
-const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
-	const [isDarkMode, setIsDarkMode] = useState(false);
+const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick, lowStockCount = 0 }) => {
 	const [notifications, setNotifications] = useState([]);
 	const [showNotifications, setShowNotifications] = useState(false);
 	const username = localStorage.getItem("username") || "User";
@@ -39,11 +36,6 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 		fetchNotifications();
 	}, []);
 
-	const toggleTheme = () => {
-		setIsDarkMode(!isDarkMode);
-		document.body.classList.toggle("dark");
-	};
-
 	return (
 		<nav className={`navbar ${isSidebarOpen ? "" : "expanded"}`}>
 			<div className="navbar-left">
@@ -59,15 +51,11 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 				<div className="nav-quick-stats">
 					<div className="nav-stat-item warning">
 						<AlertTriangle size={16} className="stat-icon" />
-						<span>Low: <strong className="text-warning">12</strong></span>
+						<span>Low: <strong className="text-warning">{lowStockCount}</strong></span>
 					</div>
 				</div>
 
 				<div className="nav-actions">
-					<button className="nav-action-btn" onClick={toggleTheme} title="Toggle Theme">
-						{isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-					</button>
-
 					<div className="notification-wrapper">
 						<button className="nav-action-btn" onClick={() => setShowNotifications(!showNotifications)}>
 								<Bell size={20} />

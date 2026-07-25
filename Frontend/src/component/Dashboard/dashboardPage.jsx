@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import "./Dashboard.css";
 import {
   Package,
@@ -15,7 +16,8 @@ import {
   ArrowDownRight,
   DollarSign,
   Users,
-  Building2
+  Building2,
+  ShoppingCart
 } from "lucide-react";
 import {
   fetchSalesOverview,
@@ -36,6 +38,26 @@ const Dashboard = ({ isSidebarOpen }) => {
   const [supplierCount, setSupplierCount] = useState({ count: 0 });
   const [customerCount, setCustomerCount] = useState({ count: 0 });
   const [loading, setLoading] = useState(true);
+
+  const handleExport = () => {
+    toast("Coming soon! Export feature is under development.", { type: "info" });
+  };
+
+  const handleImport = () => {
+    toast("Coming soon! Import feature is under development.", { type: "info" });
+  };
+
+  const handleNavigateToProducts = () => {
+    window.dispatchEvent(new CustomEvent("selectMenu", { detail: { menu: "Products" } }));
+  };
+
+  const handleNavigateToSales = () => {
+    window.dispatchEvent(new CustomEvent("selectMenu", { detail: { menu: "Sales" } }));
+  };
+
+  const handleNavigateToPurchase = () => {
+    window.dispatchEvent(new CustomEvent("selectMenu", { detail: { menu: "Purchase" } }));
+  };
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -91,11 +113,11 @@ const Dashboard = ({ isSidebarOpen }) => {
           <p>Updated for {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
         </div>
         <div className="header-actions">
-          <button className="btn btn-secondary">
+          <button className="btn btn-secondary" onClick={handleExport}>
             <Download size={16} /> Export
           </button>
-          <button className="btn btn-primary">
-            <Plus size={16} /> Add Product
+          <button className="btn btn-primary" onClick={handleImport}>
+            <Plus size={16} /> Import
           </button>
         </div>
       </header>
@@ -266,17 +288,17 @@ const Dashboard = ({ isSidebarOpen }) => {
           <div className="quick-action-panel card">
             <h3>Quick actions</h3>
             <div className="action-grid">
-              <button className="action-btn">
-                <div className="icon warning"><Download size={18} /></div>
-                <span>Receive Stock</span>
-              </button>
-              <button className="action-btn">
+              <button className="action-btn" onClick={handleNavigateToProducts}>
                 <div className="icon info"><Package size={18} /></div>
-                <span>Stock Adjust</span>
+                <span>Product</span>
               </button>
-              <button className="action-btn full-width">
-                <div className="icon success"><Plus size={18} /></div>
-                <span>Add Product</span>
+              <button className="action-btn" onClick={handleNavigateToSales}>
+                <div className="icon success"><ShoppingCart size={18} /></div>
+                <span>Sale</span>
+              </button>
+              <button className="action-btn" onClick={handleNavigateToPurchase}>
+                <div className="icon warning"><Truck size={18} /></div>
+                <span>Purchase</span>
               </button>
             </div>
           </div>
