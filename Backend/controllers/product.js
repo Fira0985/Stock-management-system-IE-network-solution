@@ -51,14 +51,20 @@ const addProduct = async (req, res) => {
       sale_price,
       cost_price,
       category_id,
+      category,
       created_by_id,
       archived // optional
     } = req.body;
 
-    // Check required fields
-    if (!name || !sale_price || !cost_price || !category_id || !created_by_id) {
+    const userId = Number(created_by_id || req.user?.id);
+    const categoryId = Number(category_id || category);
+    const salePriceValue = Number(sale_price);
+    const costPriceValue = Number(cost_price);
+
+    // Validate required fields
+    if (!name?.trim() || Number.isNaN(categoryId) || Number.isNaN(salePriceValue) || Number.isNaN(costPriceValue) || !userId) {
       return res.status(400).json({
-        error: 'Missing required fields: name, sale_price, cost_price, category_id, created_by_id'
+        error: 'Missing or invalid required fields: name, sale_price, cost_price, category_id, created_by_id'
       });
     }
 
@@ -83,13 +89,13 @@ const addProduct = async (req, res) => {
     // Create product
     const product = await prisma.product.create({
       data: {
-        name,
+        name: name.trim(),
         image_url,
-        sale_price: parseFloat(sale_price),
-        cost_price: parseFloat(cost_price),
-        category_id: parseInt(category_id),
-        created_by_id: parseInt(created_by_id),
-        archived: archived === 'true' ? true : false, // ensure boolean
+        sale_price: salePriceValue,
+        cost_price: costPriceValue,
+        category_id: categoryId,
+        created_by_id: userId,
+        archived: archived === 'true',
       },
     });
 

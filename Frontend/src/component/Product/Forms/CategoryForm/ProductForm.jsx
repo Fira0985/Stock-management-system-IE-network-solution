@@ -14,7 +14,7 @@ const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) =>
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Check if name is empty
@@ -30,7 +30,7 @@ const ProductForm = ({ onClose, onSubmit, initialData = {}, isEdit = false }) =>
         }
 
         // All validations passed
-        onSubmit(form);
+        await onSubmit(form);
     };
 
     return (

@@ -12,11 +12,20 @@ function getAuthHeaders() {
 
 export const addProduct = async (ProductData) => {
   try {
-    const response = await api.post('/products', ProductData);
+    const response = await api.post('/products', ProductData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error('Upload failed:', error);
-    throw error.response?.data || { message: 'failed' };
+    console.error('Upload failed:', error.response?.data || error);
+    const payload = error.response?.data || {};
+    throw {
+      status: error.response?.status,
+      error: payload.error || payload.message || error.message || 'Failed to add product',
+      details: payload.details,
+    };
   }
 };
 

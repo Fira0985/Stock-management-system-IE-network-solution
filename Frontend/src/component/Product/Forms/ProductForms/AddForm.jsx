@@ -23,7 +23,7 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
         setFormData(prev => ({ ...prev, image_file: file }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validate required fields
@@ -51,7 +51,7 @@ const AddForm = ({ categories, onSubmit, onCancel }) => {
         }
 
         // All validations passed
-        onSubmit(formData);
+        await onSubmit(formData);
     };
 
     return (

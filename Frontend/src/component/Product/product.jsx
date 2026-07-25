@@ -147,13 +147,13 @@ const Product = ({ isSidebarOpen }) => {
         try {
             await addCategory({
                 name: data.name,
-                created_by_id: parseInt(localStorage.getItem('id'))
             });
             await loadCategories();
             setIsFormOpen(false);
             toast.success('Category added successfully');
         } catch (err) {
-            toast.error('Failed to add category');
+            const errorMessage = err?.error || err?.message || err?.response?.data?.error || err?.response?.data?.message || 'Failed to add category';
+            toast.error(errorMessage);
         }
     };
 
@@ -168,18 +168,24 @@ const Product = ({ isSidebarOpen }) => {
             formData.append('sale_price', parseFloat(data.sale_price));
             formData.append('cost_price', parseFloat(data.cost_price));
             formData.append('category_id', parseInt(data.category));
-            formData.append('created_by_id', parseInt(localStorage.getItem('id')));
             if (data.image_file) {
                 formData.append('image', data.image_file);
             }
 
             await addProduct(formData);
-            await loadCategories();
-            await loadProducts();
             setIsAddFormOpen(false);
             toast.success('Product added successfully');
+
+            try {
+                await loadCategories();
+                await loadProducts();
+            } catch (refreshError) {
+                console.warn('Product added but refresh failed:', refreshError);
+                toast.error('Product added but page refresh failed. Please reload.');
+            }
         } catch (err) {
-            toast.error(err.message || 'Failed to add product');
+            const errorMessage = err?.error || err?.message || err?.response?.data?.error || err?.response?.data?.message || 'Failed to add product';
+            toast.error(errorMessage);
         }
     };
 

@@ -59,13 +59,13 @@
     gap: 16px;
 }
 
-/* ===== Autocomplete Groups ===== */
+/* ===== Form Groups ===== */
 .pr-form-group,
 .pr-form-inline {
     display: flex;
     flex-direction: column;
     position: relative;
-    gap: 8px;
+    gap: 12px;
 }
 
 .pr-form-inline {
@@ -74,23 +74,39 @@
     flex-wrap: wrap;
 }
 
+.pr-form-inline select,
 .pr-form-inline input {
     flex: 1;
-    min-width: 140px;
+    min-width: 200px;
 }
 
 .pr-form-inline .pr-add-item {
     white-space: nowrap;
+    align-self: flex-end;
 }
 
-/* ===== Inputs ===== */
+/* ===== Inputs and Selects ===== */
 .pr-form-group input,
-.pr-form-inline input {
-    padding: 10px 12px;
+.pr-form-group select,
+.pr-form-inline input,
+.pr-form-inline select {
+    width: 100%;
+    padding: 12px 14px;
     border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #111827;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background: #ffffff;
+}
+
+.pr-form-group input:focus,
+.pr-form-group select:focus,
+.pr-form-inline input:focus,
+.pr-form-inline select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.18);
+    outline: none;
 }
 
 .pr-form-group input:focus,

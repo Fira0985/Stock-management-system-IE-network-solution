@@ -13,9 +13,7 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
     const [purchaseItems, setPurchaseItems] = useState([]);
     const [quantity, setQuantity] = useState(1);
 
-    const [supplierInput, setSupplierInput] = useState('');
     const [productInput, setProductInput] = useState('');
-    const [showSupplierSuggestions, setShowSupplierSuggestions] = useState(false);
     const [showProductSuggestions, setShowProductSuggestions] = useState(false);
 
     useEffect(() => {
@@ -33,12 +31,6 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
         };
         loadData();
     }, []);
-
-    const handleSelectSupplier = (supplier) => {
-        setSelectedSupplier(supplier.id.toString());
-        setSupplierInput(supplier.name);
-        setShowSupplierSuggestions(false);
-    };
 
     const handleSelectProduct = (product) => {
         setSelectedProductId(product.id.toString());
@@ -106,55 +98,35 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
                 </div>
 
                 <div className="pr-popup-body">
-                    <div className="pr-form-group pr-autocomplete">
+                    <div className="pr-form-group">
                         <label>Supplier</label>
-                        <input
-                            type="text"
-                            value={supplierInput}
-                            onChange={(e) => {
-                                setSupplierInput(e.target.value);
-                                setShowSupplierSuggestions(true);
-                            }}
-                            onFocus={() => setShowSupplierSuggestions(true)}
-                            onBlur={() => setTimeout(() => setShowSupplierSuggestions(false), 150)}
-                            placeholder="Type to search supplier"
-                        />
-                        {showSupplierSuggestions && (
-                            <div className="pr-suggestions">
-                                {suppliers
-                                    .filter(s => s.name.toLowerCase().includes(supplierInput.toLowerCase()))
-                                    .map(s => (
-                                        <div key={s.id} className="pr-suggestion-item" onClick={() => handleSelectSupplier(s)}>
-                                            {s.name}
-                                        </div>
-                                    ))}
-                            </div>
-                        )}
+                        <select
+                            value={selectedSupplier}
+                            onChange={(e) => setSelectedSupplier(e.target.value)}
+                            required
+                        >
+                            <option value="">Select a supplier</option>
+                            {suppliers.map(supplier => (
+                                <option key={supplier.id} value={supplier.id}>
+                                    {supplier.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
-                    <div className="pr-form-inline pr-autocomplete">
-                        <input
-                            type="text"
-                            value={productInput}
-                            onChange={(e) => {
-                                setProductInput(e.target.value);
-                                setShowProductSuggestions(true);
-                            }}
-                            onFocus={() => setShowProductSuggestions(true)}
-                            onBlur={() => setTimeout(() => setShowProductSuggestions(false), 150)}
-                            placeholder="Type to search product"
-                        />
-                        {showProductSuggestions && (
-                            <div className="pr-suggestions">
-                                {products
-                                    .filter(p => p.name.toLowerCase().includes(productInput.toLowerCase()))
-                                    .map(p => (
-                                        <div key={p.id} className="pr-suggestion-item" onClick={() => handleSelectProduct(p)}>
-                                            {p.name}
-                                        </div>
-                                    ))}
-                            </div>
-                        )}
+                    <div className="pr-form-inline">
+                        <select
+                            value={selectedProductId}
+                            onChange={(e) => setSelectedProductId(e.target.value)}
+                            required
+                        >
+                            <option value="">Select a product</option>
+                            {products.map(product => (
+                                <option key={product.id} value={product.id}>
+                                    {product.name}
+                                </option>
+                            ))}
+                        </select>
 
                         <input
                             type="number"

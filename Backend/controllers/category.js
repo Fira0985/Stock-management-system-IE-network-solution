@@ -84,8 +84,9 @@ const deleteCategory = async (req, res) => {
 const addCategory = async (req, res) => {
   try {
     const { name, created_by_id } = req.body;
+    const userId = Number(created_by_id || req.user?.id);
 
-    if (!name || !created_by_id) {
+    if (!name || !userId) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -103,7 +104,7 @@ const addCategory = async (req, res) => {
     const category = await prisma.category.create({
       data: {
         name,
-        created_by_id: parseInt(created_by_id), // Ensure it's an integer
+        created_by_id: userId,
       },
     });
 
