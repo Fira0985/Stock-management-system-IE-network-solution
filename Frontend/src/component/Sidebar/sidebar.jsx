@@ -38,14 +38,14 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
 
     const menuItems = [
         { icon: <LayoutDashboard size={20} />, label: "Dashboard" },
-        { icon: <Package size={20} />, label: "Inventory", children: ["Products", "Stock Taking", "Adjustments"] },
+        { icon: <Package size={20} />, label: "Products", children: ["Products", "Stock Taking", "Adjustments"] },
         { icon: <ShoppingCart size={20} />, label: "Sales" },
         { icon: <ShoppingBag size={20} />, label: "Purchase" },
         { icon: <CreditCard size={20} />, label: "Credits" },
-        { icon: <BarChart2 size={20} />, label: "Reports" },
-        { icon: <Truck size={20} />, label: "Suppliers" },
-        { icon: <Users size={20} />, label: "Customers" },
-        { icon: <User size={20} />, label: "Users" },
+        { icon: <BarChart2 size={20} />, label: "Report" },
+        { icon: <Truck size={20} />, label: "Supplier" },
+        { icon: <Users size={20} />, label: "Customer" },
+        { icon: <User size={20} />, label: "User" },
         { icon: <Settings size={20} />, label: "Settings" },
     ];
 
@@ -80,8 +80,8 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
                                 <span className="menu-icon">{item.icon}</span>
                                 {isSidebarOpen && <span className="menu-label">{item.label}</span>}
                             </div>
-                            {/* Optional Category Tree for Inventory */}
-                            {item.label === "Inventory" && isSidebarOpen && categoriesOpen && (
+                            {/* Optional Category Tree for Products */}
+                            {item.label === "Products" && isSidebarOpen && categoriesOpen && (
                                 <ul className="sub-menu">
                                     <li onClick={() => handleMenuClick("Products")}>All Products</li>
                                     <li onClick={() => handleMenuClick("Categories")}>Categories</li>
