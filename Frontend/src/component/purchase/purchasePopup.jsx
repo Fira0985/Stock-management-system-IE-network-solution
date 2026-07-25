@@ -90,7 +90,10 @@ const PurchasePopup = ({ onClose, onSuccess }) => {
             if (onSuccess) onSuccess();
             onClose();
         } catch (err) {
-            toast.error('Failed to save purchase.');
+            console.error('Create purchase error:', err);
+            const backend = err?.response?.data || {};
+            const message = backend.details || backend.message || backend.error || 'Failed to save purchase.';
+            toast.error(message);
         }
     };
 

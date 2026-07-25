@@ -142,8 +142,13 @@ const NewSaleForm = ({ products, customers, onClose, onSuccess }) => {
             onSuccess();
             setTimeout(onClose, 2000); // Auto-close after 2s
         } catch (err) {
+            // Normalize backend error shape: backend returns { error: '...' }
+            const backendMsg = err?.response?.data?.error || err?.response?.data?.message;
+            const message = backendMsg && backendMsg.toLowerCase().includes('insufficient stock')
+                ? 'not enough unit'
+                : backendMsg || 'Failed to add sale. Please try again.';
             setToast({
-                message: err?.response?.data?.message || 'Failed to add sale. Please try again.',
+                message,
                 type: 'error',
             });
         }

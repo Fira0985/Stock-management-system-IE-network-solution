@@ -45,7 +45,26 @@ const addPurchase = async (req, res) => {
     }
 
     try {
+        // Validate supplier exists and is a supplier
+        const supplier = await prisma.nonUser.findUnique({ where: { id: parseInt(supplier_id) } });
+        if (!supplier || supplier.type !== 'SUPPLIER') {
+            return res.status(400).json({ success: false, message: 'Invalid supplier id' });
+        }
+
+        // Validate items: product exists and quantity is a positive number
+        for (const item of items) {
+            const productId = parseInt(item.product_id);
+            const qty = Number(item.quantity);
+            if (!productId || isNaN(qty) || qty <= 0) {
+                return res.status(400).json({ success: false, message: `Invalid item data for product_id ${item.product_id}` });
+            }
+            const prod = await prisma.product.findUnique({ where: { id: productId } });
+            if (!prod || prod.archived) {
+                return res.status(400).json({ success: false, message: `Product with ID ${productId} not found or archived.` });
+            }
+        }
         // 1. Create purchase and update product units atomically
+        // Increase transaction timeout to avoid interactive transaction expiration
         const purchase = await prisma.$transaction(async (tx) => {
             // Create the purchase
             const newPurchase = await tx.purchase.create({
@@ -71,21 +90,17 @@ const addPurchase = async (req, res) => {
                 },
             });
 
-            // Increment the product units
-            for (const item of items) {
+            // Increment the product units (run updates in parallel within transaction)
+            await Promise.all(items.map((item) => {
                 const qty = Number(item.quantity) || 0;
-                await tx.product.update({
-                    where: { id: item.product_id },
-                    data: {
-                        unit: {
-                            increment: qty,
-                        },
-                    },
+                return tx.product.update({
+                    where: { id: parseInt(item.product_id) },
+                    data: { unit: { increment: qty } },
                 });
-            }
+            }));
 
             return newPurchase;
-        });
+        }, { timeout: 20000 });
 
         // ────────── SOCKET.IO EMIT ──────────
         const io = req.app.get("io");
@@ -105,7 +120,7 @@ const addPurchase = async (req, res) => {
         console.error("Error creating purchase:", error);
         return res
             .status(500)
-            .json({ success: false, message: "Internal server error" });
+            .json({ success: false, message: "Internal server error", details: error.message });
     }
 };
 

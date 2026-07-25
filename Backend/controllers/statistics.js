@@ -255,9 +255,13 @@ exports.getRecentActivity = async (req, res) => {
         // Take only the top 10 most recent activities
         const recentActivities = activities.slice(0, 10);
 
-        // ✅ Emit activities in real-time
-        const io = req.app.get("io");
-        io.emit("recentActivity", recentActivities);
+        // ✅ Emit activities in real-time (only if Socket.IO is available)
+        const io = req.app.get && req.app.get("io");
+        if (io) {
+            io.emit("recentActivity", recentActivities);
+        } else {
+            console.debug('Socket.IO not initialized; skipping recentActivity emit');
+        }
 
         res.json(recentActivities);
     } catch (err) {

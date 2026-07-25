@@ -27,7 +27,7 @@ export const fetchAllProducts = async () => {
     const response = await api.get('/products', {
       headers: getAuthHeaders(),
     });
-    return response.data; 
+    return response.data && response.data.data !== undefined ? response.data.data : response.data;
   } catch (error) {
     console.error('Failed to fetch products:', error);
     throw error.response?.data || { message: 'Unable to fetch products' };

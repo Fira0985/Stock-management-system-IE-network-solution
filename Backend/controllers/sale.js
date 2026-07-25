@@ -228,6 +228,10 @@ const addSales = async (req, res) => {
         res.status(201).json({ message: 'Sale successfully created', sale });
     } catch (error) {
         console.error('Error adding sale:', error);
+        // If transaction threw due to insufficient stock, surface a 400 with the specific message
+        if (error && error.message && error.message.toLowerCase().includes('insufficient stock')) {
+            return res.status(400).json({ error: error.message });
+        }
         res.status(500).json({ error: 'Failed to add sale', details: error.message });
     }
 };

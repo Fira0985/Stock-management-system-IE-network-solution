@@ -18,7 +18,8 @@ export const fetchSalesOverview = async () => {
         const response = await api.get('/sales/overview', {
             headers: getAuthHeaders()
         });
-        return response.data;
+        // Support APIs that return either raw object or { success: true, data: ... }
+        return response.data && response.data.data !== undefined ? response.data.data : response.data;
     } catch (error) {
         throw error.response?.data || { message: 'Failed to fetch sales overview' };
     }
@@ -33,7 +34,7 @@ export const fetchPurchaseOverview = async () => {
         const response = await api.get('/purchase/overview', {
             headers: getAuthHeaders()
         });
-        return response.data;
+        return response.data && response.data.data !== undefined ? response.data.data : response.data;
     } catch (error) {
         throw error.response?.data || { message: 'Failed to fetch purchase overview' };
     }
@@ -48,7 +49,7 @@ export const fetchWeeklySalesChart = async () => {
         const response = await api.get('/sales/chart/weekly', {
             headers: getAuthHeaders()
         });
-        return response.data;
+        return response.data && response.data.data !== undefined ? response.data.data : response.data;
     } catch (error) {
         throw error.response?.data || { message: 'Failed to fetch weekly sales chart' };
     }
@@ -63,7 +64,7 @@ export const fetchMonthlyCategoryChart = async () => {
         const response = await api.get('/sales/chart/by-category', {
             headers: getAuthHeaders()
         });
-        return response.data;
+        return response.data && response.data.data !== undefined ? response.data.data : response.data;
     } catch (error) {
         throw error.response?.data || { message: 'Failed to fetch category sales chart' };
     }
@@ -78,7 +79,7 @@ export const fetchAnnualSalesChart = async () => {
         const response = await api.get('/sales/chart/annual', {
             headers: getAuthHeaders()
         });
-        return response.data;
+        return response.data && response.data.data !== undefined ? response.data.data : response.data;
     } catch (error) {
         throw error.response?.data || { message: 'Failed to fetch annual sales chart' };
     }
@@ -93,7 +94,7 @@ export const fetchRecentActivity = async () => {
         const response = await api.get('/recent-activity', {
             headers: getAuthHeaders()
         });
-        return response.data;
+        return response.data && response.data.data !== undefined ? response.data.data : response.data;
     } catch (error) {
         throw error.response?.data || { message: 'Failed to fetch recent activity' };
     }
