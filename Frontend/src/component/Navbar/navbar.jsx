@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./navbar.css";
 import {
 	Bell,
@@ -20,6 +20,24 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 	const [showNotifications, setShowNotifications] = useState(false);
 	const username = localStorage.getItem("username") || "User";
 	const role = localStorage.getItem("role") || "Staff";
+	const dropdownRef = useRef(null);
+
+	useEffect(() => {
+		// Fetch user notifications (backend expects email query param)
+		const fetchNotifications = async () => {
+			try {
+				const email = localStorage.getItem('email');
+				if (!email) return;
+				const res = await api.get('/api/notifications/user', { params: { email } });
+				const data = res.data || [];
+				// mark all as unread initially
+				setNotifications(data.map(n => ({ ...n, unread: true })));
+			} catch (err) {
+				console.error('Failed to fetch notifications', err);
+			}
+		};
+		fetchNotifications();
+	}, []);
 
 	const toggleTheme = () => {
 		setIsDarkMode(!isDarkMode);
@@ -51,23 +69,34 @@ const Navbar = ({ isSidebarOpen, onProfileClick, onHamburgerClick }) => {
 
 					<div className="notification-wrapper">
 						<button className="nav-action-btn" onClick={() => setShowNotifications(!showNotifications)}>
-							<Bell size={20} />
-							<span className="notification-badge">3</span>
-						</button>
+								<Bell size={20} />
+								{notifications.filter(n => n.unread).length > 0 && (
+									<span className="notification-badge">{notifications.filter(n => n.unread).length}</span>
+								)}
+							</button>
 						{showNotifications && (
-							<div className="nav-dropdown notification-dropdown card">
+							<div ref={dropdownRef} className="nav-dropdown notification-dropdown card" onMouseLeave={() => setShowNotifications(false)}>
 								<div className="dropdown-header">
 									<h4>Notifications</h4>
-									<button className="text-link">Mark all as read</button>
+									<button className="text-link" onClick={() => {
+										setNotifications(notifications.map(n => ({ ...n, unread: false })));
+										// Optionally: send mark-read to backend when endpoint exists
+									}}>Mark all as read</button>
 								</div>
 								<div className="dropdown-body">
-									<div className="dropdown-item unread">
-										<AlertTriangle size={16} className="text-warning" />
-										<div className="item-content">
-											<p><strong>Low Stock Alert:</strong> iPhone 13 Pro is below 5 units.</p>
-											<span>2 mins ago</span>
-										</div>
-									</div>
+									{notifications.length === 0 ? (
+										<div className="dropdown-item empty">No notifications</div>
+									) : (
+										notifications.map((n, idx) => (
+											<div key={idx} className={`dropdown-item ${n.unread ? 'unread' : ''}`}>
+												<AlertTriangle size={16} className="text-warning" />
+												<div className="item-content">
+													<p><strong>{n.type}</strong> {n.description}</p>
+													<span>{new Date(n.at).toLocaleString()}</span>
+												</div>
+											</div>
+										))
+									)}
 								</div>
 							</div>
 						)}
