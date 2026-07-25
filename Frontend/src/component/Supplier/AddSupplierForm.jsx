@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./form.css";
-import { validateLetters, validatePhoneNumber } from "../../utils/validators";
+import { validateName, validatePhoneNumber } from "../../utils/validators";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,8 +24,8 @@ const AddSupplierForm = ({ onClose, onSubmit }) => {
             toast.error("Supplier name is required");
             return;
         }
-        if (!validateLetters(formData.name)) {
-            toast.error("Supplier name must contain letters only");
+        if (!validateName(formData.name)) {
+            toast.error("Supplier name must contain letters (numbers allowed, not digits-only)");
             return;
         }
 

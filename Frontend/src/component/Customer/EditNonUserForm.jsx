@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./form.css";
-import { validateLetters, validatePhoneNumber, validatePositiveNumber } from "../../utils/validators";
+import { validateName, validatePhoneNumber, validatePositiveNumber } from "../../utils/validators";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,8 +29,8 @@ const EditNonUserForm = ({ nonUser, onClose, onSubmit }) => {
             toast.error("Customer name is required");
             return;
         }
-        if (!validateLetters(formData.name)) {
-            toast.error("Customer name must contain letters only");
+        if (!validateName(formData.name)) {
+            toast.error("Customer name must contain letters (numbers allowed, not digits-only)");
             return;
         }
 
