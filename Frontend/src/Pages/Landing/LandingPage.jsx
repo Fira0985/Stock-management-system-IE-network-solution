@@ -102,22 +102,7 @@ const LandingPage = () => {
                 </div>
                 <div className="hero-preview">
                     <div className="preview-card card">
-                        <div className="preview-header">
-                            <div className="dots"><span></span><span></span><span></span></div>
-                            <div className="title">TrackEQA Dashboard</div>
-                        </div>
-                        <div className="preview-body">
-                            <div className="stats-row">
-                                <div className="stat-box">Total SKUs <strong>1,280</strong></div>
-                                <div className="stat-box">Low Stock <strong className="text-danger">12</strong></div>
-                            </div>
-                            <div className="table-skeleton">
-                                <div className="row header"></div>
-                                <div className="row"></div>
-                                <div className="row"></div>
-                                <div className="row"></div>
-                            </div>
-                        </div>
+                        <img src="/dashboard.PNG" alt="Dashboard preview" className="hero-dashboard-image" />
                     </div>
                 </div>
             </header>
