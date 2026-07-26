@@ -106,15 +106,35 @@ export const fetchRecentActivity = async () => {
  */
 export const fetchUnpaidCreditValue = async () => {
     try {
-        const response = await api.get('/unpaid', {
-            headers: getAuthHeaders()
-        });
-        const data = response.data && response.data.data !== undefined ? response.data.data : response.data;
-        const array = Array.isArray(data) ? data : [];
-        const totalValue = array.reduce((sum, credit) => sum + (Number(credit.total) || 0), 0);
-        return { totalValue, count: array.length };
+        // Fetch both unpaid and partial credit sales (partial still has outstanding balance)
+        const [unpaidRes, partialRes] = await Promise.all([
+            api.get('/unpaid', { headers: getAuthHeaders() }),
+            api.get('/partial', { headers: getAuthHeaders() })
+        ]);
+
+        console.log('fetchUnpaidCreditValue unpaidRes.status:', unpaidRes.status);
+        console.log('fetchUnpaidCreditValue unpaidRes.data:', unpaidRes.data);
+        console.log('fetchUnpaidCreditValue partialRes.status:', partialRes.status);
+        console.log('fetchUnpaidCreditValue partialRes.data:', partialRes.data);
+
+        const unpaidData = unpaidRes.data && unpaidRes.data.data !== undefined ? unpaidRes.data.data : unpaidRes.data;
+        const partialData = partialRes.data && partialRes.data.data !== undefined ? partialRes.data.data : partialRes.data;
+
+        const arrayUnpaid = Array.isArray(unpaidData) ? unpaidData : [];
+        const arrayPartial = Array.isArray(partialData) ? partialData : [];
+
+        const combined = [...arrayUnpaid, ...arrayPartial];
+        // Sum remaining unpaid amounts. Prefer `balance_due` when available, otherwise compute total - paid_amount.
+        const totalValue = combined.reduce((sum, credit) => {
+            const balance = Number(credit.balance_due ?? (Number(credit.total || 0) - Number(credit.paid_amount || 0))) || 0;
+            return sum + balance;
+        }, 0);
+        const count = combined.length;
+
+        console.log('fetchUnpaidCreditValue combined unpaid count, remainingTotal:', count, totalValue);
+        return { totalValue, count };
     } catch (error) {
-        console.error('fetchUnpaidCreditValue error:', error);
+        console.error('fetchUnpaidCreditValue error:', error?.response?.data || error.message || error);
         return { totalValue: 0, count: 0 };
     }
 };

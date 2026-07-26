@@ -78,6 +78,7 @@ const Dashboard = ({ isSidebarOpen }) => {
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
+          console.log('Dashboard: starting loadDashboardData');
         const [sales, purchase, prodList, recent, unpaid, suppliers, customers] = await Promise.all([
           fetchSalesOverview(),
           fetchPurchaseOverview(),
@@ -87,6 +88,7 @@ const Dashboard = ({ isSidebarOpen }) => {
           fetchSupplierCount(),
           fetchCustomerCount()
         ]);
+          console.log('Dashboard: loadDashboardData results - unpaid:', unpaid);
         setSalesOverview(sales);
         setPurchaseOverview(purchase);
         setProducts(prodList);
@@ -189,9 +191,15 @@ const Dashboard = ({ isSidebarOpen }) => {
         <div className="stat-card card">
           <div className="stat-icon-bg danger"><DollarSign size={20} /></div>
           <div className="stat-content">
-            <span className="stat-label">Unpaid Credit</span>
-            <div className="stat-value">{loading ? "$0" : `$${unpaidCredit.totalValue.toLocaleString()}`}</div>
-            <div className="stat-trend neutral">{unpaidCredit.count} pending transactions</div>
+            <span className="stat-label">Pending transactions</span>
+            <div
+              className="stat-value"
+              onClick={() => window.dispatchEvent(new CustomEvent('selectMenu', { detail: { menu: 'Credits' } }))}
+              style={{ cursor: 'pointer' }}
+            >
+              {loading ? "$0" : `$${Number(unpaidCredit.totalValue || 0).toLocaleString()}`}
+            </div>
+            <div className="stat-trend neutral">{unpaidCredit.count} unpaid</div>
           </div>
         </div>
 
