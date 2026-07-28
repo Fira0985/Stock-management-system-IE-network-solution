@@ -37,11 +37,13 @@
 .header-titles h1 {
     font-size: 28px;
     margin-bottom: 4px;
+    margin-left: 30px;
 }
 
 .header-titles p {
     color: var(--text-muted);
     font-size: 14px;
+    margin-left: 16px;
 }
 
 .header-actions {

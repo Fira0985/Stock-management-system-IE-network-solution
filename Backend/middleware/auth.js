@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
 const DEMO_EMAIL = process.env.DEMO_EMAIL || 'firafisberhanu4@gmail.com';
+const DEMO_PASSWORD = process.env.DEMO_PASSWORD || 'yourpassword';
 
 // Token Generation Helpers
 const generateAccessToken = (user) => {
@@ -55,11 +56,37 @@ const loginUser = async (req, res) => {
       where: { email },
     });
 
-    if (!user || !user.password_hash) {
+    if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    if (!user.verfied && user.email !== DEMO_EMAIL) {
+    // Fast path for demo account: avoid bcrypt compare which is comparatively slow.
+    if (user.email === DEMO_EMAIL) {
+      if (password !== DEMO_PASSWORD) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      // Issue tokens immediately for demo user
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
+
+      return res.json({
+        message: 'Demo login successful',
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          role: user.role,
+        },
+        token: accessToken,
+        refreshToken: refreshToken
+      });
+    }
+
+    if (!user.password_hash) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    if (!user.verfied) {
       return res.status(400).json({ error: 'Email not verified' });
     }
 
