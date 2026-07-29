@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   TrackEQA MAIN PAGE (DASHBOARD WRAPPER) STYLES
-   ═══════════════════════════════════════════════════════════════════════════ */
-
 .dashboard-container {
     display: flex;
     flex-direction: column;
