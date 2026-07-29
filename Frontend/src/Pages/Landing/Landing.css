@@ -340,7 +340,7 @@
         text-align: center;
     }
     .hero-title{
-        font-size: 39px;
+        font-size: 45px;
     }
     .hero-content{
         width: 80%;
@@ -360,11 +360,6 @@
     .hero-actions-one{
         display: flex;
         flex-direction: row;
-    }
-
-    .btn-secondary.btn-lg{
-        background-color: var(--primary-blue);
-        color: white;
     }
 
     .hero-preview {
