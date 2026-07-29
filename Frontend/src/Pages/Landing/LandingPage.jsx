@@ -71,34 +71,38 @@ const LandingPage = () => {
                         No gimmicks, just the efficiency your business deserves.
                     </p>
                     <div className="hero-actions">
-                        <Link to="/request-access" className="btn btn-primary btn-lg">
-                            Request Access <ArrowRight size={18} />
-                        </Link>
-                        <button
-                            type="button"
-                            className="btn btn-tertiary btn-lg"
-                            onClick={async () => {
-                                setLoadingDemo(true);
-                                try {
-                                    await login({
-                                        email: 'firafisberhanu4@gmail.com',
-                                        password: 'yourpassword'
-                                    });
-                                    toast.success('Logged in to demo account');
-                                    navigate('/dashboard');
-                                } catch (err) {
-                                    console.error('Demo login failed:', err);
-                                    toast.error(err.message || 'Demo login failed');
-                                } finally {
-                                    setLoadingDemo(false);
-                                }
-                            }}
-                            disabled={loadingDemo}
-                        >
-                            {loadingDemo ? 'Signing in…' : 'Demo Account'}
-                        </button>
+                        <div className="hero-actions hero-actions-one">
+                            <Link to="/request-access" className="btn btn-primary btn-lg">
+                                Request Access <ArrowRight size={18} />
+                            </Link>
+                            <button
+                                type="button"
+                                className="btn btn-tertiary btn-lg"
+                                onClick={async () => {
+                                    setLoadingDemo(true);
+                                    try {
+                                        await login({
+                                            email: 'firafisberhanu4@gmail.com',
+                                            password: 'yourpassword'
+                                        });
+                                        toast.success('Logged in to demo account');
+                                        navigate('/dashboard');
+                                    } catch (err) {
+                                        console.error('Demo login failed:', err);
+                                        toast.error(err.message || 'Demo login failed');
+                                    } finally {
+                                        setLoadingDemo(false);
+                                    }
+                                }}
+                                disabled={loadingDemo}
+                            >
+                                {loadingDemo ? 'Signing in…' : 'Demo Account'}
+                            </button>
+                        </div>
+
                         <Link to="/contact" className="btn btn-secondary btn-lg">Contact Us</Link>
                     </div>
+
                 </div>
                 <div className="hero-preview">
                     <div className="preview-card card">
