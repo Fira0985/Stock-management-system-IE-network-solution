@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const baseURL = 'https://stock-management-system-backend-mff1.onrender.com/api';
-
+//const baseURL = 'http://localhost:3000/api'; 
 const api = axios.create({
   baseURL,
   withCredentials: true,

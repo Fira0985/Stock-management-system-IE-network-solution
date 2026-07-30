@@ -34,8 +34,13 @@ const Login = () => {
         setError('');
 
         try {
-            await login(loginData);
+            const userData = await login(loginData);
             toast.success('Welcome to TrackEQA');
+            if (userData?.role === 'CLERK') {
+                toast.info('Please change your password.', {
+                    autoClose: 5000,
+                });
+            }
             navigate('/dashboard');
         } catch (err) {
             setError(err.message || 'Invalid email or password');

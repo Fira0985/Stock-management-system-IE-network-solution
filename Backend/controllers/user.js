@@ -57,13 +57,18 @@ const addUser = async (req, res) => {
       username,
       email,
       role,
-      phone
+      phone,
+      password,
     } = req.body;
 
     const created_by_id = req.user.id; // From authenticateToken
 
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: 'A valid email is required' });
+    }
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -78,9 +83,7 @@ const addUser = async (req, res) => {
       return res.status(409).json({ error: 'User already exists in archives' });
     }
 
-    // Generate invitation code
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60000); // 24 hours for invitation
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS || 10);
 
     const newUser = await prisma.user.create({
       data: {
@@ -89,22 +92,13 @@ const addUser = async (req, res) => {
         role,
         phone,
         created_by_id,
-        verfied: false,
-        verfiy_code: code,
-        verfiyCode_expireAt: expiresAt,
-        password_hash: null, // Password will be set during verification
+        verfied: true,
+        password_hash: passwordHash,
       },
     });
 
-    try {
-      await sendEmail(email, code);
-    } catch (emailError) {
-      console.error('Email sending failed:', emailError);
-      // We still created the user, but invitation email failed
-    }
-
     res.status(201).json({
-      message: "User successfully invited. Verification code sent.",
+      message: 'User successfully created.',
       user: { id: newUser.id, email: newUser.email, role: newUser.role }
     });
   } catch (error) {

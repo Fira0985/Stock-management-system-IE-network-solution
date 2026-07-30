@@ -39,7 +39,10 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
             return userData;
         } catch (error) {
-            throw error.response?.data || { message: 'Login failed' };
+            const data = error.response?.data;
+            throw {
+                message: data?.message || data?.error || 'Login failed',
+            };
         }
     };
 

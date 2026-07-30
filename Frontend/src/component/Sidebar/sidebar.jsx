@@ -56,7 +56,7 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
 
     const filteredItems = menuItems.filter((item) => {
         if (role === "CLERK") {
-            const restricted = ["Users", "Suppliers", "Reports", "Purchase"];
+            const restricted = ["User", "Supplier", "Report", "Purchase"];
             return !restricted.includes(item.label);
         }
         return true;

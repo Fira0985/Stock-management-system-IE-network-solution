@@ -67,6 +67,13 @@ const MainPage = () => {
   };
 
   const renderPage = () => {
+    const role = localStorage.getItem("role");
+    const restrictedForClerk = ["User", "Supplier", "Report", "Purchase"];
+
+    if (role === "CLERK" && restrictedForClerk.includes(selectedPage)) {
+      return <Dashboard isSidebarOpen={isSidebarOpen} />;
+    }
+
     switch (selectedPage) {
       case "Dashboard":
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
