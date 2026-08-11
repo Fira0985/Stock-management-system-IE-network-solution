@@ -51,29 +51,46 @@ const addPurchase = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid supplier id' });
         }
 
-        // Validate items: product exists and quantity is a positive number
+        const productQuantities = new Map();
+        const parsedItems = [];
+
         for (const item of items) {
             const productId = parseInt(item.product_id);
             const qty = Number(item.quantity);
-            if (!productId || isNaN(qty) || qty <= 0) {
+            const costPrice = Number(item.cost_price);
+
+            if (!productId || isNaN(qty) || qty <= 0 || isNaN(costPrice) || costPrice < 0) {
                 return res.status(400).json({ success: false, message: `Invalid item data for product_id ${item.product_id}` });
             }
-            const prod = await prisma.product.findUnique({ where: { id: productId } });
-            if (!prod || prod.archived) {
-                return res.status(400).json({ success: false, message: `Product with ID ${productId} not found or archived.` });
-            }
+
+            productQuantities.set(productId, (productQuantities.get(productId) || 0) + qty);
+            parsedItems.push({ productId, quantity: qty, cost_price: costPrice });
         }
-        // 1. Create purchase and update product units atomically
-        // Increase transaction timeout to avoid interactive transaction expiration
+
+        const uniqueProductIds = Array.from(productQuantities.keys());
+        const products = await prisma.product.findMany({
+            where: { id: { in: uniqueProductIds } },
+        });
+
+        if (products.length !== uniqueProductIds.length) {
+            const foundIds = new Set(products.map((p) => p.id));
+            const missingIds = uniqueProductIds.filter((id) => !foundIds.has(id));
+            return res.status(400).json({ success: false, message: `Products not found: ${missingIds.join(', ')}` });
+        }
+
+        const archivedProduct = products.find((p) => p.archived);
+        if (archivedProduct) {
+            return res.status(400).json({ success: false, message: `Product '${archivedProduct.name}' is archived and cannot be purchased.` });
+        }
+
         const purchase = await prisma.$transaction(async (tx) => {
-            // Create the purchase
             const newPurchase = await tx.purchase.create({
                 data: {
                     supplier: { connect: { id: supplier_id } },
                     created_by: { connect: { id: userId } },
                     items: {
-                        create: items.map((item) => ({
-                            product: { connect: { id: item.product_id } },
+                        create: parsedItems.map((item) => ({
+                            product: { connect: { id: item.productId } },
                             quantity: item.quantity,
                             cost_price: item.cost_price,
                         })),
@@ -90,14 +107,15 @@ const addPurchase = async (req, res) => {
                 },
             });
 
-            // Increment the product units (run updates in parallel within transaction)
-            await Promise.all(items.map((item) => {
-                const qty = Number(item.quantity) || 0;
-                return tx.product.update({
-                    where: { id: parseInt(item.product_id) },
-                    data: { unit: { increment: qty } },
-                });
-            }));
+            const productEntries = Array.from(productQuantities.entries());
+            await Promise.all(
+                productEntries.map(([productId, totalQuantity]) =>
+                    tx.product.updateMany({
+                        where: { id: productId },
+                        data: { unit: { increment: totalQuantity } },
+                    })
+                )
+            );
 
             return newPurchase;
         }, { timeout: 20000 });
