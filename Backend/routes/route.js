@@ -120,9 +120,10 @@ router.get('/summaryBusiness', authenticateToken, reportController.getBusinessHe
 
 router.post('/message', sendSelfMessage);
 
-// Add this route for notifications
-router.get('/api/notifications/user', notificationController.getNotifications);
-
-
+router.get(
+    "/notifications/user",
+    authenticateToken,
+    notificationController.getNotifications
+);
 
 module.exports = router;

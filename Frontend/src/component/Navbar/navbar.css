@@ -225,7 +225,7 @@
 /* ─────────── Dropdowns ─────────── */
 .nav-dropdown {
     position: absolute;
-    top: 56px;
+    top: 100px;
     right: 0;
     width: 320px;
     padding: 0;
