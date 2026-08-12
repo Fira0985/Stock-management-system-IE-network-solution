@@ -23,7 +23,7 @@ const categoriesPerPage = 3;
 const productsPerCategoryPage = 3;
 const flatProductsPerPage = 3;
 
-const Product = ({ isSidebarOpen }) => {
+const Product = ({ isSidebarOpen, initialTab, onClearInitialTab }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('products');
     const [categories, setCategories] = useState([]);
@@ -60,6 +60,16 @@ const Product = ({ isSidebarOpen }) => {
         setFlatProductPage(1);
         setProductPageMap({});
     }, [searchTerm]);
+
+    // If parent asked to open a specific tab (e.g., Categories), honor it once
+    useEffect(() => {
+        if (initialTab) {
+            setActiveTab(initialTab);
+            if (typeof onClearInitialTab === 'function') {
+                onClearInitialTab();
+            }
+        }
+    }, [initialTab, onClearInitialTab]);
 
     const loadCategories = async () => {
         try {

@@ -122,6 +122,7 @@ const Supplier = ({ isSidebarOpen }) => {
             <div className="sp-supplier-table">
                 <div className="sp-supplier-row sp-header">
                     <span>ID</span>
+                    <span>Credit Limit</span>
                     <span>Name</span>
                     <span>Phone</span>
                     <span>Address</span>
@@ -130,10 +131,18 @@ const Supplier = ({ isSidebarOpen }) => {
 
                 {paginatedsuppliers.map((supplier, index) => (
                     <div className="sp-supplier-row" key={supplier.id}>
-                        <span>#{supplier.id}</span>
-                        <span>{supplier.name}</span>
-                        <span>{supplier.phone}</span>
-                        <span>{supplier.address}</span>
+                        <span data-label="ID">#{supplier.id}</span>
+                        <span data-label="Credit Limit">{
+                            (() => {
+                                const credit = supplier.creditLimit ?? supplier.credit_limit ?? supplier.credit;
+                                if (credit === null || credit === undefined || credit === "") return "-";
+                                const n = Number(credit);
+                                return Number.isFinite(n) ? n.toLocaleString() : credit;
+                            })()
+                        }</span>
+                        <span data-label="Name">{supplier.name}</span>
+                        <span data-label="Phone">{supplier.phone}</span>
+                        <span data-label="Address">{supplier.address}</span>
                         <span
                             className="sp-dots"
                             onClick={(e) => {

@@ -173,7 +173,8 @@ const Sales = ({ isSidebarOpen }) => {
                 <p>No sales found in this period.</p>
             ) : (
                 <>
-                    <table className="styled-table">
+                    <div className="table-wrapper" style={{ overflowX: 'auto' }}>
+                        <table className="styled-table">
                         <thead>
                             <tr>
                                 <th>Sale ID</th>
@@ -199,6 +200,7 @@ const Sales = ({ isSidebarOpen }) => {
                             ))}
                         </tbody>
                     </table>
+                </div>
 
                     <div className="pagination">
                         <span

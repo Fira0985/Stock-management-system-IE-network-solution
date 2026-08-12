@@ -540,3 +540,41 @@ body.dark .table-row:hover {
     font-size: 10px;
   }
 }
+
+/* Mobile: transform table rows into card-like blocks with label/value pairs */
+@media (max-width: 480px) {
+  .credit-table thead {
+    display: none;
+  }
+  .credit-table, .credit-table tbody, .credit-table tr, .credit-table td {
+    display: block;
+    width: 100%;
+  }
+  .credit-table tr {
+    margin-bottom: 12px;
+    border: 1px solid var(--credit-border);
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+  }
+  .credit-table td {
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+  }
+  .credit-table td:last-child {
+    border-bottom: none;
+  }
+  .credit-table td[data-label]::before {
+    content: attr(data-label) ": ";
+    color: var(--credit-text-muted);
+    font-weight: 600;
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+  .status-badge { transform: none; }
+  .pay-button { width: auto; }
+  .table-container { max-height: none; }
+}

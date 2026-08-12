@@ -2,12 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   background-color: white;
   min-height: 100vh;
   box-sizing: border-box;
   font-family: inherit;
-  margin-top: -5vh;
 }
 
 .contact-page.with-sidebar {
@@ -33,13 +32,13 @@
 .contact-header {
   flex: 1;
   max-width: 500px;
-  padding-top: 10vh;
+  padding-top: 40px;
 }
 
 .contact-header h2 {
-  font-size: 34px;
+  font-size: 32px;
   color: #0000FF;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-weight: 700;
   text-align: left;
 }
@@ -154,11 +153,11 @@
 }
 
 .contact-brand {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 800;
   color: #0000FF;
-  text-align: center;
-  margin-bottom: 10px;
+  text-align: left;
+  margin-bottom: 8px;
   font-family: 'Segoe UI', 'Inter', sans-serif;
 }
 
@@ -177,6 +176,11 @@
   .contact-header h2,
   .contact-header p {
     text-align: center;
+  }
+
+  .contact-brand {
+    text-align: center;
+    font-size: 32px;
   }
 
   .purple-btn {

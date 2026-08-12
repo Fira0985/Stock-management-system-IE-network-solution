@@ -22,6 +22,7 @@
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 24px;
+    margin-top: 25px;
 }
 
 .cs-customer-header h2 {
@@ -343,4 +344,66 @@ body.dark .cs-customer-table td,
     gap: 4px;
     margin-top: 12px;
   }
+}
+
+/* Very small screens: stacked card layout like Supplier/User */
+@media (max-width: 480px) {
+  .cs-customer-row.cs-header {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+  }
+
+  .cs-customer-row {
+    display: block;
+    border: 1px solid #f3f4f6;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #fff;
+  }
+
+  .cs-customer-row > span {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 4px;
+    border-bottom: 1px dashed #f0f0f0;
+    font-size: 13px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .cs-customer-row > span:last-child {
+    border-bottom: none;
+  }
+
+  .cs-customer-row > span[data-label]::before {
+    content: attr(data-label) ": ";
+    font-weight: 700;
+    color: #6b7280;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+
+  .cs-customer-row { position: relative; }
+  .cs-menu-container { position: absolute; top: 8px; right: 8px; z-index: 40; }
+  .cs-popup-menu { position: absolute; top: 36px; right: 8px; z-index: 50; }
+
+  .cs-dots {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: transparent;
+    border-radius: 6px;
+    color: #374151;
+    user-select: none;
+  }
+
+  .cs-customer-table { overflow: visible; }
 }

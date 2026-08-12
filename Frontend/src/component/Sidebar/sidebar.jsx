@@ -20,7 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
+const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect, isMobileVisible, onCloseMobileSidebar }) => {
     const [activeItem, setActiveItem] = useState("Dashboard");
     const [categoriesOpen, setCategoriesOpen] = useState(true);
     const role = localStorage.getItem("role");
@@ -39,6 +39,9 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
         }
         setActiveItem(label);
         onMenuSelect(label);
+        if (isMobileVisible && onCloseMobileSidebar) {
+            onCloseMobileSidebar();
+        }
     };
 
     const menuItems = [
@@ -63,7 +66,8 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
     });
 
     return (
-        <aside className={`sidebar ${isSidebarOpen ? "" : "collapsed"}`}>
+        <>
+            <aside className={`sidebar ${isSidebarOpen ? "" : "collapsed"} ${isMobileVisible ? "open" : ""}`}>
             <div className="sidebar-header">
                 <div className="brand">
                     <BarChart2 className="brand-icon" size={24} />
@@ -98,7 +102,7 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
             </nav>
 
             <div className="sidebar-footer">
-                <div className="footer-item" onClick={() => handleMenuClick("Contact")}>
+                <div className="footer-item" onClick={() => { handleMenuClick("Contact"); }}>
                     <PhoneCall size={20} />
                     {isSidebarOpen && <span>Support</span>}
                 </div>
@@ -108,6 +112,12 @@ const Sidebar = ({ isSidebarOpen, onToggle, onMenuSelect }) => {
                 </div>
             </div>
         </aside>
+            {/* Mobile overlay to close sidebar when clicking outside */}
+            <div
+                className={`mobile-overlay ${isMobileVisible ? "visible" : ""}`}
+                onClick={() => onCloseMobileSidebar && onCloseMobileSidebar()}
+            />
+        </>
     );
 };
 

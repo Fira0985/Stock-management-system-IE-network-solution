@@ -20,6 +20,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
+    margin-top: 20px;
 }
 
 .sp-supplier-header h2 {
@@ -67,8 +68,8 @@
 }
 
 .sp-supplier-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr 2fr 0.5fr;
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 2fr 2fr 2fr 0.6fr;
     padding: 15px 15px;
     border-bottom: 1px solid #eee;
     font-size: 14px;
@@ -215,8 +216,8 @@ body.dark .sp-supplier-row.sp-header {
   }
   .sp-supplier-row > span,
   .sp-supplier-row.sp-header > span {
-    flex: 1 1 120px;
-    min-width: 80px;
+    flex: 1 1 100px;
+    min-width: 70px;
     word-break: break-word;
     text-align: left;
   }
@@ -266,7 +267,7 @@ body.dark .sp-supplier-row.sp-header {
   .sp-supplier-row > span,
   .sp-supplier-row.sp-header > span {
     flex: 1 1 80px;
-    min-width: 60px;
+    min-width: 50px;
     word-break: break-word;
     text-align: left;
   }
@@ -279,5 +280,61 @@ body.dark .sp-supplier-row.sp-header {
     font-size: 12px;
     gap: 4px;
     margin-top: 12px;
+  }
+}
+
+/* Very small screens: convert rows to stacked cards */
+@media (max-width: 480px) {
+  .sp-supplier-row.sp-header {
+    display: none;
+  }
+
+  .sp-supplier-row {
+    display: block;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  .sp-supplier-row > span {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 4px;
+    border-bottom: 1px dashed #f0f0f0;
+    font-size: 13px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .sp-supplier-row > span:last-child {
+    border-bottom: none;
+  }
+
+  .sp-supplier-row > span[data-label]::before {
+    content: attr(data-label) ": ";
+    font-weight: 700;
+    color: #6b7280;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+
+  .sp-dots {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 20;
+    background: transparent;
+  }
+
+  .sp-popup-menu {
+    position: absolute;
+    top: 32px;
+    right: 8px;
+  }
+
+  .sp-supplier-table {
+    overflow: visible;
   }
 }

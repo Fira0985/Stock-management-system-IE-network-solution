@@ -142,12 +142,12 @@ const UserManagement = ({ isSidebarOpen, currentUserId }) => {
 
                 {pagedUsers.map((user, index) => (
                     <div className="user-row" key={user.email}>
-                        <span>{user.id}</span>
-                        <span>{user.username}</span>
-                        <span>{user.email}</span>
-                        <span>{user.role}</span>
-                        <span>{new Date(user.lastLogin).toLocaleString()}</span>
-                        <span>{user.phone}</span>
+                        <span data-label="User ID">{user.id}</span>
+                        <span data-label="Name">{user.username}</span>
+                        <span data-label="Email">{user.email}</span>
+                        <span data-label="Role">{user.role}</span>
+                        <span data-label="Last Login">{user.lastLogin ? new Date(user.lastLogin).toLocaleString() : '-'}</span>
+                        <span data-label="Phone">{user.phone || '-'}</span>
                         <span className="menu-container" ref={el => menuRefs.current[index] = el} onClick={stopPropagation}>
                             <span className="menu-dots" onClick={() => setMenuIndex(menuIndex === index ? null : index)}>⋯</span>
                             {menuIndex === index && (

@@ -23,6 +23,7 @@
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 24px;
+    margin-top: 25px;
 }
 
 .user-header h2 {
@@ -93,8 +94,8 @@
 
 /* Table Rows */
 .user-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr 3fr 1fr 2fr 2fr 0.5fr;
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr 1fr 2fr 2fr 0.5fr;
     padding: 20px 16px;
     border-bottom: 1px solid #f3f4f6;
     font-size: 14px;
@@ -320,4 +321,66 @@ body.dark .user-header-row {
     gap: 4px;
     margin-top: 12px;
   }
+}
+
+/* Very small screens: stacked card layout like Supplier */
+@media (max-width: 480px) {
+  .user-header-row {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+  }
+
+  .user-row {
+    display: block;
+    border: 1px solid #f3f4f6;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #fff;
+  }
+
+  .user-row > span {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 4px;
+    border-bottom: 1px dashed #f0f0f0;
+    font-size: 13px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .user-row > span:last-child {
+    border-bottom: none;
+  }
+
+  .user-row > span[data-label]::before {
+    content: attr(data-label) ": ";
+    font-weight: 700;
+    color: #6b7280;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+
+  .user-row { position: relative; }
+  .menu-container { position: absolute; top: 8px; right: 8px; z-index: 40; }
+  .popup-menu { position: absolute; top: 36px; right: 8px; z-index: 50; }
+
+  .menu-dots {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: transparent;
+    border-radius: 6px;
+    color: #374151;
+    user-select: none;
+  }
+
+  .user-table { overflow: visible; }
 }

@@ -205,3 +205,77 @@
     color: var(--text-muted);
     cursor: pointer;
 }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .sales-container {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .buttonCont {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .tabs {
+        overflow-x: auto;
+        gap: 12px;
+    }
+
+    .styled-table th, .styled-table td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 640px) {
+    .sales-container {
+        padding: 12px;
+    }
+
+    .page-title {
+        font-size: 18px;
+    }
+
+    .buttonCont {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .sale-btn, .sale-export-btn {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    /* Hide Customer column on narrow screens to reduce horizontal width */
+    .styled-table th:nth-child(3),
+    .styled-table td:nth-child(3) {
+        display: none;
+    }
+
+    /* Reduce table density */
+    .styled-table th, .styled-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    /* Make popup full width on very small screens */
+    .popup-box-sale {
+        max-width: 98vw;
+        margin: 0 1vw;
+    }
+}
+
+/* Ensure table wrapper uses full width and shows scrollbar when needed */
+.table-wrapper {
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}

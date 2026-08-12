@@ -217,19 +217,19 @@ const Credit = ({ isSidebarOpen }) => {
                 <tbody>
                   {paginatedData.map((item) => (
                     <tr key={item.id} className="table-row">
-                      <td className="sale-id">{item.saleId}</td>
-                      <td className="customer-name">{item.customer}</td>
-                      <td className="phone-number">{item.phone}</td>
-                      <td>{item.itemsCount}</td>
-                      <td className="amount">{formatCurrency(item.amount)}</td>
-                      <td className="amount">{formatCurrency(item.discount)}</td>
-                      <td className="amount">{formatCurrency(item.paid)}</td>
-                      <td className="amount balance-due">{formatCurrency(item.balanceDue)}</td>
-                      <td>
+                      <td className="sale-id" data-label="Sale ID">{item.saleId}</td>
+                      <td className="customer-name" data-label="Customer">{item.customer}</td>
+                      <td className="phone-number" data-label="Phone">{item.phone}</td>
+                      <td data-label="Items">{item.itemsCount}</td>
+                      <td className="amount" data-label="Total">{formatCurrency(item.amount)}</td>
+                      <td className="amount" data-label="Discount">{formatCurrency(item.discount)}</td>
+                      <td className="amount" data-label="Paid">{formatCurrency(item.paid)}</td>
+                      <td className="amount balance-due" data-label="Balance Due">{formatCurrency(item.balanceDue)}</td>
+                      <td data-label="Status">
                         <StatusBadge status={item.status} />
                       </td>
-                      <td>{item.createdAt}</td>
-                      <td>
+                      <td data-label="Date">{item.createdAt}</td>
+                      <td data-label="Action">
                         <button
                           type="button"
                           className="pay-button"

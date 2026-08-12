@@ -20,13 +20,22 @@ import { fetchAllProducts } from "../../services/productService";
 const MainPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedPage, setSelectedPage] = useState("Dashboard");
+  const [productInitialTab, setProductInitialTab] = useState(null);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [lowStockCount, setLowStockCount] = useState(0);
 
   useEffect(() => {
     const handleSelectMenu = (event) => {
-      setSelectedPage(event.detail.menu);
+      const menu = event.detail.menu;
+      if (menu === "Categories") {
+        setSelectedPage("Products");
+        setProductInitialTab("categories");
+      } else {
+        setSelectedPage(menu);
+      }
+      // Close mobile sidebar when a menu is selected from elsewhere (dashboard shortcuts etc.)
+      setShowMobileSidebar(false);
     };
     window.addEventListener("selectMenu", handleSelectMenu);
     return () => window.removeEventListener("selectMenu", handleSelectMenu);
@@ -51,7 +60,14 @@ const MainPage = () => {
   };
 
   const handleMenuSelect = (menu) => {
-    setSelectedPage(menu);
+    if (menu === "Categories") {
+      setSelectedPage("Products");
+      setProductInitialTab("categories");
+    } else {
+      setSelectedPage(menu);
+    }
+    // close mobile sidebar after selecting a menu
+    setShowMobileSidebar(false);
   };
 
   const handleProfileClick = () => {
@@ -78,7 +94,13 @@ const MainPage = () => {
       case "Dashboard":
         return <Dashboard isSidebarOpen={isSidebarOpen} />;
       case "Products":
-        return <Product isSidebarOpen={isSidebarOpen} />;
+        return (
+          <Product
+            isSidebarOpen={isSidebarOpen}
+            initialTab={productInitialTab}
+            onClearInitialTab={() => setProductInitialTab(null)}
+          />
+        );
       case "Sales":
         return <Sales isSidebarOpen={isSidebarOpen} />;
       case "Purchase":

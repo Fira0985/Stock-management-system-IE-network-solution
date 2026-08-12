@@ -254,3 +254,92 @@
     font-size: 12px;
     font-weight: 600;
 }
+
+/* Responsive product layout adjustments */
+@media (max-width: 1024px) {
+    .pd-Product-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .pd-top {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .pd-page-title {
+        width: 100%;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .pd-add, .pd-bulk, .pd-export-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .pd-search-bar input {
+        max-width: 100%;
+    }
+
+    /* Tables become denser */
+    .pd-product-table th, .pd-product-table td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .pd-section-title {
+        padding: 16px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .pd-Product-content {
+        padding: 12px;
+    }
+
+    .pd-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pd-add, .pd-bulk, .pd-export-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pd-tab-navigation {
+        gap: 12px;
+    }
+
+    .pd-search-bar input {
+        width: 100%;
+    }
+
+    /* Stack category list items for narrow screens */
+    .pd-category-item {
+        padding: 12px;
+    }
+
+    /* Hide less important table columns to reduce horizontal space */
+    .pd-product-table th:nth-child(n+6),
+    .pd-product-table td:nth-child(n+6) {
+        display: none;
+    }
+
+    .pd-product-table th, .pd-product-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .pd-product-table td img {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Ensure direct div wrappers inside .pd-section (table wrappers) are horizontally scrollable */
+.pd-section > div {
+    overflow-x: auto;
+}

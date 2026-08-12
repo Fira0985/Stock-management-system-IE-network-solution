@@ -132,11 +132,18 @@ const Customer = ({ isSidebarOpen }) => {
 
                 {paginatedCustomers.map((customer, index) => (
                     <div className="cs-customer-row" key={customer.id}>
-                        <span>#{customer.id}</span>
-                        <span>{customer.name}</span>
-                        <span>{customer.phone}</span>
-                        <span>{customer.address}</span>
-                        <span>{customer.credit_limit?.toLocaleString()}</span>
+                        <span data-label="ID">#{customer.id}</span>
+                        <span data-label="Name">{customer.name}</span>
+                        <span data-label="Phone">{customer.phone || '-'}</span>
+                        <span data-label="Address">{customer.address || '-'}</span>
+                        <span data-label="Credit Limit">{
+                            (() => {
+                                const credit = customer.credit_limit ?? customer.creditLimit ?? customer.credit;
+                                if (credit === null || credit === undefined || credit === "") return "-";
+                                const n = Number(credit);
+                                return Number.isFinite(n) ? n.toLocaleString() : credit;
+                            })()
+                        }</span>
                         <span
                             className="cs-dots"
                             onClick={(e) => {
