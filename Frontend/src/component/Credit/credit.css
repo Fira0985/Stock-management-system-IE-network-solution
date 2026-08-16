@@ -173,60 +173,81 @@
 }
 
 /* ==========================================================================
-   Table
+   Credit list cards
    ========================================================================== */
 
-.table-container {
-  overflow-x: auto;
+.credit-list-container {
+  overflow-x: hidden;
   max-height: 70vh;
   overflow-y: auto;
 }
 
-.credit-table {
-  width: 100%;
-  border-collapse: collapse;
+.credit-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 1.25rem;
 }
 
-.table-header {
-  background: #f8fafc;
-  border-bottom: 2px solid var(--credit-border);
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.table-header th {
+.credit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid var(--credit-border);
+  border-radius: 0.9rem;
   padding: 1rem;
-  text-align: left;
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
-.table-row {
-  border-bottom: 1px solid #f3f4f6;
+.credit-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--credit-accent);
+  box-shadow: 0 8px 18px rgba(0, 0, 255, 0.08);
 }
 
-.table-row:hover {
-  background: #f8fafc;
-}
-
-.table-row td {
-  padding: 1rem;
-  font-size: 0.875rem;
-  color: #374151;
-  vertical-align: middle;
+.credit-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--credit-border);
 }
 
 .sale-id {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--credit-accent);
+  letter-spacing: 0.02em;
+}
+
+.credit-item-body {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.credit-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.credit-meta-label {
+  color: var(--credit-text-muted);
+  font-weight: 500;
+}
+
+.credit-meta-value {
+  color: var(--credit-text);
+  text-align: right;
+  font-weight: 500;
 }
 
 .customer-name {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--credit-text);
 }
 
@@ -243,6 +264,12 @@
 
 .balance-due {
   color: #dc2626;
+}
+
+.credit-item-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.25rem;
 }
 
 /* ==========================================================================
@@ -450,10 +477,11 @@ body.dark .table-row:hover {
   .credit-title {
     font-size: 2.5rem;
   }
-  .credit-table th,
-  .credit-table td {
-    font-size: 1.7rem;
-    padding: 36px 48px;
+  .credit-item {
+    padding: 1.6rem;
+  }
+  .credit-meta-row {
+    font-size: 1.45rem;
   }
 }
 
@@ -465,10 +493,11 @@ body.dark .table-row:hover {
   .credit-title {
     font-size: 2rem;
   }
-  .credit-table th,
-  .credit-table td {
-    font-size: 1.2rem;
-    padding: 24px 32px;
+  .credit-item {
+    padding: 1.25rem;
+  }
+  .credit-meta-row {
+    font-size: 1.1rem;
   }
 }
 
@@ -505,16 +534,18 @@ body.dark .table-row:hover {
     gap: 0.75rem;
     font-size: 12px;
   }
-  .table-container {
+  .credit-list-container {
     max-height: 55vh;
   }
-  .credit-table {
-    font-size: 11px;
+  .credit-list {
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
   }
-  .credit-table th,
-  .credit-table td {
-    padding: 8px 6px;
-    font-size: 10px;
+  .credit-item {
+    padding: 0.75rem;
+  }
+  .credit-meta-row {
+    font-size: 0.8rem;
   }
   .status-badge {
     font-size: 0.7rem;
@@ -534,47 +565,26 @@ body.dark .table-row:hover {
   .credit-title {
     font-size: 1rem;
   }
-  .credit-table th,
-  .credit-table td {
-    padding: 6px 4px;
-    font-size: 10px;
+  .credit-meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  .credit-meta-value {
+    text-align: left;
   }
 }
 
-/* Mobile: transform table rows into card-like blocks with label/value pairs */
 @media (max-width: 480px) {
-  .credit-table thead {
-    display: none;
+  .credit-list-container {
+    max-height: none;
   }
-  .credit-table, .credit-table tbody, .credit-table tr, .credit-table td {
-    display: block;
+  .credit-item-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .pay-button {
     width: 100%;
+    justify-content: center;
   }
-  .credit-table tr {
-    margin-bottom: 12px;
-    border: 1px solid var(--credit-border);
-    border-radius: 8px;
-    padding: 8px;
-    background: #fff;
-  }
-  .credit-table td {
-    padding: 8px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: none;
-  }
-  .credit-table td:last-child {
-    border-bottom: none;
-  }
-  .credit-table td[data-label]::before {
-    content: attr(data-label) ": ";
-    color: var(--credit-text-muted);
-    font-weight: 600;
-    margin-right: 8px;
-    white-space: nowrap;
-  }
-  .status-badge { transform: none; }
-  .pay-button { width: auto; }
-  .table-container { max-height: none; }
 }

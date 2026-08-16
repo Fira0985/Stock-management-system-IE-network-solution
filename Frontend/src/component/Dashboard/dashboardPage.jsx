@@ -123,7 +123,7 @@ const Dashboard = ({ isSidebarOpen }) => {
   const totalSalesValue = Number(salesOverview?.totalSales || 0);
 
   return (
-    <main className={`main-content ${isSidebarOpen ? "" : "expanded"}`}>
+    <main className={`main-contents ${isSidebarOpen ? "" : "expanded"}`}>
       <header className="dashboard-header">
         <div className="header-titles">
           <p className="eyebrow">Operations dashboard</p>

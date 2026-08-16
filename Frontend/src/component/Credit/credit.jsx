@@ -187,7 +187,7 @@ const Credit = ({ isSidebarOpen }) => {
           </div>
         </div>
 
-        <div className="table-container">
+        <div className="credit-list-container">
           {loading ? (
             <div className="loading-message">Loading credit sales...</div>
           ) : filteredData.length === 0 ? (
@@ -198,52 +198,63 @@ const Credit = ({ isSidebarOpen }) => {
             </div>
           ) : (
             <>
-              <table className="credit-table">
-                <thead>
-                  <tr className="table-header">
-                    <th>Sale ID</th>
-                    <th>Customer</th>
-                    <th>Phone</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Discount</th>
-                    <th>Paid</th>
-                    <th>Balance Due</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedData.map((item) => (
-                    <tr key={item.id} className="table-row">
-                      <td className="sale-id" data-label="Sale ID">{item.saleId}</td>
-                      <td className="customer-name" data-label="Customer">{item.customer}</td>
-                      <td className="phone-number" data-label="Phone">{item.phone}</td>
-                      <td data-label="Items">{item.itemsCount}</td>
-                      <td className="amount" data-label="Total">{formatCurrency(item.amount)}</td>
-                      <td className="amount" data-label="Discount">{formatCurrency(item.discount)}</td>
-                      <td className="amount" data-label="Paid">{formatCurrency(item.paid)}</td>
-                      <td className="amount balance-due" data-label="Balance Due">{formatCurrency(item.balanceDue)}</td>
-                      <td data-label="Status">
-                        <StatusBadge status={item.status} />
-                      </td>
-                      <td data-label="Date">{item.createdAt}</td>
-                      <td data-label="Action">
-                        <button
-                          type="button"
-                          className="pay-button"
-                          disabled={item.balanceDue <= 0}
-                          onClick={() => handlePayment(item)}
-                        >
-                          <DollarSign className="pay-icon" />
-                          Pay
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="credit-list">
+                {paginatedData.map((item) => (
+                  <article key={item.id} className="credit-item">
+                    <div className="credit-item-header">
+                      <div className="sale-id">{item.saleId}</div>
+                      <StatusBadge status={item.status} />
+                    </div>
+
+                    <div className="credit-item-body">
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Customer</span>
+                        <span className="credit-meta-value customer-name">{item.customer}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Phone</span>
+                        <span className="credit-meta-value phone-number">{item.phone}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Items</span>
+                        <span className="credit-meta-value">{item.itemsCount}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Total</span>
+                        <span className="credit-meta-value amount">{formatCurrency(item.amount)}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Discount</span>
+                        <span className="credit-meta-value amount">{formatCurrency(item.discount)}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Paid</span>
+                        <span className="credit-meta-value amount">{formatCurrency(item.paid)}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Balance Due</span>
+                        <span className="credit-meta-value amount balance-due">{formatCurrency(item.balanceDue)}</span>
+                      </div>
+                      <div className="credit-meta-row">
+                        <span className="credit-meta-label">Date</span>
+                        <span className="credit-meta-value">{item.createdAt}</span>
+                      </div>
+                    </div>
+
+                    <div className="credit-item-footer">
+                      <button
+                        type="button"
+                        className="pay-button"
+                        disabled={item.balanceDue <= 0}
+                        onClick={() => handlePayment(item)}
+                      >
+                        <DollarSign className="pay-icon" />
+                        Pay
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
 
               {totalPages > 1 && (
                 <div className="pagination">
