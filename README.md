@@ -266,10 +266,5 @@ TrackEqa is a functional stock and business management system developed to suppo
 
 **Firafis Berhanu**
 
-Software Engineering Graduate | Software Engineer
-
-## License
-
-This project was developed as a software engineering project and portfolio application.
 
 
