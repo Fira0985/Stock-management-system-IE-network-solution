@@ -242,8 +242,6 @@ DB_PASSWORD=your_database_password
 DB_NAME=trackeqa
 ```
 
-Do not commit sensitive credentials or `.env` files to the repository.
-
 ### Run the Application
 
 Start the backend:
